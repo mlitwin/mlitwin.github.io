@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html
+  class=""
+  lang="en-us"
+  prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#"
+>
+  <head>
+    <meta charset="utf-8" />
+
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="HandheldFriendly" content="True" />
+<meta name="MobileOptimized" content="320" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="https://mlitwin.github.io//apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://mlitwin.github.io//favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://mlitwin.github.io//favicon-16x16.png">
+<link rel="manifest" href="https://mlitwin.github.io//site.webmanifest">
+<link rel="mask-icon" href="https://mlitwin.github.io//safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+
+
+
+<meta name="keywords" content="">
+
+<meta property="og:title" content="Preliminaries to a Software Testing Manifesto" />
+<meta property="og:description" content="I&rsquo;m not quite ready for a manifesto. Still gathering my own thoughts, and trying to understand software testing terminology and methodologies. But - feels like there is a fair amount of confusion about how it&rsquo;s supposed to work even in the best case.
+What is a Software Test A software test is a repeatable process applied to a software product that yields a binary pass/fail result.
+Testing Terminology Kinds/properties of tests Primary Taxonomy  Unit Test, Component Test, Module Test - A test of a minimal part of a system that can be tested in isolation  Solitary Unit Test - A test where the one and only concrete service is the service under test (all other dependencies, except for data/value types are mocked) Sociable Unit Test, Component Test - A test which uses concrete service dependencies to test the class currently under test." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://mlitwin.github.io/posts/preliminaries-to-a-software-testing-manifesto/" />
+<meta property="article:published_time" content="2020-02-23T18:06:42-08:00" />
+<meta property="article:modified_time" content="2020-03-03T19:47:03-08:00" />
+
+<meta property="og:site_name" content="Matthew Litwin&#39;s Personal Site" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Preliminaries to a Software Testing Manifesto"/>
+<meta name="twitter:description" content="I&rsquo;m not quite ready for a manifesto. Still gathering my own thoughts, and trying to understand software testing terminology and methodologies. But - feels like there is a fair amount of confusion about how it&rsquo;s supposed to work even in the best case.
+What is a Software Test A software test is a repeatable process applied to a software product that yields a binary pass/fail result.
+Testing Terminology Kinds/properties of tests Primary Taxonomy  Unit Test, Component Test, Module Test - A test of a minimal part of a system that can be tested in isolation  Solitary Unit Test - A test where the one and only concrete service is the service under test (all other dependencies, except for data/value types are mocked) Sociable Unit Test, Component Test - A test which uses concrete service dependencies to test the class currently under test."/>
+
+
+<meta itemprop="name" content="Preliminaries to a Software Testing Manifesto">
+<meta itemprop="description" content="I&rsquo;m not quite ready for a manifesto. Still gathering my own thoughts, and trying to understand software testing terminology and methodologies. But - feels like there is a fair amount of confusion about how it&rsquo;s supposed to work even in the best case.
+What is a Software Test A software test is a repeatable process applied to a software product that yields a binary pass/fail result.
+Testing Terminology Kinds/properties of tests Primary Taxonomy  Unit Test, Component Test, Module Test - A test of a minimal part of a system that can be tested in isolation  Solitary Unit Test - A test where the one and only concrete service is the service under test (all other dependencies, except for data/value types are mocked) Sociable Unit Test, Component Test - A test which uses concrete service dependencies to test the class currently under test.">
+<meta itemprop="datePublished" content="2020-02-23T18:06:42-08:00" />
+<meta itemprop="dateModified" content="2020-03-03T19:47:03-08:00" />
+<meta itemprop="wordCount" content="720">
+
+
+
+<meta itemprop="keywords" content="" />
+
+
+    <title>Preliminaries to a Software Testing Manifesto</title>
+    <link rel="canonical" href="https://mlitwin.github.io/posts/preliminaries-to-a-software-testing-manifesto/" />
+
+    
+
+    <link rel="stylesheet" href="/css/reboot.css" />
+<link rel="stylesheet" href="/css/style.css" />
+<link rel="stylesheet" href="/css/syntax.css" />
+
+<link rel="stylesheet" href="/css/custom.css" />
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+<link href="https://fonts.googleapis.com/css?family=Lora&display=swap" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+
+
+<body
+  class=" look-sheet-bkg"
+  lang="en-us"
+  itemscope
+  itemtype="http://schema.org/Article" >
+  <meta itemprop="author" content="" />
+  <meta itemprop="publisher" content="" />
+  <meta itemprop="image" content="" />
+
+  <div class="nav-bkg">
+    <nav class="content-container pagewide-bar-padding">
+      <span class="divider">/ </span>
+      <a href="https://mlitwin.github.io/" >Matthew Litwin&#39;s Personal Site</a>
+      <span class="divider">/ </span>
+      <a href="https://mlitwin.github.io/posts">Posts</a>
+      <ul class="list-unstyled right-links">
+
+          <li>
+            <a href="/about/">
+              <span class="post-title">about</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/posts/">
+              <span class="post-title">blog</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/posts/index.xml">
+              <span class="post-title">rss</span>
+            </a>
+          </li>
+
+</ul>
+
+    </nav>
+  </div>
+  <section id="main" class="content-container look-sheet article-pad-v " itemprop="mainEntityOfPage">
+    <h1 itemprop="name" id="title">Preliminaries to a Software Testing Manifesto</h1>
+    <meta itemprop="headline" content="Preliminaries to a Software Testing Manifesto" />
+    
+    
+      <div class="post-date">Created: <span itemprop="datePublished">February 23, 2020</span></div>
+      <div class="post-date">Last Edited: <span itemprop="dateModified">March 3, 2020</span></div>
+    
+    
+    <article itemprop="articleBody" id="content" class="article-body margin-top-2em">
+      <p>I&rsquo;m not quite ready for a manifesto. Still gathering my own thoughts, and trying to understand software testing terminology and methodologies. But - feels like there is a fair amount of confusion about how it&rsquo;s supposed to work even in the best case.</p>
+<h2 id="what-is-a-software-test">What is a Software Test</h2>
+<p>A software test is a repeatable process applied to a software product that yields a binary pass/fail result.</p>
+<h2 id="testing-terminology">Testing Terminology</h2>
+<h3 id="kindsproperties-of-tests">Kinds/properties of tests</h3>
+<h4 id="primary-taxonomy">Primary Taxonomy</h4>
+<ul>
+<li><a href="http://softwaretestingfundamentals.com/unit-testing/">Unit Test, Component Test, Module Test</a> - A test of a minimal part of a system that can be tested in isolation
+<ul>
+<li><a href="https://medium.com/@jkone27_3876/arguments-around-solitary-versus-sociable-unit-testing-3b2211b15103">Solitary Unit Test</a> - A test  where the one and only concrete service is the service under test (all other dependencies, except for data/value types are mocked)</li>
+<li><a href="https://medium.com/@jkone27_3876/arguments-around-solitary-versus-sociable-unit-testing-3b2211b15103">Sociable Unit Test, Component Test</a> - A test which uses concrete service dependencies to test the class currently under test.</li>
+</ul>
+</li>
+<li><a href="http://softwaretestingfundamentals.com/system-testing/">System Test</a> -  A test that focuses on verifying that a system as a whole meets specified requirements</li>
+<li><a href="http://softwaretestingfundamentals.com/functional-testing/">Functional Test</a> - A test of the system against the functional requirements/specifications.</li>
+<li><a href="https://www.guru99.com/end-to-end-testing.html">End-to-End (E2E) Test, Chain Test</a> - A test that validates the software system along with its integration with external interfaces. The purpose of end-to-end Test is to exercise a complete production-like scenario.</li>
+<li><a href="http://softwaretestingfundamentals.com/integration-testing/">Integration Test</a> - A test where individual units are combined and tested as a group.</li>
+<li><a href="http://softwaretestingfundamentals.com/acceptance-testing/">Acceptance Test</a>-  A test of a system for acceptability. The purpose of this test is to evaluate the system’s compliance with the business requirements and assess whether it is acceptable for delivery.</li>
+</ul>
+<h4 id="secondary-taxonomies">Secondary Taxonomies</h4>
+<ul>
+<li><a href="https://martinfowler.com/articles/practical-test-pyramid.html">User Interface Test, UI Test</a>. A test which starts at the User Interface level. Can be an E2E test, but could also mock services.</li>
+<li><a href="https://www.mountaingoatsoftware.com/blog/the-forgotten-layer-of-the-test-automation-pyramid">Service Test</a> - A hard to understand kind of test that is higher-level than a unit test, lower level than a UI test.</li>
+<li><a href="http://softwaretestingfundamentals.com/black-box-testing/">Black Box Test, Behavioral Test</a> - A test in which the internal structure/design/implementation of the item being tested is not known to the tester</li>
+<li><a href="http://softwaretestingfundamentals.com/white-box-testing/">White Box Test, Clear Box Test,  Glass Box Test, Transparent Box Test,  Code-Based Test,  Structural Test</a> - A test in which the internal structure/design/implementation of the item being tested is known to the tester.</li>
+<li><a href="http://softwaretestingfundamentals.com/gray-box-testing/">Gray Box Testing</a> - A test where the internal structure is partially known</li>
+<li>Tripwire Test (my personal terminology) - A test that verifies a function compared to a previous run of that function. The test shows whether the behavior of the function has changed, not whether that change represents a bug.</li>
+<li><a href="https://smartbear.com/learn/automated-testing/what-is-automated-testing/">Automated Test</a> - A test driven by software rather than humans.</li>
+<li><a href="https://smartbear.com/learn/automated-testing/what-is-automated-testing/">Manual Test</a> - A test driven by humans rather than software.</li>
+</ul>
+<h3 id="other-terms">Other Terms</h3>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Mock_object">Mock</a> - A simulation of a complex object or service by some simpler mechanism, for purposes of testing.</li>
+<li>Health Check - A test which verifies the current correct functionality of running software.</li>
+</ul>
+<h3 id="why-we-test">Why we Test</h3>
+<p>The value of a test lies in what it tells you when it runs. Depending on the kind of test, and whether it passes or fails, it could tell you:</p>
+<ul>
+<li>The application code is correct</li>
+<li>The application code has a bug</li>
+<li>The test code is correct</li>
+<li>The test code has a bug</li>
+<li>A dependent service has a bug</li>
+<li>Dependent services are working as expected</li>
+<li>Something is wrong on the internet which is interfering with the test</li>
+<li>The part of the internet the test relies on is working.</li>
+</ul>
+<p>Breaking this down according to the kind of test, I think the following are true:</p>
+<ul>
+<li>Solitary Unit Tests, after some initial work to stabilize them, generally tell you whether your application code is correct or has bug. Generally the issue is not in the test code.</li>
+<li>Sociable Unit Tests mostly tell you application code is correct or has bug. The more you mock, the more the errors tend to be in the test code itself, however.</li>
+<li>End-to-End tests mostly tell you whether your test code is correct or has a bug. After that, they test for errors in dependent services, or the generalized issues with connectivity.</li>
+</ul>
+<p>End-to-End tests seem more like Health Checks than tests per se. Having them run against released software would increase the value of running them as tests against pre-released software. If the live test works, but the pre-release test does not, it suggests that any issue is not simply connectivity or a downstream service dependency.</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://martinfowler.com/articles/practical-test-pyramid.html">https://martinfowler.com/articles/practical-test-pyramid.html</a></li>
+<li><a href="https://watirmelon.blog/testing-pyramids/">https://watirmelon.blog/testing-pyramids/</a></li>
+<li><a href="http://softwaretestingfundamentals.com/">http://softwaretestingfundamentals.com/</a></li>
+<li><a href="https://www.istqb.org/downloads/send/20-istqb-glossary/297-istqb_glossary-all-terms_v3-3.html">https://www.istqb.org/downloads/send/20-istqb-glossary/297-istqb_glossary-all-terms_v3-3.html</a></li>
+</ul>
+
+    </article>
+  </section>
+  
+  <div class="nav-bkg-50 content-container-narrow-pad bottom-links text-0p75">
+    <nav class="flex-row">
+    
+      <span class="flex-row v-center"></span>
+    
+    
+      <span class="flex-row v-center"></span>
+    
+    </nav>
+  </div>
+  
+  </body>
+</html>
