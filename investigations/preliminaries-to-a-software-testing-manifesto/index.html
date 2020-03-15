@@ -28,10 +28,10 @@
   
     
   
-  <meta name="description" content="Software Engineer">
+  <meta name="description" content="Preliminaries to a Software Testing Manifesto">
 
   
-  <link rel="alternate" hreflang="en-us" href="https://mlitwin.github.io/tags/">
+  <link rel="alternate" hreflang="en-us" href="https://mlitwin.github.io/investigations/preliminaries-to-a-software-testing-manifesto/">
 
   
 
@@ -213,14 +213,14 @@
 
 
   
-  <link rel="alternate" href="/tags/index.xml" type="application/rss+xml" title="Matthew Litwin">
+  <link rel="alternate" href="/investigations/preliminaries-to-a-software-testing-manifesto/index.xml" type="application/rss+xml" title="Matthew Litwin">
   
 
   <link rel="manifest" href="/index.webmanifest">
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="https://mlitwin.github.io/tags/">
+  <link rel="canonical" href="https://mlitwin.github.io/investigations/preliminaries-to-a-software-testing-manifesto/">
 
   
   
@@ -234,12 +234,12 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Matthew Litwin">
-  <meta property="og:url" content="https://mlitwin.github.io/tags/">
-  <meta property="og:title" content="Tags | Matthew Litwin">
-  <meta property="og:description" content="Software Engineer"><meta property="og:image" content="img/map[gravatar:%!s(bool=false) shape:square]">
+  <meta property="og:url" content="https://mlitwin.github.io/investigations/preliminaries-to-a-software-testing-manifesto/">
+  <meta property="og:title" content="Preliminaries to a Software Testing Manifesto | Matthew Litwin">
+  <meta property="og:description" content="Preliminaries to a Software Testing Manifesto"><meta property="og:image" content="img/map[gravatar:%!s(bool=false) shape:square]">
   <meta property="twitter:image" content="img/map[gravatar:%!s(bool=false) shape:square]"><meta property="og:locale" content="en-us">
   
-    
+    <meta property="og:updated_time" content="2020-03-08T21:35:35-07:00">
   
 
   
@@ -256,7 +256,7 @@
 
 
 
-  <title>Tags | Matthew Litwin</title>
+  <title>Preliminaries to a Software Testing Manifesto | Matthew Litwin</title>
 
 </head>
 
@@ -377,7 +377,7 @@
         
 
         <li class="nav-item">
-          <a class="nav-link " href="/investigations/"><span>Investigations</span></a>
+          <a class="nav-link  active" href="/investigations/"><span>Investigations</span></a>
         </li>
 
         
@@ -441,43 +441,141 @@
 
   
 
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      
 
 
 
 
 
-
-
-
-
-
-
-  
-
-  
-  
   
     
   
-<div class="universal-wrapper pt-3">
-  <h1>Tags</h1>
+
+
+
+
+<form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-3" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <span><i class="fas fa-bars"></i></span>
+  </button>
 
   
+  <input name="q" type="search" class="form-control" placeholder="Search..." autocomplete="off">
+  
+</form>
 
+<nav class="collapse docs-links" id="docs-nav">
+  
+
+  
+  
+  
+  
+  <div class="docs-toc-item active">
+    <a class="docs-toc-link" href="/investigations/preliminaries-to-a-software-testing-manifesto/">Introduction</a>
+
+  </div>
+  
+  <div class="docs-toc-item">
+    <a class="docs-toc-link" href="/investigations/preliminaries-to-a-software-testing-manifesto/terminology/">Terminology</a>
+
+  </div>
+  
+  <div class="docs-toc-item">
+    <a class="docs-toc-link" href="/investigations/preliminaries-to-a-software-testing-manifesto/analysis/">Analysis</a>
+
+  </div>
+  
+  <div class="docs-toc-item">
+    <a class="docs-toc-link" href="/investigations/preliminaries-to-a-software-testing-manifesto/references/">Refererences</a>
+
+  </div>
+  
+  
+</nav>
+
+    </div>
+
+    
+
+    <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 docs-content" role="main">
+
+      <article class="article">
+
+        <div class="docs-article-container">
+          <h1>Preliminaries to a Software Testing Manifesto</h1>
+
+          <div class="article-style">
+            <p>I&rsquo;m not quite ready for a manifesto. Still gathering my own thoughts, and trying to understand software testing terminology and methodologies. But - feels like there is a fair amount of confusion about how it&rsquo;s supposed to work even in the best case.</p>
+<h2 id="what-is-a-software-test">What is a Software Test</h2>
+<p>A software test is a repeatable process applied to a software product that yields a binary pass/fail result.</p>
+<h3 id="why-we-test">Why we Test</h3>
+<p>The value of a test lies in what it tells you when it runs. Depending on the kind of test, and whether it passes or fails, it could tell you:</p>
+<ul>
+<li>The application code is correct</li>
+<li>The application code has a bug</li>
+<li>The test code is correct</li>
+<li>The test code has a bug</li>
+<li>A dependent service has a bug</li>
+<li>Dependent services are working as expected</li>
+<li>Something is wrong on the internet which is interfering with the test</li>
+<li>The part of the internet the test relies on is working.</li>
+</ul>
+<p>
+<a href="/investigations/preliminaries-to-a-software-testing-manifesto/terminology/">Terminology</a></p>
+
+          </div>
+
+          
+
+
+
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
   
 </div>
 
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          <p>Last updated on Mar 14, 2020</p>
+
+          
 
 
-<div class="universal-wrapper">
+          
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
   
 
-  
-  
+  <p class="powered-by">
+    
 
-  
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
 
+    
+  </p>
+</footer>
+
+
+    </main>
+  </div>
 </div>
+
 
       
 
@@ -538,6 +636,11 @@
 
     
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.1/anchor.min.js" integrity="sha256-pB/deHc9CGfFpJRjC43imB29Rse8tak+5eXqntO94ck=" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
 
     
     
@@ -590,31 +693,6 @@
 
 
   
-  
-  <div class="container">
-    <footer class="site-footer">
-  
-
-  <p class="powered-by">
-    
-
-    Powered by the
-    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
-    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
-
-    
-    <span class="float-right" aria-hidden="true">
-      <a href="#" class="back-to-top">
-        <span class="button_icon">
-          <i class="fas fa-chevron-up fa-2x"></i>
-        </span>
-      </a>
-    </span>
-    
-  </p>
-</footer>
-
-  </div>
   
 
   

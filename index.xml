@@ -13,6 +13,98 @@
     </image>
     
     <item>
+      <title>Terminology Review</title>
+      <link>https://mlitwin.github.io/investigations/preliminaries-to-a-software-testing-manifesto/terminology/</link>
+      <pubDate>Sun, 05 May 2019 00:00:00 +0100</pubDate>
+      <guid>https://mlitwin.github.io/investigations/preliminaries-to-a-software-testing-manifesto/terminology/</guid>
+      <description>&lt;h2 id=&#34;testing-terminology&#34;&gt;Testing Terminology&lt;/h2&gt;
+&lt;p&gt;There is a bewildering variety of terms for various kinds of software tests and methodologies. Some of the distinctions are subtle and philosophical. With all that, the terminology seems incomplete - there are distinctions which seem worthy of distinction, where I&amp;rsquo;ve not yet been able to find a commonly used term. For these, I&amp;rsquo;ve invented a name.&lt;/p&gt;
+&lt;h3 id=&#34;kindsproperties-of-tests&#34;&gt;Kinds/properties of tests&lt;/h3&gt;
+&lt;h4 id=&#34;primary-taxonomy&#34;&gt;Primary Taxonomy&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://softwaretestingfundamentals.com/unit-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Unit Test, Component Test, Module Test&lt;/a&gt; - A test of a minimal part of a system that can be tested in isolation
+&lt;ul&gt;
+&lt;li&gt;Solipsistic Unit Test - (My own terminology - is there not something already out there?) A test that does not depend on other components, like for a function that accepts, and produces low-level dumb data.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://medium.com/@jkone27_3876/arguments-around-solitary-versus-sociable-unit-testing-3b2211b15103&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Solitary Unit Test&lt;/a&gt; - A test where the one and only concrete service is the service under test (all other dependencies, except for data/value types are mocked)&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://medium.com/@jkone27_3876/arguments-around-solitary-versus-sociable-unit-testing-3b2211b15103&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Sociable Unit Test, Component Test&lt;/a&gt; - A test which uses concrete service dependencies to test the class currently under test.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://softwaretestingfundamentals.com/system-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;System Test&lt;/a&gt; -  A test that focuses on verifying that a system as a whole meets specified requirements&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://softwaretestingfundamentals.com/functional-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Functional Test&lt;/a&gt; - A test of the system against the functional requirements/specifications.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://www.guru99.com/end-to-end-testing.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;End-to-End (E2E) Test, Chain Test&lt;/a&gt; - A test that validates the software system along with its integration with external interfaces. The purpose of end-to-end Test is to exercise a complete production-like scenario.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://softwaretestingfundamentals.com/integration-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Integration Test&lt;/a&gt; - A test where individual units are combined and tested as a group.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://softwaretestingfundamentals.com/acceptance-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Acceptance Test&lt;/a&gt;-  A test of a system for acceptability. The purpose of this test is to evaluate the system’s compliance with the business requirements and assess whether it is acceptable for delivery.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;secondary-taxonomies&#34;&gt;Secondary Taxonomies&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://martinfowler.com/articles/practical-test-pyramid.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;User Interface Test, UI Test&lt;/a&gt;. A test which starts at the User Interface level. Can be an E2E test, but could also mock services.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://www.mountaingoatsoftware.com/blog/the-forgotten-layer-of-the-test-automation-pyramid&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Service Test&lt;/a&gt; - A hard to understand kind of test that is higher-level than a unit test, lower level than a UI test.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://softwaretestingfundamentals.com/black-box-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Black Box Test, Behavioral Test&lt;/a&gt; - A test in which the internal structure/design/implementation of the item being tested is not known to the tester&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://softwaretestingfundamentals.com/white-box-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;White Box Test, Clear Box Test,  Glass Box Test, Transparent Box Test,  Code-Based Test,  Structural Test&lt;/a&gt; - A test in which the internal structure/design/implementation of the item being tested is known to the tester.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://softwaretestingfundamentals.com/gray-box-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Gray Box Testing&lt;/a&gt; - A test where the internal structure is partially known&lt;/li&gt;
+&lt;li&gt;Tripwire Test (personal terminology) - A test that verifies a function compared to a previous run of that function. The test shows whether the behavior of the function has changed, not whether that change represents a bug.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://smartbear.com/learn/automated-testing/what-is-automated-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Automated Test&lt;/a&gt; - A test driven by software rather than humans.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://smartbear.com/learn/automated-testing/what-is-automated-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Manual Test&lt;/a&gt; - A test driven by humans rather than software.&lt;/li&gt;
+&lt;li&gt;Cyborg Test (personal terminology) - A manual test which is assisted by automated technology. This could a test that is mostly automated, but requires some user intervention.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;other-terms&#34;&gt;Other Terms&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://en.wikipedia.org/wiki/Mock_object&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Mock&lt;/a&gt; - A simulation of a complex object or service by some simpler mechanism, for purposes of testing.&lt;/li&gt;
+&lt;li&gt;Health Check - A test which verifies the current correct functionality of running software.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Analysis</title>
+      <link>https://mlitwin.github.io/investigations/preliminaries-to-a-software-testing-manifesto/analysis/</link>
+      <pubDate>Sun, 05 May 2019 00:00:00 +0100</pubDate>
+      <guid>https://mlitwin.github.io/investigations/preliminaries-to-a-software-testing-manifesto/analysis/</guid>
+      <description>&lt;p&gt;Breaking this down according to the kind of test, I think the following are true:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Solipsistic Unit Test generally tell you whether your application code is correct or has bug. Generally the issue is not in the test code.&lt;/li&gt;
+&lt;li&gt;Solitary Unit Tests, after some initial work to stabilize them, generally tell you whether your application code is correct or has bug. The more you mock, the more the errors tend to be in the test code itself, since mocks can be wrong.&lt;/li&gt;
+&lt;li&gt;Sociable Unit Tests mostly tell you application code is correct or has bug. Generally the issue is not in the test code, although the error could be in the components your test depends on.&lt;/li&gt;
+&lt;li&gt;End-to-End tests mostly tell you whether your test code is correct or has a bug. After that, they test for errors in dependent services, or the generalized issues with connectivity.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;end-to-end-tests&#34;&gt;End-to-End Tests&lt;/h2&gt;
+&lt;p&gt;End-to-End tests seem more like Health Checks than tests per se. Having them run against released software would increase the value of running them as tests against pre-released software. If the live test works, but the pre-release test does not, it suggests that any issue is not simply connectivity or a downstream service dependency.&lt;/p&gt;
+&lt;p&gt;On the other hand, I think manual testing has a place in testing UI code. An API should have well-enough defined behavior so that it is testable, and since it is intended for use by software, rather than humans, tests are naturally automatable. So for a UI manual testing (augmented where useful by automation) has a place. I could see this being very useful when testing across multiple browser configurations.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>References</title>
+      <link>https://mlitwin.github.io/investigations/preliminaries-to-a-software-testing-manifesto/references/</link>
+      <pubDate>Sun, 05 May 2019 00:00:00 +0100</pubDate>
+      <guid>https://mlitwin.github.io/investigations/preliminaries-to-a-software-testing-manifesto/references/</guid>
+      <description>&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://martinfowler.com/articles/practical-test-pyramid.html&#34;&gt;https://martinfowler.com/articles/practical-test-pyramid.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://watirmelon.blog/testing-pyramids/&#34;&gt;https://watirmelon.blog/testing-pyramids/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://softwaretestingfundamentals.com/&#34;&gt;http://softwaretestingfundamentals.com/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.istqb.org/downloads/send/20-istqb-glossary/297-istqb_glossary-all-terms_v3-3.html&#34;&gt;https://www.istqb.org/downloads/send/20-istqb-glossary/297-istqb_glossary-all-terms_v3-3.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Preliminaries to a Software Testing Manifesto</title>
       <link>https://mlitwin.github.io/post/preliminaries-to-a-software-testing-manifesto/</link>
       <pubDate>Sun, 08 Mar 2020 17:50:48 -0700</pubDate>
