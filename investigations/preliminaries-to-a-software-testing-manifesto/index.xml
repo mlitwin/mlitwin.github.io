@@ -21,11 +21,12 @@
 &lt;p&gt;There is a bewildering variety of terms for various kinds of software tests and methodologies. Some of the distinctions are subtle and philosophical. With all that, the terminology seems incomplete - there are distinctions which seem worthy of distinction, where I&amp;rsquo;ve not yet been able to find a commonly used term. For these, I&amp;rsquo;ve invented a name.&lt;/p&gt;
 &lt;h3 id=&#34;kindsproperties-of-tests&#34;&gt;Kinds/properties of tests&lt;/h3&gt;
 &lt;h4 id=&#34;primary-taxonomy&#34;&gt;Primary Taxonomy&lt;/h4&gt;
+&lt;p&gt;Different kinds of test are classified in a hierarchy or progression, where there are ones that are in some sense &amp;ldquo;lower level&amp;rdquo; that others. From lower to higher (vaguely):&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;a href=&#34;http://softwaretestingfundamentals.com/unit-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Unit Test, Component Test, Module Test&lt;/a&gt; - A test of a minimal part of a system that can be tested in isolation
 &lt;ul&gt;
-&lt;li&gt;Solipsistic Unit Test - (My own terminology - is there not something already out there?) A test that does not depend on other components, like for a function that accepts, and produces low-level dumb data.&lt;/li&gt;
+&lt;li&gt;Solipsistic Unit Test - (personal terminology) A test that does not depend on other components, like for a function that accepts, and produces low-level dumb data.&lt;/li&gt;
 &lt;li&gt;
 &lt;a href=&#34;https://medium.com/@jkone27_3876/arguments-around-solitary-versus-sociable-unit-testing-3b2211b15103&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Solitary Unit Test&lt;/a&gt; - A test where the one and only concrete service is the service under test (all other dependencies, except for data/value types are mocked)&lt;/li&gt;
 &lt;li&gt;
@@ -33,17 +34,18 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;a href=&#34;http://softwaretestingfundamentals.com/system-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;System Test&lt;/a&gt; -  A test that focuses on verifying that a system as a whole meets specified requirements&lt;/li&gt;
+&lt;a href=&#34;http://softwaretestingfundamentals.com/integration-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Integration Test&lt;/a&gt; - A test where individual units are combined and tested as a group.&lt;/li&gt;
 &lt;li&gt;
-&lt;a href=&#34;http://softwaretestingfundamentals.com/functional-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Functional Test&lt;/a&gt; - A test of the system against the functional requirements/specifications.&lt;/li&gt;
+&lt;a href=&#34;http://softwaretestingfundamentals.com/functional-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Functional Test&lt;/a&gt; - A test of the system against the functional requirements/specifications. These requirements are the technical ones intended for engineering.&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://softwaretestingfundamentals.com/system-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;System Test&lt;/a&gt; -  A test that focuses on verifying that a system as a whole meets specified requirements. These requirements are the high-level ones meaningful to end users (e.g. user documentationsx)&lt;/li&gt;
 &lt;li&gt;
 &lt;a href=&#34;https://www.guru99.com/end-to-end-testing.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;End-to-End (E2E) Test, Chain Test&lt;/a&gt; - A test that validates the software system along with its integration with external interfaces. The purpose of end-to-end Test is to exercise a complete production-like scenario.&lt;/li&gt;
-&lt;li&gt;
-&lt;a href=&#34;http://softwaretestingfundamentals.com/integration-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Integration Test&lt;/a&gt; - A test where individual units are combined and tested as a group.&lt;/li&gt;
 &lt;li&gt;
 &lt;a href=&#34;http://softwaretestingfundamentals.com/acceptance-testing/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Acceptance Test&lt;/a&gt;-  A test of a system for acceptability. The purpose of this test is to evaluate the system’s compliance with the business requirements and assess whether it is acceptable for delivery.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h4 id=&#34;secondary-taxonomies&#34;&gt;Secondary Taxonomies&lt;/h4&gt;
+&lt;p&gt;Various other terminology, variously applied:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;a href=&#34;https://martinfowler.com/articles/practical-test-pyramid.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;User Interface Test, UI Test&lt;/a&gt;. A test which starts at the User Interface level. Can be an E2E test, but could also mock services.&lt;/li&gt;
@@ -96,10 +98,16 @@
       <guid>https://mlitwin.github.io/investigations/preliminaries-to-a-software-testing-manifesto/references/</guid>
       <description>&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://martinfowler.com/articles/practical-test-pyramid.html&#34;&gt;https://martinfowler.com/articles/practical-test-pyramid.html&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://watirmelon.blog/testing-pyramids/&#34;&gt;https://watirmelon.blog/testing-pyramids/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://softwaretestingfundamentals.com/&#34;&gt;http://softwaretestingfundamentals.com/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.istqb.org/downloads/send/20-istqb-glossary/297-istqb_glossary-all-terms_v3-3.html&#34;&gt;https://www.istqb.org/downloads/send/20-istqb-glossary/297-istqb_glossary-all-terms_v3-3.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://martinfowler.com/articles/practical-test-pyramid.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Martin Fowler, The Practical Test Pyramid&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://watirmelon.blog/testing-pyramids/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Alister Scott, Testing Pyramids &amp;amp; Ice-Cream Cones&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;http://softwaretestingfundamentals.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Software Testing Fundamentals&lt;/a&gt; (Many definitions)&lt;/li&gt;
+&lt;li&gt;
+&lt;a href=&#34;https://www.istqb.org/downloads/send/20-istqb-glossary/297-istqb_glossary-all-terms_v3-3.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;International Software Testing Qualifications Board (ISTQB)&lt;/a&gt; (Some more formal definitions)&lt;/li&gt;
+&lt;li&gt;Kaner, Falk, Nguyen. Testing Computer Software. Wiley Computer Publishing, 1999 in 
+&lt;a href=&#34;https://en.wikipedia.org/wiki/Functional_testing&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Wikipedia Functional_testing&lt;/a&gt; (Functional and Systems Testing)&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
