@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Web Sketchpad &middot; Matthew Litwin</title>
+  <meta name="description" content="" />
+  <link href="https://mlitwin.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://mlitwin.github.io/css/concated.min.css" rel="stylesheet">
+  
+  
+</head>
+
+  <body class="single-body">
+    <nav class="nav-bar side-padding">
+  <h1 class="nav-header"><a href="https://mlitwin.github.io/" class="nav-text">Matthew David Litwin</a></h1>
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span></span>
+      <span></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://mlitwin.github.io/" class="hamburger-menu-overlay-link">Home</a></li>
+      <li><a href="https://mlitwin.github.io/posts/preliminaries-to-a-software-testing-manifesto/" class="hamburger-menu-overlay-link">Preliminaries to a Software Testing Manifesto</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+    <main class="content side-text-padding">
+      <article class="post ">
+        <header class="post-header">
+          <h1 class="post-title">Web Sketchpad</h1>
+          <p class="post-date">Posted <time datetime="2021-04-03">Apr 3, 2021</time></p>
+        </header>
+        
+        
+        <h2 id="the-geometers-sketchpad">The Geometer&rsquo;s Sketchpad</h2>
+<p>I worked a lot in my career on <a href="https://en.wikipedia.org/wiki/The_Geometer%27s_Sketchpad">The Geometer&rsquo;s Sketchpad</a>, an educational geometry visualization and interaction desktop application. Sketchpad had a long and useful life, finally retired as a product in <a href="https://www.mheducation.com/prek-12/program/geometer-s-sketchpad-software/MKTSP-HGA01M0.html">2019</a>. Twenty-five years! It&rsquo;s still in use as an authoring environment for the HTML5 web viewer.</p>
+<h2 id="web-sketchpad">Web Sketchpad</h2>
+<div
+class="sketch_canvas"
+ data-url="../../wsp/Newton.json"
+></div>
+
+<script src="../../wsp/jquery-2.1.0.min.js"></script>
+<script src="../../wsp/wsp.js"></script>
+<script src="../../wsp/wsp-runner.js"></script>
+<p>Web Sketchpad is HTML5 viewer for Geometer&rsquo;s Sketchpad documents. This was a ground-up re-implementation of the desktop software&rsquo;s internal C logic into HTML5 / JavaScript.</p>
+<ul>
+<li>Some of it&rsquo;s pedagogical potential can be seen in it&rsquo;s <a href="https://geometricfunctions.org/fc/tools/">construction tools</a> or <a href="https://illuminations.nctm.org/wsp/">pre constructed activites</a>.</li>
+<li>You can see a engineering-centric usage in an <a href="https://mlitwin.github.io/Cyclades/">engineering presentation</a> I gave on cycle detection (navigate with the right and left arrow).</li>
+</ul>
+<p>I learned a tremendous amount about HTML/CSS/JavaScript while working on this. Looking back, it holds up pretty well:</p>
+<ul>
+<li>We limited dependent libraries. There are a few, but it&rsquo;s not an <code>npm install</code> fest.</li>
+<li>HTML <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas">Canvas</a> rendering has stayed reasonably performant. Not pining for <a href="https://developer.mozilla.org/en-US/docs/Web/SVG">SVG</a>.</li>
+</ul>
+<p>Things I&rsquo;d re-work:</p>
+<ul>
+<li>Remove the dependency on <a href="http://youmightnotneedjquery.com/">jQuery</a>. In fact, we didn&rsquo;t need it. Useful and comforting while learning, though.</li>
+<li>Use a modern build pipeline like <a href="https://webpack.js.org/">Webpack</a>.</li>
+<li>Use <a href="https://www.typescriptlang.org/">Typescript</a>. Even a modest amount of type checking would help catch some bugs.</li>
+<li>Work on accessibility from the get-go.</li>
+</ul>
+
+      </article>
+      
+    </main>
+    <nav class="end-nav side-padding">
+      
+      <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://mlitwin.github.io/posts/preliminaries-to-a-software-testing-manifesto/" class="card blog-card bc-next" rel="bookmark" >
+  
+  <article class="card-body">
+    <h2 class="card-title">Preliminaries to a Software Testing Manifesto</h2>
+    <p class="card-text">I’m not quite ready for a manifesto. Still gathering my own thoughts, and trying to understand software testing terminology and methodologies. But - feels like there is a fair amount of confusion about how it’s supposed to work even in the best case.
+At a high level, I’ll try to break down what software tests are, why we use them, and try to elucidate the terminology used in describing the kinds and properties of various forms of testing.</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2020-03-08 38:00">Mar 8, 2020</time></p>
+      <p></p>
+    </div>
+  </article>
+</a>
+      
+    </nav>
+    <footer class="side-padding" style="background-image: url('https://mlitwin.github.io/img/home-blob-flip.svg');">
+    <a href="https://mlitwin.github.io/" class="footer-link">
+    
+        <img class="footer-icon" src="https://mlitwin.github.io/icons/home-page.png">
+    
+    </a>
+    
+    <a href="https://github.com/mlitwin" class="footer-link">
+    
+        <img class="footer-icon" src="https://mlitwin.github.io/icons/github.png" />
+    
+    </a>
+    
+    
+    <a href="https://www.linkedin.com/in/matthewlitwin/" class="footer-link">
+    
+        <img class="footer-icon" src="https://mlitwin.github.io/icons/linkedin.png" />
+    
+    </a>
+    
+</footer>
+    
+  <script defer src="https://mlitwin.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://mlitwin.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://mlitwin.github.io/js/core.min.js"></script>
+
+  </body>
+</html>
