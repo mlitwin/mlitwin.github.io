@@ -1,0 +1,21 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Personal Site - Matthew Litwin</title>
+    <link>https://mlitwin.github.io/</link>
+    <description>Recent content in Personal Site on Matthew Litwin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 02 Apr 2021 15:51:16 -0700</lastBuildDate>
+    
+        <atom:link href="https://mlitwin.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Posts</title>
+      <link>https://mlitwin.github.io/posts/</link>
+      <pubDate>Sun, 08 Mar 2020 21:35:35 -0700</pubDate>
+      
+      <guid>https://mlitwin.github.io/posts/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>
