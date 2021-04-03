@@ -5,3 +5,13 @@ footer {
 .home-header {
     background-image: none !important;
 }
+
+.sketch_canvas {
+    padding-top: 20px;
+    float: right;
+}
+
+.sketch_canvas img {
+    width: unset;
+    height: unset;
+}
