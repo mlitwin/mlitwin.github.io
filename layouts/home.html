@@ -6,16 +6,6 @@
     <main class="card-container side-gutter">
       {{ if or (not (eq .Description "")) (not (eq .Title "")) -}}
       <header class="home-header" style="background-image: url('{{ "img/home-blob.svg" | absURL }}');">
-        <div class="home-blob-text-container">
-        {{ with .Title }}<h1 class="home-blob-title">{{ . }}</h1>{{ end }}
-        <div class="home-blob-text">
-<ul>
-    <li>I live in San Francisco</li>
-    <li>I work at <a href="https://www.mheducation.com/">McGraw-Hill Education</a> as a software engineer</li>
-    <li>My <a href="https://mlitwin.github.io/resume/">résumé</a></li>
-</ul>
-        </div>
-        </div>
         {{ with resources.GetMatch .Site.Params.headshotimg -}}
         <div class="home-faceshot-card">
           <picture>
@@ -27,6 +17,16 @@
           </picture>
         </div>
         {{ end -}}
+        <div class="home-blob-text-container">
+        {{ with .Title }}<h1 class="home-blob-title">{{ . }}</h1>{{ end }}
+        <div class="home-blob-text">
+<ul>
+    <li>I live in San Francisco</li>
+    <li>I work at <a href="https://www.mheducation.com/">McGraw-Hill Education</a> as a software engineer</li>
+    <li>My <a href="https://mlitwin.github.io/resume/">résumé</a></li>
+</ul>
+        </div>
+        </div>
       </header>
       {{- end }}
       {{ with .Content -}}
