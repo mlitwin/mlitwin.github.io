@@ -2,7 +2,8 @@ baseURL = "https://mlitwin.github.io/"
 languageCode = "en-us"
 title = "Matthew Litwin"
 description = "Matthew Litwin"
-publishDir="docs"
+publishDir = "docs"
+googleAnalytics = "G-XE117G3H0D"
 
 [[module.imports]]
     path = "github.com/josephhutch/aether"

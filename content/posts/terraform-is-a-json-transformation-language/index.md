@@ -8,11 +8,11 @@ displayInList: true
 draft: true
 ---
 
-We use Terraform a lot at my work. There's been an interesting learning curve as I've gone from no knowledge of it, to using it in production.
+We use Terraform a lot at my work. There's been an interesting learning curve as I've gone from no knowledge of it, to using it in production. I had a bit of trouble figuring out a conceptual model - a way of thinking about what it was doing - that worked for me.
 
-# What terraform is and isn't
+Eventually I found one.
 
-## Terraform operates with (and on JSON)
+## What Terraform is
 
 Terraform configurations are written in [HCL](https://github.com/hashicorp/hcl) which is
 
@@ -20,7 +20,9 @@ Terraform configurations are written in [HCL](https://github.com/hashicorp/hcl) 
 
 HCL provides significant templating functionality, and syntactic sugar - but to understand what the configuration will actually do, you should think of it as JSON. Specifically, think of it in terms of a set of deeply nested objects, with key -> value a.b.c.f -> config. The meaning of the config comes from the keys, and the value. 
 
-# Mental model
+## A Mental Modal for Terraform
+
+Schematically, here's what happens when you use terraform:
 
 $$\operatorname{T}(state, code; infrastructure) \rightarrow (state', infrastructure')$$
 
