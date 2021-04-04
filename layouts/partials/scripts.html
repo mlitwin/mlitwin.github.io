@@ -1,0 +1,21 @@
+{{ with resources.Get "js/katex.js" }}
+  <script defer src="{{ .Permalink }}"></script>
+{{ end }}
+{{ with resources.Get "js/auto-render.js" }}
+  <script defer src="{{ .Permalink }}" onload="renderMathInElement(document.body);"></script>
+{{ end }}
+{{ $corejs := resources.Get "js/core.js" | minify }}
+<script src="{{ $corejs.Permalink }}"></script>
+
+
+{{ with .Params.wsp }}
+{{ with resources.Get "wsp/jquery-2.1.0.min.js" }}
+  <script src="{{ .Permalink }}"></script>
+{{ end }}
+{{ with resources.Get "wsp/wsp.js" }}
+  <script src="{{ .Permalink }}"></script>
+{{ end }}
+{{ with resources.Get "wsp/wsp-runner.js" }}
+  <script src="{{ .Permalink }}"></script>
+{{ end }}
+{{ end}}
