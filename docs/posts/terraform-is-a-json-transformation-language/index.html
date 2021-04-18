@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Terraform is a JSON transformation language with side-effects &middot; Matthew Litwin</title>
+  <meta name="description" content="" />
+  <link href="https://mlitwin.github.io/css/katex.css" rel="stylesheet">
+  
+  
+  
+  
+  <link href="https://mlitwin.github.io/css/concated.min.css" rel="stylesheet">
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XE117G3H0D"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-XE117G3H0D', { 'anonymize_ip': false });
+}
+</script>
+
+  
+</head>
+
+  <body class="single-body">
+    <nav class="nav-bar side-padding">
+  <h1 class="nav-header"><a href="https://mlitwin.github.io/" class="nav-text">Matthew David Litwin</a></h1>
+  <div class="hamburger-menu">
+    <button onclick="hamburgerMenuPressed.call(this)" aria-haspopup="true" aria-expanded="false" aria-controls="menu" aria-label="Menu">
+      <span></span>
+      <span></span>
+    </button>
+    <ul id="menu" class="hamburger-menu-overlay">
+      <li><a href="https://mlitwin.github.io/" class="hamburger-menu-overlay-link">Home</a></li>
+      <li><a href="https://mlitwin.github.io/posts/preliminaries-to-a-software-testing-manifesto/" class="hamburger-menu-overlay-link">Preliminaries to a Software Testing Manifesto</a></li>
+      
+      
+    </ul>
+  </div>
+</nav>
+
+    <main class="content side-text-padding">
+      <article class="post ">
+        <header class="post-header">
+          <h1 class="post-title">Terraform is a JSON transformation language with side-effects</h1>
+          <p class="post-date">Posted <time datetime="2021-04-17">Apr 17, 2021</time></p>
+        </header>
+        
+        
+        <p>We use <a href="https://www.terraform.io/">Terraform</a> a lot at my work. There&rsquo;s been an interesting learning curve as I&rsquo;ve gone from no knowledge of it, to using it in production. I had a bit of trouble figuring out a conceptual model - a way of thinking about what it was doing - that worked for me.</p>
+<p>Eventually I found one.</p>
+<h2 id="what-terraform-is">What Terraform is</h2>
+<p>Terraform configurations are written in <a href="https://github.com/hashicorp/hcl">HCL</a> which is</p>
+<blockquote>
+<p>a specialized language for our tools, and JSON as the interoperability layer.</p>
+</blockquote>
+<p>HCL provides significant templating functionality, and syntactic sugar - but to understand what the configuration will actually do, you should think of it as JSON. Specifically, think of it in terms of a set of deeply nested objects, with key -&gt; value a.b.c.f -&gt; config. The meaning of the config comes from the keys, and the value.</p>
+<h2 id="what-terraform-does">What Terraform does</h2>
+<p>Schematically, here&rsquo;s what happens when you use terraform:</p>
+<p>$$\operatorname{T}(state, code; infrastructure) \rightarrow (state', infrastructure')$$</p>
+<p><img src="/diagrams/terraform.svg" alt="Terraform Flowchart"></p>
+<p>The tricky part for me to understand here is the role of the <code>tf.state</code> file. It&rsquo;s the mysterious file that&rsquo;s always being &lsquo;refreshed&rsquo;, and sometimes (or before you get the hang of things, maybe more than sometimes) gets corrupt and needs you to mess around to <a href="https://medium.com/@abtreece/recovering-terraform-state-69c9966db71e">recover it</a>.</p>
+<p>But <code>tf.state</code> is the key to understanding what terraform is doing. Basically, it&rsquo;s just taking <code>tf.state</code>, applying a program (defined by your <code>.tf</code> files), and updating to a new <code>tf.state</code>. What happens to your infrastructure is just a happy side effect. This is I think a weakness of the terraform model - that you have two sources of truth - the state file, and the actual infrastructure. I wonder if for AWS at least, you could tag the infrastructure terraform created with enough metadata so that you could get rid of <code>tf.state</code>.</p>
+
+      </article>
+      
+    </main>
+    <nav class="end-nav side-padding">
+      
+      <a ontouchstart="cardPressed.call(this)" ontouchend="cardReleased.call(this)" ontouchmove="cardReleased.call(this)" 
+  href="https://mlitwin.github.io/posts/web-sketchpad/" class="card blog-card bc-next" rel="bookmark" >
+  
+  <article class="card-body">
+    <h2 class="card-title">Web Sketchpad</h2>
+    <p class="card-text">Reflections on The Geometer&#39;s Sketchpad, and Web Sketchpad</p>
+    <div class="card-subtext muted-text">
+      <p>Posted <time datetime="2021-04-03 43:00">Apr 3, 2021</time></p>
+      <p></p>
+    </div>
+  </article>
+</a>
+      
+    </nav>
+    <footer class="side-padding" style="background-image: url('https://mlitwin.github.io/img/home-blob-flip.svg');">
+    <a href="https://mlitwin.github.io/" class="footer-link">
+    
+        <img class="footer-icon" src="https://mlitwin.github.io/icons/home-page.png">
+    
+    </a>
+    
+    <a href="https://github.com/mlitwin" class="footer-link">
+    
+        <img class="footer-icon" src="https://mlitwin.github.io/icons/github.png" />
+    
+    </a>
+    
+    
+    <a href="https://www.linkedin.com/in/matthewlitwin/" class="footer-link">
+    
+        <img class="footer-icon" src="https://mlitwin.github.io/icons/linkedin.png" />
+    
+    </a>
+    
+</footer>
+    
+  <script defer src="https://mlitwin.github.io/js/katex.js"></script>
+
+
+  <script defer src="https://mlitwin.github.io/js/auto-render.js" onload="renderMathInElement(document.body);"></script>
+
+
+<script src="https://mlitwin.github.io/js/core.min.js"></script>
+
+
+
+  </body>
+</html>

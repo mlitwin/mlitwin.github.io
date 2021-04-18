@@ -1,7 +1,7 @@
 ---
 title: "Web Sketchpad"
 date: 2021-04-03T14:21:28-07:00
-description: ""
+description: "Reflections on The Geometer's Sketchpad, and Web Sketchpad"
 categories: []
 toc: false
 dropCap: false

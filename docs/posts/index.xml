@@ -5,17 +5,27 @@
     <description>Recent content in Posts on Matthew Litwin</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 03 Apr 2021 14:21:28 -0700</lastBuildDate>
+    <lastBuildDate>Sat, 17 Apr 2021 13:55:38 -0700</lastBuildDate>
     
         <atom:link href="https://mlitwin.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Terraform is a JSON transformation language with side-effects</title>
+      <link>https://mlitwin.github.io/posts/terraform-is-a-json-transformation-language/</link>
+      <pubDate>Sat, 17 Apr 2021 13:55:38 -0700</pubDate>
+      
+      <guid>https://mlitwin.github.io/posts/terraform-is-a-json-transformation-language/</guid>
+      <description>We use Terraform a lot at my work. There&amp;rsquo;s been an interesting learning curve as I&amp;rsquo;ve gone from no knowledge of it, to using it in production. I had a bit of trouble figuring out a conceptual model - a way of thinking about what it was doing - that worked for me.
+Eventually I found one.
+What Terraform is Terraform configurations are written in HCL which is
+ a specialized language for our tools, and JSON as the interoperability layer.</description>
+    </item><item>
       <title>Web Sketchpad</title>
       <link>https://mlitwin.github.io/posts/web-sketchpad/</link>
       <pubDate>Sat, 03 Apr 2021 14:21:28 -0700</pubDate>
       
       <guid>https://mlitwin.github.io/posts/web-sketchpad/</guid>
-      <description></description>
+      <description>Reflections on The Geometer&#39;s Sketchpad, and Web Sketchpad</description>
     </item><item>
       <title>Preliminaries to a Software Testing Manifesto</title>
       <link>https://mlitwin.github.io/posts/preliminaries-to-a-software-testing-manifesto/</link>

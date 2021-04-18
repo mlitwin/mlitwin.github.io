@@ -1,10 +1,10 @@
 ---
-title: "Hello"
-date: 2021-04-02T15:51:16-07:00
+title: "Index"
+date: 2021-04-17T13:55:38-07:00
 description: ""
 categories: []
 toc: false
-dropCap: false
+dropCap: true
 displayInMenu: false
 displayInList: true
 draft: true
@@ -17,9 +17,3 @@ resources:
       name: ""
       link: ""
 ---
-
-Hello World!
-
-{{< raw >}}
-\[u(t) = K_p e(t) + K_i \int_{0}^{t} e(\tau) d\tau + K_d \frac{de(t)}{dt} \]
-{{< /raw >}}
