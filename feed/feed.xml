@@ -3,18 +3,18 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <title>Matthew Litwin</title>
   <subtitle>Matthew Litwin&#39;s personal site</subtitle>
-  <link href="https://antoninus.org/eleventy-base-blog/feed/feed.xml" rel="self" />
-  <link href="https://antoninus.org/eleventy-base-blog/" />
+  <link href="https://antoninus.org/feed/feed.xml" rel="self" />
+  <link href="https://antoninus.org/" />
   <updated>2021-04-17T20:55:38Z</updated>
-  <id>https://antoninus.org/eleventy-base-blog/</id>
+  <id>https://antoninus.org/</id>
   <author>
     <name>Matthew Litwin</name>
   </author>
   <entry>
     <title>Terraform is a JSON transformation language with side-effects</title>
-    <link href="https://antoninus.org/eleventy-base-blog/blog/terraform-is-a-json-transformation-language/" />
+    <link href="https://antoninus.org/blog/terraform-is-a-json-transformation-language/" />
     <updated>2021-04-17T20:55:38Z</updated>
-    <id>https://antoninus.org/eleventy-base-blog/blog/terraform-is-a-json-transformation-language/</id>
+    <id>https://antoninus.org/blog/terraform-is-a-json-transformation-language/</id>
     <content type="html">&lt;p&gt;We use &lt;a href=&quot;https://www.terraform.io/&quot;&gt;Terraform&lt;/a&gt; a lot at my work. There&#39;s been an interesting learning curve as I&#39;ve gone from no knowledge of it, to using it in production. I had a bit of trouble figuring out a conceptual model - a way of thinking about what it was doing - that worked for me.&lt;/p&gt;
 &lt;p&gt;Eventually I found one.&lt;/p&gt;
 &lt;h2 id=&quot;what-terraform-is&quot;&gt;What Terraform is&lt;/h2&gt;
@@ -34,9 +34,9 @@
   </entry>
   <entry>
     <title>Web Sketchpad</title>
-    <link href="https://antoninus.org/eleventy-base-blog/blog/web-sketchpad/" />
+    <link href="https://antoninus.org/blog/web-sketchpad/" />
     <updated>2021-04-03T21:21:28Z</updated>
-    <id>https://antoninus.org/eleventy-base-blog/blog/web-sketchpad/</id>
+    <id>https://antoninus.org/blog/web-sketchpad/</id>
     <content type="html">&lt;p&gt;I worked a lot in my career on &lt;a href=&quot;https://en.wikipedia.org/wiki/The_Geometer%27s_Sketchpad&quot;&gt;The Geometer&#39;s Sketchpad&lt;/a&gt;, an educational geometry visualization and interaction desktop application. Sketchpad had a long and useful life, finally retired as a product in &lt;a href=&quot;https://www.mheducation.com/prek-12/program/geometer-s-sketchpad-software/MKTSP-HGA01M0.html&quot;&gt;2019&lt;/a&gt;. Twenty-five years! It&#39;s still in use as an authoring environment for the HTML5 web viewer.&lt;/p&gt;
 &lt;h2 id=&quot;web-sketchpad&quot;&gt;Web Sketchpad&lt;/h2&gt;
 &lt;div class=&quot;sketch_canvas&quot; data-url=&quot;/wsp/Newton.json&quot;&gt;&lt;/div&gt;
@@ -61,9 +61,9 @@
   </entry>
   <entry>
     <title>Preliminaries to a Software Testing Manifesto</title>
-    <link href="https://antoninus.org/eleventy-base-blog/blog/preliminaries-to-a-software-testing-manifesto/" />
+    <link href="https://antoninus.org/blog/preliminaries-to-a-software-testing-manifesto/" />
     <updated>2018-09-30T00:00:00Z</updated>
-    <id>https://antoninus.org/eleventy-base-blog/blog/preliminaries-to-a-software-testing-manifesto/</id>
+    <id>https://antoninus.org/blog/preliminaries-to-a-software-testing-manifesto/</id>
     <content type="html">&lt;p&gt;I&#39;m not quite ready for a manifesto. Still gathering my own thoughts, and trying to understand software testing terminology and methodologies. But - feels like there is a fair amount of confusion about how it&#39;s supposed to work even in the best case.&lt;/p&gt;
 &lt;h1 id=&quot;what-is-a-software-test&quot;&gt;What is a Software Test&lt;/h1&gt;
 &lt;p&gt;A software test is a repeatable process applied to a software product that yields a binary pass/fail result.&lt;/p&gt;
