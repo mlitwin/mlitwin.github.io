@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Preliminaries to a Software Testing Manifesto</title>
+		<meta name="description" content="Personal site of Matthew Litwin">
+		<link rel="alternate" href="/eleventy-base-blog/feed/feed.xml" type="application/atom+xml" title="Matthew Litwin">
+
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+		
+		<style>/**
+ * okaidia theme for JavaScript, CSS and HTML
+ * Loosely based on Monokai textmate theme by http://www.monokai.nl/
+ * @author ocodia
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+	color: #f8f8f2;
+	background: none;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	font-size: 1em;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+	border-radius: 0.3em;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background: #272822;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
+	white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: #8292a2;
+}
+
+.token.punctuation {
+	color: #f8f8f2;
+}
+
+.token.namespace {
+	opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+	color: #f92672;
+}
+
+.token.boolean,
+.token.number {
+	color: #ae81ff;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+	color: #a6e22e;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string,
+.token.variable {
+	color: #f8f8f2;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.function,
+.token.class-name {
+	color: #e6db74;
+}
+
+.token.keyword {
+	color: #66d9ef;
+}
+
+.token.regex,
+.token.important {
+	color: #fd971f;
+}
+
+.token.important,
+.token.bold {
+	font-weight: bold;
+}
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
+}
+/*
+ * New diff- syntax
+ */
+
+pre[class*="language-diff-"] {
+	--eleventy-code-padding: 1.25em;
+	padding-left: var(--eleventy-code-padding);
+	padding-right: var(--eleventy-code-padding);
+}
+.token.deleted {
+	background-color: hsl(0, 51%, 37%);
+	color: inherit;
+}
+.token.inserted {
+	background-color: hsl(126, 31%, 39%);
+	color: inherit;
+}
+
+/* Make the + and - characters unselectable for copy/paste */
+.token.prefix.unchanged,
+.token.prefix.inserted,
+.token.prefix.deleted {
+	-webkit-user-select: none;
+	user-select: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+.token.prefix.inserted,
+.token.prefix.deleted {
+	width: var(--eleventy-code-padding);
+	background-color: rgba(0,0,0,.2);
+}
+
+/* Optional: full-width background color */
+.token.inserted:not(.prefix),
+.token.deleted:not(.prefix) {
+	display: block;
+	margin-left: calc(-1 * var(--eleventy-code-padding));
+	margin-right: calc(-1 * var(--eleventy-code-padding));
+	text-decoration: none; /* override del, ins, mark defaults */
+	color: inherit; /* override del, ins, mark defaults */
+}
+/* This is an arbitrary CSS string added to the bundle */
+/* Defaults */
+:root {
+	--font-family: -apple-system, system-ui, sans-serif;
+	--font-family-monospace: Consolas, Menlo, Monaco, Andale Mono WT, Andale Mono, Lucida Console, Lucida Sans Typewriter, DejaVu Sans Mono, Bitstream Vera Sans Mono, Liberation Mono, Nimbus Mono L, Courier New, Courier, monospace;
+}
+
+/* Theme colors */
+:root {
+	--color-gray-20: #e0e0e0;
+	--color-gray-50: #C0C0C0;
+	--color-gray-90: #333;
+
+	/* --background-color: #fff; */
+	--background-color: rgb(226, 229, 234);
+	
+
+	--text-color: var(--color-gray-90);
+	--text-color-link: #082840;
+	--text-color-link-active: #5f2b48;
+	--text-color-link-visited: #17050F;
+
+	--syntax-tab-size: 2;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--color-gray-20: #e0e0e0;
+		--color-gray-50: #C0C0C0;
+		--color-gray-90: #dad8d8;
+
+		/* --text-color is assigned to --color-gray-_ above */
+		--text-color-link: #1493fb;
+		--text-color-link-active: #6969f7;
+		--text-color-link-visited: #a6a6f8;
+
+		--background-color: #15202b;
+	}
+}
+
+
+/* Global stylesheet */
+* {
+	box-sizing: border-box;
+}
+
+@view-transition {
+	navigation: auto;
+}
+
+html,
+body {
+	padding: 0;
+	margin: 0 auto;
+	font-family: var(--font-family);
+	color: var(--text-color);
+	background-color: var(--background-color);
+}
+html {
+	overflow-y: scroll;
+}
+body {
+	max-width: 50em;
+	padding: 1em;
+}
+
+/* https://www.a11yproject.com/posts/how-to-hide-content/ */
+.visually-hidden {
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+
+/* Fluid images via https://www.zachleat.com/web/fluid-images/ */
+img{
+  max-width: 100%;
+}
+img[width][height] {
+  height: auto;
+}
+img[src$=".svg"] {
+  width: 100%;
+  height: auto;
+  max-width: none;
+}
+video,
+iframe {
+	width: 100%;
+	height: auto;
+}
+iframe {
+	aspect-ratio: 16/9;
+}
+
+p:last-child {
+	margin-bottom: 0;
+}
+p {
+	line-height: 1.5;
+}
+
+li {
+	line-height: 1.5;
+}
+
+a[href] {
+	color: var(--text-color-link);
+}
+a[href]:visited {
+	color: var(--text-color-link-visited);
+}
+a[href]:hover,
+a[href]:active {
+	color: var(--text-color-link-active);
+}
+
+main,
+footer {
+	padding: 1rem;
+}
+main :first-child {
+	margin-top: 0;
+}
+
+header {
+	border-bottom: 1px dashed var(--color-gray-20);
+}
+header:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.links-nextprev {
+	display: flex;
+	justify-content: space-between;
+	gap: .5em 1em;
+	list-style: "";
+	border-top: 1px dashed var(--color-gray-20);
+	padding: 1em 0;
+}
+.links-nextprev > * {
+	flex-grow: 1;
+}
+.links-nextprev-next {
+	text-align: right;
+}
+
+table {
+	margin: 1em 0;
+}
+table td,
+table th {
+	padding-right: 1em;
+}
+
+pre,
+code {
+	font-family: var(--font-family-monospace);
+}
+pre:not([class*="language-"]) {
+	margin: .5em 0;
+	line-height: 1.375; /* 22px /16 */
+	-moz-tab-size: var(--syntax-tab-size);
+	-o-tab-size: var(--syntax-tab-size);
+	tab-size: var(--syntax-tab-size);
+	-webkit-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	overflow-x: auto;
+}
+code {
+	word-break: break-all;
+}
+
+/* Header */
+header {
+	display: flex;
+	gap: 1em .5em;
+	flex-wrap: wrap;
+	align-items: center;
+	padding: 1em;
+}
+.home-link {
+	font-size: 1em; /* 16px /16 */
+	font-weight: 700;
+	margin-right: 2em;
+}
+.home-link:link:not(:hover) {
+	text-decoration: none;
+}
+
+/* Nav */
+.nav {
+	display: flex;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+.nav-item {
+	display: inline-block;
+	margin-right: 1em;
+}
+.nav-item a[href]:not(:hover) {
+	text-decoration: none;
+}
+.nav a[href][aria-current="page"] {
+	text-decoration: underline;
+}
+
+/* Posts list */
+.postlist {
+	list-style: none;
+	padding: 0;
+	padding-left: 1.5rem;
+}
+.postlist-item {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	counter-increment: start-from -1;
+	margin-bottom: 1em;
+}
+.postlist-item:before {
+	display: inline-block;
+	pointer-events: none;
+	content: "" counter(start-from, decimal-leading-zero) ". ";
+	line-height: 100%;
+	text-align: right;
+	margin-left: -1.5rem;
+}
+.postlist-date,
+.postlist-item:before {
+	font-size: 0.8125em; /* 13px /16 */
+	color: var(--color-gray-90);
+}
+.postlist-date {
+	word-spacing: -0.5px;
+}
+.postlist-link {
+	font-size: 1.1875em; /* 19px /16 */
+	flex-basis: calc(100% - 1.5rem);
+	padding-left: .25em;
+	padding-right: .5em;
+	text-decoration: none;
+}
+.postlist-item-active .postlist-link {
+	font-weight: bold;
+}
+
+.postlist-excerpt {
+	margin-bottom: 1em;
+}
+
+/* Tags */
+.post-tag {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-transform: capitalize;
+	font-style: italic;
+}
+.postlist-item > .post-tag {
+	align-self: center;
+}
+
+/* Tags list */
+.post-metadata {
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: .5em;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.post-metadata time {
+	margin-right: 1em;
+}
+
+
+/* Custom */
+
+
+body {
+	background-color: #fff;
+	border-radius: 20px;
+}
+
+.intro-with-image {
+	display: flex;
+	gap: .5em;
+	padding: 0;
+	margin: 0;
+}
+
+.intro-with-image ul {
+	list-style: none;
+	padding-inline-start: 1em;
+}
+
+.intro-with-image ul li {
+	padding-inline-start: 0;
+}
+
+footer {
+	display: flex;
+	justify-content: space-between;
+}
+.footer-icon {
+	max-width: 3rem;
+	margin: 0;
+}
+
+.picture-box {
+  background: var(--background-color);
+  padding: 1em;
+  border-radius: 1em;
+}
+
+.picture-box img {
+  border-radius: 1em;
+}</style>
+	</head>
+	<body>
+		<a href="#skip" class="visually-hidden">Skip to main content</a>
+
+		<header>
+			<a href="/eleventy-base-blog/" class="home-link">Matthew Litwin</a>
+			<nav>
+				<h2 class="visually-hidden" id="top-level-navigation-menu">Top level navigation menu</h2>
+				<ul class="nav">
+					<li class="nav-item"><a href="/eleventy-base-blog/">Home</a></li>
+					<li class="nav-item"><a href="/eleventy-base-blog/blog/">Archive</a></li>
+					<li class="nav-item"><a href="/eleventy-base-blog/feed/feed.xml">Feed</a></li>
+				</ul>
+			</nav>
+		</header>
+
+		<main id="skip">
+			<heading-anchors>
+				
+<h1 id="preliminaries-to-a-software-testing-manifesto">Preliminaries to a Software Testing Manifesto</h1>
+
+<ul class="post-metadata">
+	<li><time datetime="2018-09-30">30 September 2018</time></li>
+</ul>
+
+<p>I'm not quite ready for a manifesto. Still gathering my own thoughts, and trying to understand software testing terminology and methodologies. But - feels like there is a fair amount of confusion about how it's supposed to work even in the best case.</p>
+<h1 id="what-is-a-software-test">What is a Software Test</h1>
+<p>A software test is a repeatable process applied to a software product that yields a binary pass/fail result.</p>
+<h2 id="why-we-test">Why we Test</h2>
+<p>The value of a test lies in what it tells you when it runs. Depending on the kind of test, and whether it passes or fails, it could tell you:</p>
+<ul>
+<li>The application code is correct</li>
+<li>The application code has a bug</li>
+<li>The test code is correct</li>
+<li>The test code has a bug</li>
+<li>A dependent service has a bug</li>
+<li>Dependent services are working as expected</li>
+<li>Something is wrong on the internet which is interfering with the test</li>
+<li>The part of the internet the test relies on is working.</li>
+</ul>
+<h1 id="testing-terminology">Testing Terminology</h1>
+<p>There is a bewildering variety of terms for various kinds of software tests and methodologies. Some of the distinctions are subtle and philosophical. With all that, the terminology seems incomplete - there are distinctions which seem worthy of distinction, where I've not yet been able to find a commonly used term. For these, I've invented a name.</p>
+<h3 id="kinds-properties-of-tests">Kinds/properties of tests</h3>
+<h4 id="primary-taxonomy">Primary Taxonomy</h4>
+<p>Different kinds of test are classified in a hierarchy or progression, where there are ones that are in some sense &quot;lower level&quot; that others. From lower to higher (vaguely):</p>
+<ul>
+<li><a href="http://softwaretestingfundamentals.com/unit-testing/">Unit Test, Component Test, Module Test</a> - A test of a minimal part of a system that can be tested in isolation
+<ul>
+<li>Solipsistic Unit Test - (personal terminology) A test that does not depend on other components, like for a function that accepts, and produces low-level dumb data.</li>
+<li><a href="https://medium.com/@jkone27_3876/arguments-around-solitary-versus-sociable-unit-testing-3b2211b15103">Solitary Unit Test</a> - A test where the one and only concrete service is the service under test (all other dependencies, except for data/value types are mocked)</li>
+<li><a href="https://medium.com/@jkone27_3876/arguments-around-solitary-versus-sociable-unit-testing-3b2211b15103">Sociable Unit Test, Component Test</a> - A test which uses concrete service dependencies to test the class currently under test.</li>
+</ul>
+</li>
+<li><a href="http://softwaretestingfundamentals.com/integration-testing/">Integration Test</a> - A test where individual units are combined and tested as a group.</li>
+<li><a href="http://softwaretestingfundamentals.com/functional-testing/">Functional Test</a> - A test of the system against the functional requirements/specifications. These requirements are the technical ones intended for engineering.</li>
+<li><a href="http://softwaretestingfundamentals.com/system-testing/">System Test</a> -  A test that focuses on verifying that a system as a whole meets specified requirements. These requirements are the high-level ones meaningful to end users (e.g. user documentationsx)</li>
+<li><a href="https://www.guru99.com/end-to-end-testing.html">End-to-End (E2E) Test, Chain Test</a> - A test that validates the software system along with its integration with external interfaces. The purpose of end-to-end Test is to exercise a complete production-like scenario.</li>
+<li><a href="http://softwaretestingfundamentals.com/acceptance-testing/">Acceptance Test</a>-  A test of a system for acceptability. The purpose of this test is to evaluate the system’s compliance with the business requirements and assess whether it is acceptable for delivery.</li>
+</ul>
+<h4 id="secondary-taxonomies">Secondary Taxonomies</h4>
+<p>Various other terminology, variously applied:</p>
+<ul>
+<li><a href="https://martinfowler.com/articles/practical-test-pyramid.html">User Interface Test, UI Test</a>. A test which starts at the User Interface level. Can be an E2E test, but could also mock services.</li>
+<li><a href="https://www.mountaingoatsoftware.com/blog/the-forgotten-layer-of-the-test-automation-pyramid">Service Test</a> - A hard to understand kind of test that is higher-level than a unit test, lower level than a UI test.</li>
+<li><a href="http://softwaretestingfundamentals.com/black-box-testing/">Black Box Test, Behavioral Test</a> - A test in which the internal structure/design/implementation of the item being tested is not known to the tester</li>
+<li><a href="http://softwaretestingfundamentals.com/white-box-testing/">White Box Test, Clear Box Test,  Glass Box Test, Transparent Box Test,  Code-Based Test,  Structural Test</a> - A test in which the internal structure/design/implementation of the item being tested is known to the tester.</li>
+<li><a href="http://softwaretestingfundamentals.com/gray-box-testing/">Gray Box Testing</a> - A test where the internal structure is partially known</li>
+<li>Tripwire Test (personal terminology) - A test that verifies a function compared to a previous run of that function. The test shows whether the behavior of the function has changed, not whether that change represents a bug.</li>
+<li><a href="https://smartbear.com/learn/automated-testing/what-is-automated-testing/">Automated Test</a> - A test driven by software rather than humans.</li>
+<li><a href="https://smartbear.com/learn/automated-testing/what-is-automated-testing/">Manual Test</a> - A test driven by humans rather than software.</li>
+<li>Cyborg Test (personal terminology) - A manual test which is assisted by automated technology. This could a test that is mostly automated, but requires some user intervention.</li>
+</ul>
+<h3 id="other-terms">Other Terms</h3>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Mock_object">Mock</a> - A simulation of a complex object or service by some simpler mechanism, for purposes of testing.</li>
+<li>Health Check - A test which verifies the current correct functionality of running software.</li>
+</ul>
+<h1 id="analysis">Analysis</h1>
+<p>Breaking this down according to the kind of test, I think the following are true:</p>
+<ul>
+<li>Solipsistic Unit Test generally tell you whether your application code is correct or has bug. Generally the issue is not in the test code.</li>
+<li>Solitary Unit Tests, after some initial work to stabilize them, generally tell you whether your application code is correct or has bug. The more you mock, the more the errors tend to be in the test code itself, since mocks can be wrong.</li>
+<li>Sociable Unit Tests mostly tell you application code is correct or has bug. Generally the issue is not in the test code, although the error could be in the components your test depends on.</li>
+<li>End-to-End tests mostly tell you whether your test code is correct or has a bug. After that, they test for errors in dependent services, or the generalized issues with connectivity.</li>
+</ul>
+<h2 id="end-to-end-tests">End-to-End Tests</h2>
+<p>End-to-End tests seem more like Health Checks than tests per se. Having them run against released software would increase the value of running them as tests against pre-released software. If the live test works, but the pre-release test does not, it suggests that any issue is not simply connectivity or a downstream service dependency.</p>
+<p>On the other hand, I think manual testing has a place in testing UI code. An API should have well-enough defined behavior so that it is testable, and since it is intended for use by software, rather than humans, tests are naturally automatable. So for a UI manual testing (augmented where useful by automation) has a place. I could see this being very useful when testing across multiple browser configurations.</p>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="https://martinfowler.com/articles/practical-test-pyramid.html">Martin Fowler, The Practical Test Pyramid</a></li>
+<li><a href="https://watirmelon.blog/testing-pyramids/">Alister Scott, Testing Pyramids &amp; Ice-Cream Cones</a></li>
+<li><a href="http://softwaretestingfundamentals.com/">Software Testing Fundamentals</a> (Many definitions)</li>
+<li><a href="https://www.istqb.org/downloads/send/20-istqb-glossary/297-istqb_glossary-all-terms_v3-3.html">International Software Testing Qualifications Board (ISTQB)</a> (Some more formal definitions)</li>
+<li>Kaner, Falk, Nguyen. Testing Computer Software. Wiley Computer Publishing, 1999 in <a href="https://en.wikipedia.org/wiki/Functional_testing">Wikipedia Functional_testing</a> (Functional and Systems Testing)</li>
+</ul>
+
+<ul class="links-nextprev"><li class="links-nextprev-next">Next →<br><a href="/eleventy-base-blog/blog/web-sketchpad/">Web Sketchpad</a></li>
+</ul>
+
+			</heading-anchors>
+		</main>
+
+		<footer>
+    	<a href="/eleventy-base-blog/" class="footer-link">
+				<img class="footer-icon" src="/eleventy-base-blog/img/icons/home-page.png">
+			</a>
+			<a href="https://github.com/mlitwin" class="footer-link">
+				<img class="footer-icon" src="../img/icons/github.png">
+			</a>
+			<a href="https://www.linkedin.com/in/matthewlitwin/" class="footer-link">
+				<img class="footer-icon" src="/eleventy-base-blog/img/icons/linkedin.png">
+			</a>
+		</footer>
+
+		<!-- This page `/blog/preliminaries-to-a-software-testing-manifesto/` was built on 2025-01-28T23:38:53.078Z -->
+		<script type="module" async="">import mermaid from "https://unpkg.com/mermaid@10/dist/mermaid.esm.min.mjs";document.addEventListener('DOMContentLoaded', mermaid.initialize({"loadOnSave":true}));</script>
+		<script type="module" src="/eleventy-base-blog/dist/PQuipxb2GV.js"></script>
+		
+			
+		
+	</body>
+</html>

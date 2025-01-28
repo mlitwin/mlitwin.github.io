@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+	
+	<url>
+		<loc>https://antoninus.org/eleventy-base-blog/blog/preliminaries-to-a-software-testing-manifesto/</loc>
+		<lastmod>2018-09-30</lastmod>
+	</url>
+	
+	<url>
+		<loc>https://antoninus.org/eleventy-base-blog/blog/web-sketchpad/</loc>
+		<lastmod>2021-04-03</lastmod>
+	</url>
+	
+	<url>
+		<loc>https://antoninus.org/eleventy-base-blog/blog/terraform-is-a-json-transformation-language/</loc>
+		<lastmod>2021-04-17</lastmod>
+	</url>
+	
+	<url>
+		<loc>https://antoninus.org/eleventy-base-blog/blog/</loc>
+		<lastmod>2025-01-28</lastmod>
+	</url>
+	
+	<url>
+		<loc>https://antoninus.org/eleventy-base-blog/</loc>
+		<lastmod>2025-01-28</lastmod>
+	</url>
+	
+	<url>
+		<loc>https://antoninus.org/eleventy-base-blog/resume/</loc>
+		<lastmod>2025-01-28</lastmod>
+	</url>
+	
+	<url>
+		<loc>https://antoninus.org/eleventy-base-blog/tags/</loc>
+		<lastmod>2025-01-28</lastmod>
+	</url>
+	
+	<url>
+		<loc>https://antoninus.org/eleventy-base-blog/feed/feed.xml</loc>
+		<lastmod>2025-01-28</lastmod>
+	</url>
+</urlset>

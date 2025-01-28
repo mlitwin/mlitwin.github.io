@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="pretty-atom-feed.xsl" type="text/xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <title>Matthew Litwin</title>
+  <subtitle>Matthew Litwin&#39;s personal site</subtitle>
+  <link href="https://antoninus.org/eleventy-base-blog/feed/feed.xml" rel="self" />
+  <link href="https://antoninus.org/eleventy-base-blog/" />
+  <updated>2021-04-17T20:55:38Z</updated>
+  <id>https://antoninus.org/eleventy-base-blog/</id>
+  <author>
+    <name>Matthew Litwin</name>
+  </author>
+  <entry>
+    <title>Terraform is a JSON transformation language with side-effects</title>
+    <link href="https://antoninus.org/eleventy-base-blog/blog/terraform-is-a-json-transformation-language/" />
+    <updated>2021-04-17T20:55:38Z</updated>
+    <id>https://antoninus.org/eleventy-base-blog/blog/terraform-is-a-json-transformation-language/</id>
+    <content type="html">&lt;p&gt;We use &lt;a href=&quot;https://www.terraform.io/&quot;&gt;Terraform&lt;/a&gt; a lot at my work. There&#39;s been an interesting learning curve as I&#39;ve gone from no knowledge of it, to using it in production. I had a bit of trouble figuring out a conceptual model - a way of thinking about what it was doing - that worked for me.&lt;/p&gt;
+&lt;p&gt;Eventually I found one.&lt;/p&gt;
+&lt;h2 id=&quot;what-terraform-is&quot;&gt;What Terraform is&lt;/h2&gt;
+&lt;p&gt;Terraform configurations are written in &lt;a href=&quot;https://github.com/hashicorp/hcl&quot;&gt;HCL&lt;/a&gt; which is&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;a specialized language for our tools, and JSON as the interoperability layer.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;HCL provides significant templating functionality, and syntactic sugar - but to understand what the configuration will actually do, you should think of it as JSON. Specifically, think of it in terms of a set of deeply nested objects, with key -&amp;gt; value a.b.c.f -&amp;gt; config. The meaning of the config comes from the keys, and the value.&lt;/p&gt;
+&lt;h2 id=&quot;what-terraform-does&quot;&gt;What Terraform does&lt;/h2&gt;
+&lt;p&gt;Schematically, here&#39;s what happens when you use terraform:&lt;/p&gt;
+&lt;p class=&quot;katex-block&quot;&gt;&lt;span class=&quot;katex-display&quot;&gt;&lt;span class=&quot;katex&quot;&gt;&lt;span class=&quot;katex-mathml&quot;&gt;&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot; display=&quot;block&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi mathvariant=&quot;normal&quot;&gt;T&lt;/mi&gt;&lt;mo&gt;⁡&lt;/mo&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;s&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mo separator=&quot;true&quot;&gt;,&lt;/mo&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mi&gt;o&lt;/mi&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mo separator=&quot;true&quot;&gt;;&lt;/mo&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;f&lt;/mi&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;s&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;mi&gt;u&lt;/mi&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;u&lt;/mi&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;mo&gt;→&lt;/mo&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;s&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;msup&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mo mathvariant=&quot;normal&quot; lspace=&quot;0em&quot; rspace=&quot;0em&quot;&gt;′&lt;/mo&gt;&lt;/msup&gt;&lt;mo separator=&quot;true&quot;&gt;,&lt;/mo&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;f&lt;/mi&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mi&gt;s&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;mi&gt;u&lt;/mi&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mi&gt;u&lt;/mi&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;msup&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mo mathvariant=&quot;normal&quot; lspace=&quot;0em&quot; rspace=&quot;0em&quot;&gt;′&lt;/mo&gt;&lt;/msup&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;&#92;operatorname{T}(state, code; infrastructure) &#92;rightarrow (state&amp;#x27;, infrastructure&amp;#x27;)
+&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class=&quot;katex-html&quot; aria-hidden=&quot;true&quot;&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:1em;vertical-align:-0.25em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mop&quot;&gt;&lt;span class=&quot;mord mathrm&quot;&gt;T&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;mopen&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;mpunct&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.1667em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;co&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;mpunct&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.1667em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;margin-right:0.10764em;&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;margin-right:0.02778em;&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;margin-right:0.02778em;&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;re&lt;/span&gt;&lt;span class=&quot;mclose&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.2778em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mrel&quot;&gt;→&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.2778em;&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;base&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;height:1.0519em;vertical-align:-0.25em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mopen&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;msupsub&quot;&gt;&lt;span class=&quot;vlist-t&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.8019em;&quot;&gt;&lt;span style=&quot;top:-3.113em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;′&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;mpunct&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;margin-right:0.1667em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;margin-right:0.10764em;&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;margin-right:0.02778em;&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;margin-right:0.02778em;&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;margin-right:0.02778em;&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;mord&quot;&gt;&lt;span class=&quot;mord mathnormal&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;msupsub&quot;&gt;&lt;span class=&quot;vlist-t&quot;&gt;&lt;span class=&quot;vlist-r&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;height:0.8019em;&quot;&gt;&lt;span style=&quot;top:-3.113em;margin-right:0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;height:2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;&lt;span class=&quot;mord mtight&quot;&gt;′&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;mclose&quot;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;pre class=&quot;mermaid&quot;&gt;graph TD&amp;#10;code[&amp;quot;code.tf / variables.tfvars&amp;quot;]&amp;#10;state0[state.tfstate]&amp;#10;state_tmp[refreshed.tfstate]&amp;#10;state1[state.tfstate]&amp;#10;infrastructure0[/infrastructure&#92;]&amp;#10;infrastructure1[&#92;infrastructure/]&amp;#10;tf_refresh(( ))&amp;#10;tf_plan(( ))&amp;#10;tf_plan_out[plan.json]&amp;#10;tf_apply(( ))&amp;#10;&amp;#10;code --&amp;gt; tf_refresh&amp;#10;state0 --&amp;gt; tf_refresh&amp;#10;infrastructure0 --&amp;gt; tf_refresh&amp;#10;tf_refresh -- refresh --&amp;gt; state_tmp&amp;#10;code --&amp;gt; tf_plan&amp;#10;state_tmp --&amp;gt; tf_plan&amp;#10;tf_plan -- plan --&amp;gt; tf_plan_out&amp;#10;tf_plan_out --&amp;gt; tf_apply&amp;#10;infrastructure0 --&amp;gt; tf_apply&amp;#10;tf_apply -- apply --&amp;gt; state1&amp;#10;tf_apply -- apply --&amp;gt; infrastructure1&amp;#10;&lt;/pre&gt;
+&lt;p&gt;The tricky part for me to understand here is the role of the &lt;code&gt;tf.state&lt;/code&gt; file. It&#39;s the mysterious file that&#39;s always being &#39;refreshed&#39;, and sometimes (or before you get the hang of things, maybe more than sometimes) gets corrupt and needs you to mess around to &lt;a href=&quot;https://medium.com/@abtreece/recovering-terraform-state-69c9966db71e&quot;&gt;recover it&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;But &lt;code&gt;tf.state&lt;/code&gt; is the key to understanding what terraform is doing. Basically, it&#39;s just taking &lt;code&gt;tf.state&lt;/code&gt;, applying a program (defined by your &lt;code&gt;.tf&lt;/code&gt; files), and updating to a new &lt;code&gt;tf.state&lt;/code&gt;. What happens to your infrastructure is just a happy side effect. This is I think a weakness of the terraform model - that you have two sources of truth - the state file, and the actual infrastructure. I wonder if for AWS at least, you could tag the infrastructure terraform created with enough metadata so that you could get rid of &lt;code&gt;tf.state&lt;/code&gt;.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Web Sketchpad</title>
+    <link href="https://antoninus.org/eleventy-base-blog/blog/web-sketchpad/" />
+    <updated>2021-04-03T21:21:28Z</updated>
+    <id>https://antoninus.org/eleventy-base-blog/blog/web-sketchpad/</id>
+    <content type="html">&lt;p&gt;I worked a lot in my career on &lt;a href=&quot;https://en.wikipedia.org/wiki/The_Geometer%27s_Sketchpad&quot;&gt;The Geometer&#39;s Sketchpad&lt;/a&gt;, an educational geometry visualization and interaction desktop application. Sketchpad had a long and useful life, finally retired as a product in &lt;a href=&quot;https://www.mheducation.com/prek-12/program/geometer-s-sketchpad-software/MKTSP-HGA01M0.html&quot;&gt;2019&lt;/a&gt;. Twenty-five years! It&#39;s still in use as an authoring environment for the HTML5 web viewer.&lt;/p&gt;
+&lt;h2 id=&quot;web-sketchpad&quot;&gt;Web Sketchpad&lt;/h2&gt;
+&lt;div class=&quot;sketch_canvas&quot; data-url=&quot;/wsp/Newton.json&quot;&gt;&lt;/div&gt;
+&lt;p&gt;Web Sketchpad is HTML5 viewer for Geometer&#39;s Sketchpad documents. This was a ground-up re-implementation of the desktop software&#39;s internal C logic into HTML5 / JavaScript.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Some of it&#39;s pedagogical potential can be seen in it&#39;s &lt;a href=&quot;https://geometricfunctions.org/fc/tools/&quot;&gt;construction tools&lt;/a&gt; or &lt;a href=&quot;https://illuminations.nctm.org/wsp/&quot;&gt;pre constructed activities&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;You can see a engineering-centric usage in an &lt;a href=&quot;https://mlitwin.github.io/Cyclades/&quot;&gt;engineering presentation&lt;/a&gt; I gave on cycle detection (navigate with the right and left arrow).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I learned a tremendous amount about HTML/CSS/JavaScript while working on this. Looking back, it holds up pretty well:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;We limited dependent libraries. There are a few, but it&#39;s not an &lt;code&gt;npm install&lt;/code&gt; fest.&lt;/li&gt;
+&lt;li&gt;HTML &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas&quot;&gt;Canvas&lt;/a&gt; rendering has stayed reasonably performant. Not pining for &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/SVG&quot;&gt;SVG&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Things I&#39;d re-work:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Remove the dependency on &lt;a href=&quot;http://youmightnotneedjquery.com/&quot;&gt;jQuery&lt;/a&gt;. In fact, we didn&#39;t need it. Useful and comforting while learning, though.&lt;/li&gt;
+&lt;li&gt;Use a modern build pipeline like &lt;a href=&quot;https://webpack.js.org/&quot;&gt;Webpack&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Use &lt;a href=&quot;https://www.typescriptlang.org/&quot;&gt;Typescript&lt;/a&gt;. Even a modest amount of type checking would help catch some bugs.&lt;/li&gt;
+&lt;li&gt;Work on accessibility from the get-go.&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Preliminaries to a Software Testing Manifesto</title>
+    <link href="https://antoninus.org/eleventy-base-blog/blog/preliminaries-to-a-software-testing-manifesto/" />
+    <updated>2018-09-30T00:00:00Z</updated>
+    <id>https://antoninus.org/eleventy-base-blog/blog/preliminaries-to-a-software-testing-manifesto/</id>
+    <content type="html">&lt;p&gt;I&#39;m not quite ready for a manifesto. Still gathering my own thoughts, and trying to understand software testing terminology and methodologies. But - feels like there is a fair amount of confusion about how it&#39;s supposed to work even in the best case.&lt;/p&gt;
+&lt;h1 id=&quot;what-is-a-software-test&quot;&gt;What is a Software Test&lt;/h1&gt;
+&lt;p&gt;A software test is a repeatable process applied to a software product that yields a binary pass/fail result.&lt;/p&gt;
+&lt;h2 id=&quot;why-we-test&quot;&gt;Why we Test&lt;/h2&gt;
+&lt;p&gt;The value of a test lies in what it tells you when it runs. Depending on the kind of test, and whether it passes or fails, it could tell you:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The application code is correct&lt;/li&gt;
+&lt;li&gt;The application code has a bug&lt;/li&gt;
+&lt;li&gt;The test code is correct&lt;/li&gt;
+&lt;li&gt;The test code has a bug&lt;/li&gt;
+&lt;li&gt;A dependent service has a bug&lt;/li&gt;
+&lt;li&gt;Dependent services are working as expected&lt;/li&gt;
+&lt;li&gt;Something is wrong on the internet which is interfering with the test&lt;/li&gt;
+&lt;li&gt;The part of the internet the test relies on is working.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;testing-terminology&quot;&gt;Testing Terminology&lt;/h1&gt;
+&lt;p&gt;There is a bewildering variety of terms for various kinds of software tests and methodologies. Some of the distinctions are subtle and philosophical. With all that, the terminology seems incomplete - there are distinctions which seem worthy of distinction, where I&#39;ve not yet been able to find a commonly used term. For these, I&#39;ve invented a name.&lt;/p&gt;
+&lt;h3 id=&quot;kinds-properties-of-tests&quot;&gt;Kinds/properties of tests&lt;/h3&gt;
+&lt;h4 id=&quot;primary-taxonomy&quot;&gt;Primary Taxonomy&lt;/h4&gt;
+&lt;p&gt;Different kinds of test are classified in a hierarchy or progression, where there are ones that are in some sense &amp;quot;lower level&amp;quot; that others. From lower to higher (vaguely):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://softwaretestingfundamentals.com/unit-testing/&quot;&gt;Unit Test, Component Test, Module Test&lt;/a&gt; - A test of a minimal part of a system that can be tested in isolation
+&lt;ul&gt;
+&lt;li&gt;Solipsistic Unit Test - (personal terminology) A test that does not depend on other components, like for a function that accepts, and produces low-level dumb data.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://medium.com/@jkone27_3876/arguments-around-solitary-versus-sociable-unit-testing-3b2211b15103&quot;&gt;Solitary Unit Test&lt;/a&gt; - A test where the one and only concrete service is the service under test (all other dependencies, except for data/value types are mocked)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://medium.com/@jkone27_3876/arguments-around-solitary-versus-sociable-unit-testing-3b2211b15103&quot;&gt;Sociable Unit Test, Component Test&lt;/a&gt; - A test which uses concrete service dependencies to test the class currently under test.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://softwaretestingfundamentals.com/integration-testing/&quot;&gt;Integration Test&lt;/a&gt; - A test where individual units are combined and tested as a group.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://softwaretestingfundamentals.com/functional-testing/&quot;&gt;Functional Test&lt;/a&gt; - A test of the system against the functional requirements/specifications. These requirements are the technical ones intended for engineering.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://softwaretestingfundamentals.com/system-testing/&quot;&gt;System Test&lt;/a&gt; -  A test that focuses on verifying that a system as a whole meets specified requirements. These requirements are the high-level ones meaningful to end users (e.g. user documentationsx)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.guru99.com/end-to-end-testing.html&quot;&gt;End-to-End (E2E) Test, Chain Test&lt;/a&gt; - A test that validates the software system along with its integration with external interfaces. The purpose of end-to-end Test is to exercise a complete production-like scenario.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://softwaretestingfundamentals.com/acceptance-testing/&quot;&gt;Acceptance Test&lt;/a&gt;-  A test of a system for acceptability. The purpose of this test is to evaluate the system’s compliance with the business requirements and assess whether it is acceptable for delivery.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;secondary-taxonomies&quot;&gt;Secondary Taxonomies&lt;/h4&gt;
+&lt;p&gt;Various other terminology, variously applied:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://martinfowler.com/articles/practical-test-pyramid.html&quot;&gt;User Interface Test, UI Test&lt;/a&gt;. A test which starts at the User Interface level. Can be an E2E test, but could also mock services.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.mountaingoatsoftware.com/blog/the-forgotten-layer-of-the-test-automation-pyramid&quot;&gt;Service Test&lt;/a&gt; - A hard to understand kind of test that is higher-level than a unit test, lower level than a UI test.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://softwaretestingfundamentals.com/black-box-testing/&quot;&gt;Black Box Test, Behavioral Test&lt;/a&gt; - A test in which the internal structure/design/implementation of the item being tested is not known to the tester&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://softwaretestingfundamentals.com/white-box-testing/&quot;&gt;White Box Test, Clear Box Test,  Glass Box Test, Transparent Box Test,  Code-Based Test,  Structural Test&lt;/a&gt; - A test in which the internal structure/design/implementation of the item being tested is known to the tester.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://softwaretestingfundamentals.com/gray-box-testing/&quot;&gt;Gray Box Testing&lt;/a&gt; - A test where the internal structure is partially known&lt;/li&gt;
+&lt;li&gt;Tripwire Test (personal terminology) - A test that verifies a function compared to a previous run of that function. The test shows whether the behavior of the function has changed, not whether that change represents a bug.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://smartbear.com/learn/automated-testing/what-is-automated-testing/&quot;&gt;Automated Test&lt;/a&gt; - A test driven by software rather than humans.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://smartbear.com/learn/automated-testing/what-is-automated-testing/&quot;&gt;Manual Test&lt;/a&gt; - A test driven by humans rather than software.&lt;/li&gt;
+&lt;li&gt;Cyborg Test (personal terminology) - A manual test which is assisted by automated technology. This could a test that is mostly automated, but requires some user intervention.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;other-terms&quot;&gt;Other Terms&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Mock_object&quot;&gt;Mock&lt;/a&gt; - A simulation of a complex object or service by some simpler mechanism, for purposes of testing.&lt;/li&gt;
+&lt;li&gt;Health Check - A test which verifies the current correct functionality of running software.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;analysis&quot;&gt;Analysis&lt;/h1&gt;
+&lt;p&gt;Breaking this down according to the kind of test, I think the following are true:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Solipsistic Unit Test generally tell you whether your application code is correct or has bug. Generally the issue is not in the test code.&lt;/li&gt;
+&lt;li&gt;Solitary Unit Tests, after some initial work to stabilize them, generally tell you whether your application code is correct or has bug. The more you mock, the more the errors tend to be in the test code itself, since mocks can be wrong.&lt;/li&gt;
+&lt;li&gt;Sociable Unit Tests mostly tell you application code is correct or has bug. Generally the issue is not in the test code, although the error could be in the components your test depends on.&lt;/li&gt;
+&lt;li&gt;End-to-End tests mostly tell you whether your test code is correct or has a bug. After that, they test for errors in dependent services, or the generalized issues with connectivity.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;end-to-end-tests&quot;&gt;End-to-End Tests&lt;/h2&gt;
+&lt;p&gt;End-to-End tests seem more like Health Checks than tests per se. Having them run against released software would increase the value of running them as tests against pre-released software. If the live test works, but the pre-release test does not, it suggests that any issue is not simply connectivity or a downstream service dependency.&lt;/p&gt;
+&lt;p&gt;On the other hand, I think manual testing has a place in testing UI code. An API should have well-enough defined behavior so that it is testable, and since it is intended for use by software, rather than humans, tests are naturally automatable. So for a UI manual testing (augmented where useful by automation) has a place. I could see this being very useful when testing across multiple browser configurations.&lt;/p&gt;
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://martinfowler.com/articles/practical-test-pyramid.html&quot;&gt;Martin Fowler, The Practical Test Pyramid&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://watirmelon.blog/testing-pyramids/&quot;&gt;Alister Scott, Testing Pyramids &amp;amp; Ice-Cream Cones&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://softwaretestingfundamentals.com/&quot;&gt;Software Testing Fundamentals&lt;/a&gt; (Many definitions)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.istqb.org/downloads/send/20-istqb-glossary/297-istqb_glossary-all-terms_v3-3.html&quot;&gt;International Software Testing Qualifications Board (ISTQB)&lt;/a&gt; (Some more formal definitions)&lt;/li&gt;
+&lt;li&gt;Kaner, Falk, Nguyen. Testing Computer Software. Wiley Computer Publishing, 1999 in &lt;a href=&quot;https://en.wikipedia.org/wiki/Functional_testing&quot;&gt;Wikipedia Functional_testing&lt;/a&gt; (Functional and Systems Testing)&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+  </entry>
+</feed>
