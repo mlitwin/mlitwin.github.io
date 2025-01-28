@@ -1,0 +1,36 @@
+---js
+const eleventyNavigation = {
+	key: "Home",
+	order: 1
+};
+
+const numberOfLatestPostsToShow = 3;
+---
+
+<h1>About Me</h1>
+<p>Hi there I'm Matt Litwin</p>
+<div class="intro-with-image">
+	<picture class="picture-box">
+		<img class="img" src="./../img/avatar.jpg">
+	</picture>
+	<ul>
+		<li>I live in San Francisco, California.</li>
+		<li>I work at <a href="https://www.mheducation.com/">McGraw-Hill Education</a> as a software engineer.</li>
+		<li>My <a href="/resume">CV</a> has more details.</li>
+	</ul>
+</div>
+
+{% set postsCount = collections.posts | length %}
+{% set latestPostsCount = postsCount | min(numberOfLatestPostsToShow) %}
+<h1>Latest {{ latestPostsCount }} Post{% if latestPostsCount != 1 %}s{% endif %}</h1>
+
+{% set postslist = collections.posts | head(-1 * numberOfLatestPostsToShow) %}
+{% set postslistCounter = postsCount %}
+{% include "postslist.njk" %}
+
+{% set morePosts = postsCount - numberOfLatestPostsToShow %}
+{% if morePosts > 0 %}
+<p>{{ morePosts }} more post{% if morePosts != 1 %}s{% endif %} can be found in <a href="blog.njk">the archive</a>.</p>
+{% endif %}
+
+
