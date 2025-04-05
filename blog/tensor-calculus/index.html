@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Web Sketchpad</title>
+		<title>Tensor Calculus</title>
 		<meta name="description" content="Personal site of Matthew Litwin">
 		<link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="Matthew Litwin">
 
@@ -527,34 +527,46 @@ footer {
 		<main id="skip">
 			<heading-anchors>
 				
-<h1 id="web-sketchpad">Web Sketchpad</h1>
+<h1 id="tensor-calculus">Tensor Calculus</h1>
 
 <ul class="post-metadata">
-	<li><time datetime="2021-04-03">03 April 2021</time></li>
+	<li><time datetime="2025-04-04">04 April 2025</time></li>
 </ul>
 
-<p>I worked a lot in my career on <a href="https://en.wikipedia.org/wiki/The_Geometer%27s_Sketchpad">The Geometer's Sketchpad</a>, an educational geometry visualization and interaction desktop application. Sketchpad had a long and useful life, finally retired as a product in <a href="https://www.mheducation.com/prek-12/program/geometer-s-sketchpad-software/MKTSP-HGA01M0.html">2019</a>. Twenty-five years! It's still in use as an authoring environment for the HTML5 web viewer.</p>
-<h2 id="web-sketchpad-2">Web Sketchpad</h2>
-<div class="sketch_canvas" data-url="/wsp/Newton.json"></div>
-<p>Web Sketchpad is HTML5 viewer for Geometer's Sketchpad documents. This was a ground-up re-implementation of the desktop software's internal C logic into HTML5 / JavaScript.</p>
+<p>So I've been getting back into a bit of physics, and decided to take a crack at general relativity and tensor calculus. It's all derivatives, right, so it should be easy? Well, of course, I'm having trouble. One major sticking point is the notion of a dual basis. I understand the definition but couldn't make it click into a substantive understanding. This is my attempt to start working it out.</p>
+<p>Seems to be a rite of long passage.</p>
+<h2 id="reading-list">Reading List</h2>
+<p>Reading different texts for different insights:</p>
 <ul>
-<li>Some of it's pedagogical potential can be seen in it's <a href="https://geometricfunctions.org/fc/tools/">construction tools</a> or <a href="https://illuminations.nctm.org/wsp/">pre constructed activities</a>.</li>
-<li>You can see a engineering-centric usage in an <a href="https://mlitwin.github.io/Cyclades/">engineering presentation</a> I gave on cycle detection (navigate with the right and left arrow).</li>
+<li><a href="http://www4.danfleisch.com/sgvt/">A Student's Guide to Vectors and Tensors</a></li>
+<li><a href="https://www.cambridge.org/highereducation/books/a-first-course-in-general-relativity/933C1A8C84420EF1349B676F0D70A065#overview">A First Course in General Relativity</a></li>
+<li><a href="https://www.cambridge.org/core/books/mathematical-methods-for-physics-and-engineering/911A43AE1CF224743D32707FCC4AE0EB">Mathematical Methods for Physics and Engineering</a></li>
+<li><a href="https://lectures.princeton.edu/sites/g/files/toruqf296/files/2020-08/_Albert_Einstein__Brian_Greene__The_meaning_of_rel_BookZZ.org_.pdf">The Meaning of Relativity</a></li>
 </ul>
-<p>I learned a tremendous amount about HTML/CSS/JavaScript while working on this. Looking back, it holds up pretty well:</p>
+<h2 id="the-goal">The Goal</h2>
+<p>The general idea, as I understand it, is to &quot;do calculus&quot; in a way that is independent of the coordinate system you choose. You do this by expressing your mathematics in a way that works for any coordinate system so that you can ensure the rules are, in fact, independent of your choice.</p>
+<p>There are a series of mathematical abstractions at work here. I'm going to try to take a path through those with a concrete example. Along the way, there will be places where I'm assuming more than we need to or skipping some complications. Those can be of interest mathematically but also of scientific significance, so I'll try to note those according to my current understanding.</p>
+<h2 id="a-tale-of-two-coordinate-systems">A Tale of Two Coordinate Systems</h2>
+<p>Let's work with a concrete example that is simple enough (hopefully) to calculate explicitly and complicated enough (hopefully) to show some of the complexities that tensor calculus can handle.</p>
+<p>We will take as our example the surface of a sphere, embedded in 3-dimensional space: center at the origin, radius 1. We will examine two coordinate systems:</p>
 <ul>
-<li>We limited dependent libraries. There are a few, but it's not an <code>npm install</code> fest.</li>
-<li>HTML <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas">Canvas</a> rendering has stayed reasonably performant. Not pining for <a href="https://developer.mozilla.org/en-US/docs/Web/SVG">SVG</a>.</li>
+<li>The <a href="https://en.wikipedia.org/wiki/Geographic_coordinate_system">Geographic Coordinate System</a> with standard latitude and longitude.</li>
+<li>A coordinate system with longitude as usual, but with longitudes not through the North Pole but through the <a href="https://en.wikipedia.org/wiki/Geomagnetic_pole">Geomagnetic Pole</a>, which is about 9.6° away from the North Pole.</li>
 </ul>
-<p>Things I'd re-work:</p>
+<h3 id="geographic-spherical-coordinates">Geographic Spherical Coordinates</h3>
+<p>The standard coordinate system for the surface of a sphere is <a href="https://en.wikipedia.org/wiki/Geographic_coordinate_system">latitude and longitude</a>.</p>
 <ul>
-<li>Remove the dependency on <a href="http://youmightnotneedjquery.com/">jQuery</a>. In fact, we didn't need it. Useful and comforting while learning, though.</li>
-<li>Use a modern build pipeline like <a href="https://webpack.js.org/">Webpack</a>.</li>
-<li>Use <a href="https://www.typescriptlang.org/">Typescript</a>. Even a modest amount of type checking would help catch some bugs.</li>
-<li>Work on accessibility from the get-go.</li>
+<li>Latitude φ</li>
+<li>Longitude λ</li>
 </ul>
+<p><picture><source type="image/avif" srcset="/blog/tensor-calculus/rlEgmt-bF3-200.avif 200w"><source type="image/webp" srcset="/blog/tensor-calculus/rlEgmt-bF3-200.webp 200w"><img loading="lazy" decoding="async" src="/blog/tensor-calculus/rlEgmt-bF3-200.svg" alt="Geographic Spherical Coordinates" width="200" height="200"></picture></p>
+<h3 id="geomagnetic-spherical-coordinates">Geomagnetic Spherical Coordinates</h3>
+<p>We use a coordinate system just complicated enough to be non-orthogonal: latitudes as usual, but longitudes not through the North Pole but through the <a href="https://en.wikipedia.org/wiki/Geomagnetic_pole">Geomagnetic Pole</a>, which is about 9.6° away from the North Pole.</p>
+<p><picture><source type="image/avif" srcset="/blog/tensor-calculus/hwO_n9cVfO-200.avif 200w"><source type="image/webp" srcset="/blog/tensor-calculus/hwO_n9cVfO-200.webp 200w"><img loading="lazy" decoding="async" src="/blog/tensor-calculus/hwO_n9cVfO-200.svg" alt="Geomagnetic Spherical Coordinates" width="200" height="200"></picture></p>
+<h1 id="next-up">Next Up</h1>
+<p>Next up will be &quot;The Tangent Space&quot;</p>
 
-<ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/blog/preliminaries-to-a-software-testing-manifesto/">Preliminaries to a Software Testing Manifesto</a></li><li class="links-nextprev-next">Next →<br><a href="/blog/terraform-is-a-json-transformation-language/">Terraform is a JSON transformation language with side-effects</a></li>
+<ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/blog/terraform-is-a-json-transformation-language/">Terraform is a JSON transformation language with side-effects</a></li>
 </ul>
 
 			</heading-anchors>
@@ -572,14 +584,10 @@ footer {
 			</a>
 		</footer>
 
-		<!-- This page `/blog/web-sketchpad/` was built on 2025-04-05T04:48:52.200Z -->
+		<!-- This page `/blog/tensor-calculus/` was built on 2025-04-05T04:48:52.200Z -->
 		<script type="module" async="">import mermaid from "https://unpkg.com/mermaid@10/dist/mermaid.esm.min.mjs";document.addEventListener('DOMContentLoaded', mermaid.initialize({"loadOnSave":true}));</script>
 		<script type="module" src="/dist/xbxy_EL6cU.js"></script>
 		
-			
-				<script src="/wsp/jquery-2.1.0.min.js"></script>
-				<script src="/wsp/wsp-min.js"></script>
-				<script src="/wsp/wsp-runner.js"></script>
 			
 		
 	</body>
