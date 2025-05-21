@@ -3,13 +3,181 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Matthew Litwin</title>
+		<title>Interlude in the House of SVG</title>
 		<meta name="description" content="Personal site of Matthew Litwin">
 		<link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="Matthew Litwin">
 
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
 		
-		<style>/* This is an arbitrary CSS string added to the bundle */
+		<style>/**
+ * okaidia theme for JavaScript, CSS and HTML
+ * Loosely based on Monokai textmate theme by http://www.monokai.nl/
+ * @author ocodia
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+	color: #f8f8f2;
+	background: none;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	font-size: 1em;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+	border-radius: 0.3em;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background: #272822;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
+	white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: #8292a2;
+}
+
+.token.punctuation {
+	color: #f8f8f2;
+}
+
+.token.namespace {
+	opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+	color: #f92672;
+}
+
+.token.boolean,
+.token.number {
+	color: #ae81ff;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+	color: #a6e22e;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string,
+.token.variable {
+	color: #f8f8f2;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.function,
+.token.class-name {
+	color: #e6db74;
+}
+
+.token.keyword {
+	color: #66d9ef;
+}
+
+.token.regex,
+.token.important {
+	color: #fd971f;
+}
+
+.token.important,
+.token.bold {
+	font-weight: bold;
+}
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
+}
+/*
+ * New diff- syntax
+ */
+
+pre[class*="language-diff-"] {
+	--eleventy-code-padding: 1.25em;
+	padding-left: var(--eleventy-code-padding);
+	padding-right: var(--eleventy-code-padding);
+}
+.token.deleted {
+	background-color: hsl(0, 51%, 37%);
+	color: inherit;
+}
+.token.inserted {
+	background-color: hsl(126, 31%, 39%);
+	color: inherit;
+}
+
+/* Make the + and - characters unselectable for copy/paste */
+.token.prefix.unchanged,
+.token.prefix.inserted,
+.token.prefix.deleted {
+	-webkit-user-select: none;
+	user-select: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+.token.prefix.inserted,
+.token.prefix.deleted {
+	width: var(--eleventy-code-padding);
+	background-color: rgba(0,0,0,.2);
+}
+
+/* Optional: full-width background color */
+.token.inserted:not(.prefix),
+.token.deleted:not(.prefix) {
+	display: block;
+	margin-left: calc(-1 * var(--eleventy-code-padding));
+	margin-right: calc(-1 * var(--eleventy-code-padding));
+	text-decoration: none; /* override del, ins, mark defaults */
+	color: inherit; /* override del, ins, mark defaults */
+}
+/* This is an arbitrary CSS string added to the bundle */
 /* Defaults */
 :root {
 	--font-family: -apple-system, system-ui, sans-serif;
@@ -359,19 +527,26 @@ footer {
 		<main id="skip">
 			<heading-anchors>
 				
-<h1 id="content-not-found">Content not found.</h1>
-<p>Go <a href="/">home</a>.</p>
-<!--
+<h1 id="interlude-in-the-house-of-svg">Interlude in the House of SVG</h1>
 
-Read more: https://www.11ty.dev/docs/quicktips/not-found/
+<ul class="post-metadata">
+	<li><time datetime="2025-05-20">20 May 2025</time></li>
+</ul>
 
-This will work for both GitHub pages and Netlify:
+<p>Making diagrams for coordinate systems proved harder than I thought, and I got sidetracked.</p>
+<h2 id="svg-diagrams">SVG Diagrams</h2>
+<p>I wanted to make some <a href="https://developer.mozilla.org/en-US/docs/Web/SVG">SVG</a> diagrams for coordinate systems on a sphere, to illustrate some tensor calculus concepts, and work through some examples. SVG's 3D capability isn't quite what I wanted (via <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/perspective">CSS perspective transform</a>) - there are cases like viewing shapes on edge that don't work in common browsers, and the full 3D experience isn't actually what I was looking for, e.g. I want a 1 pixel width line to stay 1 pixel width at any distance – more a wireframe effect than true 3D.</p>
+<h2 id="svg-gen">svg-gen</h2>
+<p>So I wrote a node library <a href="https://github.com/mlitwin/svg-gen">svg-gen</a> to create SVGs, which supports a perspective transform by mapping shapes (here circles) according to a perspective transform, where they become ellipses. It can also handle special cases like viewing a circle on edge by transforming it into a line.</p>
+<p>Clipping was hard!</p>
+<p>Much more to do in the library, but good enough to start on diagrams.</p>
+<p><img src="/blog/interlude-svg/RSNMyU6aV1-600.svg" alt="Sphere" loading="lazy" decoding="async" width="600" height="600"></p>
+<p><img src="/blog/interlude-svg/gomnMgUQrZ-600.svg" alt="Skew Sphere" loading="lazy" decoding="async" width="600" height="600"></p>
+<p>And here's a CSS transform effect that wasn't what I was aiming for</p>
+<p><img src="/blog/interlude-svg/vTNZcmOoZa-600.svg" alt="CSS 3D Transformed Circles" loading="lazy" decoding="async" width="600" height="600"></p>
 
-* https://help.github.com/articles/creating-a-custom-404-page-for-your-github-pages-site/
-* https://www.netlify.com/docs/redirects/#custom-404
-
--->
-
+<ul class="links-nextprev"><li class="links-nextprev-prev">← Previous<br> <a href="/blog/tensor-calculus/">Tensor Calculus</a></li>
+</ul>
 
 			</heading-anchors>
 		</main>
@@ -388,7 +563,7 @@ This will work for both GitHub pages and Netlify:
 			</a>
 		</footer>
 
-		<!-- This page `/404.html` was built on 2025-05-21T04:20:16.458Z -->
+		<!-- This page `/blog/interlude-svg/` was built on 2025-05-21T04:20:16.458Z -->
 		<script type="module" async="">import mermaid from "https://unpkg.com/mermaid@10/dist/mermaid.esm.min.mjs";document.addEventListener('DOMContentLoaded', mermaid.initialize({"loadOnSave":true}));</script>
 		<script type="module" src="/dist/xbxy_EL6cU.js"></script>
 		
