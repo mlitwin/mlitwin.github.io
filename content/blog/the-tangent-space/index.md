@@ -33,7 +33,7 @@ For the conversion to cartesian coordinates we have:
 
 At each pont you have basis vectors of the tangent space: $\{e^1,e^2\}$.
 
-For our sphere, the basis vectors are perpendicular, so this is a cartesian coordinate.
+For our sphere, the basis vectors are perpendicular, so this is a cartesian coordinate system.
 
 ![Sphere](https://antoninus.org/svg-gen/generated/spherestandard-tanget.svg)'
 
