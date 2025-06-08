@@ -20,13 +20,13 @@ Clipping was hard!
 Much more to do in the library, but good enough to start on diagrams.
 
 
-![Sphere](https://antoninus.org/svg-gen/generated/spherestandard.svg)
+![Sphere](https://antoninus.org/svg-gen/images/spherestandard.svg)
 
-![Skew Sphere](https://antoninus.org/svg-gen/generated/sphereskew.svg)
+![Skew Sphere](https://antoninus.org/svg-gen/images/sphereskew.svg)
 
 
 And here's a CSS transform effect that wasn't what I was aiming for
 
-![CSS 3D Transformed Circles](https://antoninus.org/svg-gen/csstransforms.svg)
+![CSS 3D Transformed Circles](https://antoninus.org/svg-gen/images/csstransforms.svg)
 
 
