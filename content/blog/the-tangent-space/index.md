@@ -9,7 +9,7 @@ Let's set the scene of the things I think I understand, at least to the first ap
 
 ### Coordinates
 
-![Sphere](https://antoninus.org/svg-gen/images/spherestandard-tanget.svg)
+![Sphere](https://antoninus.org/svg-gen/images/spherestandard.svg)
 
 Define a [Spherical Coordinate System](https://en.wikipedia.org/wiki/Spherical_coordinate_system). For a given point take:
 * $r =$ radius
@@ -35,7 +35,7 @@ At each pont you have basis vectors of the tangent space: $\{e^1,e^2\}$.
 
 For our sphere, the basis vectors are perpendicular, so this is a cartesian coordinate system.
 
-![Sphere](https://antoninus.org/svg-gen/images/spherestandard.svg)'
+![Sphere](https://antoninus.org/svg-gen/images/spherestandard-tanget.svg)'
 
 But how long are they are they?
 
