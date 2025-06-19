@@ -9,7 +9,7 @@ Let's set the scene of the things I think I understand, at least to the first ap
 
 ### Coordinates
 
-![Sphere](https://antoninus.org/svg-gen/generated/spherestandard.svg)
+![Sphere](https://antoninus.org/svg-gen/images/spherestandard-tanget.svg)
 
 Define a [Spherical Coordinate System](https://en.wikipedia.org/wiki/Spherical_coordinate_system). For a given point take:
 * $r =$ radius
