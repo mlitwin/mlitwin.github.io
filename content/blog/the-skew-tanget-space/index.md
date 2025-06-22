@@ -88,5 +88,7 @@ $$ \frac{e^1 \cdot e^2}{|e^1||e^2|} = \cos\alpha= \frac{\gamma}{\theta}\sin\phi$
 $$e^1 \cdot e^2=\frac{\gamma}{\theta} \frac{\sin\phi}{\sin\theta}$$
 
 
+# Next Up
 
+Next up will be "The Riemannian Metric"
 
