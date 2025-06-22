@@ -1,0 +1,531 @@
+{
+  "metadata" : {
+    "width" : 389,
+    "height" : 305,
+    "wsp-version" : "4.8.0",
+    "exporter-version" : "5.10",
+    "exporter-build" : "3058",
+    "exporter-debug" : false,
+    "original-document-name" : "SkewTriangle",
+    "start-page" : "1"
+    },
+  "resources" : {
+    "fontList" : [
+      "\"Times New Roman\", serif",
+      "\"Arial\", sans-serif"
+      ]
+    },
+  "pages" : [
+    {
+      "metadata" : {
+        "title" : "1",
+        "id" : "1",
+        "sketchRect" : {
+          "top" : 8,
+          "left" : 268,
+          "bottom" : 313,
+          "right" : 657
+          }
+        },
+      "preferences" : {
+        "units" : {
+          "length" : "cm",
+          "angle" : "deg"
+          },
+        "precision" : {
+          "length" : 2,
+          "angle" : 2,
+          "scalar" : 2
+          },
+        "colorableComponents" : {
+          "Straights" : {
+            "color" : "blue"
+            },
+          "Curves" : {
+            "color" : "blue"
+            },
+          "ActionButton" : {
+            "color" : "rgb(255,128,0)"
+            }
+          },
+        "text" : {
+          "mathItalicization" : true,
+          "textTypes" : {
+            "Label" : {
+              "font-family" : "\"Times New Roman\", serif"
+              },
+            "Caption" : {
+              "font-family" : "\"Times New Roman\", serif",
+              "font-size" : 10,
+              "font-weight" : "bold"
+              },
+            "Measurement" : {
+              "font-family" : "\"Times New Roman\", serif"
+              },
+            "Action" : {
+              "label" : {
+                "font-family" : "\"Arial\", sans-serif"
+                }
+              },
+            "Table" : {
+              "font-family" : "\"Arial\", sans-serif"
+              },
+            "AxisTicksAndOptionalLabel" : {
+              "font-family" : "\"Arial\", sans-serif"
+              }
+            }
+          }
+        },
+      "objects" : {
+        "1" : {
+          "kind" : "Point",
+          "genus" : "Point",
+          "constraint" : "Free",
+          "geom" : {
+            "loc" : {
+              "x" : 372,
+              "y" : 58
+              }
+            },
+          "label" : "P",
+          "style" : {
+            "label" : {
+              "showLabel" : true,
+              "labelOffsetX" : 3,
+              "labelOffsetY" : -26
+              }
+            }
+          },
+        "2" : {
+          "kind" : "Point",
+          "genus" : "Point",
+          "constraint" : "Free",
+          "geom" : {
+            "loc" : {
+              "x" : 371,
+              "y" : 456
+              }
+            }
+          },
+        "3" : {
+          "kind" : "Straight",
+          "genus" : "Line",
+          "parents" : {
+            "p0" : "1",
+            "p1" : "2"
+            },
+          "constraint" : "Line",
+          "style" : {
+            "color" : "navy",
+            "line-style" : "dashed"
+            }
+          },
+        "4" : {
+          "kind" : "Straight",
+          "genus" : "Segment",
+          "parents" : {
+            "p0" : "1",
+            "p1" : "2"
+            },
+          "constraint" : "Segment",
+          "style" : {
+            "color" : "navy"
+            }
+          },
+        "5" : {
+          "kind" : "Point",
+          "genus" : "Midpoint",
+          "parents" : {
+            "path" : "4"
+            },
+          "constraint" : "Midpoint"
+          },
+        "6" : {
+          "kind" : "Circle",
+          "genus" : "Circle",
+          "parents" : {
+            "p0" : "5",
+            "p1" : "1"
+            },
+          "constraint" : "CircleFromTwoPoints",
+          "latentVisibility" : true,
+          "style" : {
+            "line-style" : "dashed"
+            }
+          },
+        "7" : {
+          "kind" : "Point",
+          "genus" : "PointOnPath",
+          "parents" : {
+            "path" : "6"
+            },
+          "value" : 0.17059755594999754,
+          "constraint" : "PointOnPath",
+          "label" : "M",
+          "style" : {
+            "label" : {
+              "showLabel" : true,
+              "labelOffsetX" : -2,
+              "labelOffsetY" : -29
+              }
+            }
+          },
+        "8" : {
+          "kind" : "Point",
+          "genus" : "Point",
+          "constraint" : "Free",
+          "geom" : {
+            "loc" : {
+              "x" : 410,
+              "y" : 225
+              }
+            },
+          "label" : "A",
+          "style" : {
+            "label" : {
+              "showLabel" : true,
+              "labelOffsetX" : -9,
+              "labelOffsetY" : 5
+              }
+            }
+          },
+        "9" : {
+          "kind" : "Straight",
+          "genus" : "Perpendicular",
+          "parents" : {
+            "p0" : "8",
+            "line" : "4"
+            },
+          "constraint" : "Perpendicular",
+          "style" : {
+            "color" : "navy",
+            "line-style" : "dashed"
+            }
+          },
+        "10" : {
+          "kind" : "Point",
+          "genus" : "Intersection",
+          "parents" : {
+            "obj" : "9",
+            "circle" : "6"
+            },
+          "constraint" : "Intersection1",
+          "label" : "B",
+          "style" : {
+            "label" : {
+              "showLabel" : true,
+              "labelOffsetX" : 6,
+              "labelOffsetY" : 3
+              }
+            }
+          },
+        "11" : {
+          "kind" : "Straight",
+          "genus" : "Segment",
+          "parents" : {
+            "p0" : "10",
+            "p1" : "8"
+            },
+          "constraint" : "Segment",
+          "label" : "b",
+          "style" : {
+            "label" : {
+              "showLabel" : true,
+              "labelOffsetX" : 0,
+              "labelOffsetY" : 4,
+              "labelParam" : 0.52333298838575615
+              }
+            }
+          },
+        "12" : {
+          "kind" : "Straight",
+          "genus" : "Segment",
+          "parents" : {
+            "p0" : "1",
+            "p1" : "8"
+            },
+          "constraint" : "Segment",
+          "style" : {
+            "width" : 5
+            }
+          },
+        "13" : {
+          "kind" : "Straight",
+          "genus" : "Segment",
+          "parents" : {
+            "p0" : "7",
+            "p1" : "8"
+            },
+          "constraint" : "Segment",
+          "label" : "a",
+          "style" : {
+            "label" : {
+              "showLabel" : true,
+              "labelOffsetX" : -23,
+              "labelOffsetY" : -14,
+              "labelParam" : 0.34281378986072703
+              },
+            "width" : 5
+            }
+          },
+        "14" : {
+          "kind" : "Arc",
+          "genus" : "SimpleArc",
+          "parents" : {
+            "p0" : "1",
+            "p1" : "7",
+            "p2" : "10"
+            },
+          "constraint" : "Arc3Points",
+          "style" : {
+            "width" : 5
+            }
+          },
+        "15" : {
+          "kind" : "Button",
+          "genus" : "Action",
+          "parents" : {
+            "0" : "6"
+            },
+          "geom" : {
+            "loc" : {
+              "x" : 10,
+              "y" : 5
+              }
+            },
+          "label" : "Hide Circle",
+          "style" : {
+            "hidden" : true
+            },
+          "constraint" : "ActionButtonToggleHideShow",
+          "messages" : [
+            "Hide Circle",
+            "Show Circle"
+            ],
+          "shouldAutogenerateLabel" : true,
+          "fade" : true
+          },
+        "16" : {
+          "kind" : "AngleMarker",
+          "genus" : "AngleMarker",
+          "parents" : {
+            "p0" : "10",
+            "p1" : "8",
+            "p2" : "7"
+            },
+          "constraint" : "AngleMarker_Simple",
+          "label" : "α",
+          "style" : {
+            "opacity" : 0.25,
+            "label" : {
+              "showLabel" : true,
+              "labelOffsetX" : -10,
+              "labelOffsetY" : -17
+              },
+            "width" : 5
+            }
+          },
+        "17" : {
+          "kind" : "Point",
+          "genus" : "Intersection",
+          "parents" : {
+            "line0" : "4",
+            "line1" : "9"
+            },
+          "constraint" : "Intersection"
+          },
+        "18" : {
+          "kind" : "Straight",
+          "genus" : "Perpendicular",
+          "parents" : {
+            "p0" : "10",
+            "line" : "11"
+            },
+          "constraint" : "Perpendicular",
+          "style" : {
+            "hidden" : true,
+            "width" : 5
+            }
+          },
+        "19" : {
+          "kind" : "Point",
+          "genus" : "PointOnPath",
+          "parents" : {
+            "path" : "18"
+            },
+          "value" : 0.85990727130460676,
+          "constraint" : "PointOnPath",
+          "style" : {
+            "hidden" : true
+            }
+          },
+        "20" : {
+          "kind" : "Straight",
+          "genus" : "Perpendicular",
+          "parents" : {
+            "p0" : "7",
+            "line" : "13"
+            },
+          "constraint" : "Perpendicular",
+          "style" : {
+            "hidden" : true,
+            "width" : 5
+            }
+          },
+        "21" : {
+          "kind" : "Point",
+          "genus" : "PointOnPath",
+          "parents" : {
+            "path" : "20"
+            },
+          "value" : 0.083438583694191659,
+          "constraint" : "PointOnPath",
+          "label" : "E",
+          "style" : {
+            "hidden" : true
+            }
+          },
+        "22" : {
+          "kind" : "AngleMarker",
+          "genus" : "AngleMarker",
+          "parents" : {
+            "p0" : "8",
+            "p1" : "7",
+            "p2" : "21"
+            },
+          "constraint" : "AngleMarker_Simple",
+          "label" : "ɸ",
+          "style" : {
+            "hidden" : true,
+            "opacity" : 0.25,
+            "label" : {
+              "showLabel" : true,
+              "labelOffsetX" : -10,
+              "labelOffsetY" : -13
+              },
+            "width" : 5
+            }
+          },
+        "23" : {
+          "kind" : "Point",
+          "genus" : "PointOnPath",
+          "parents" : {
+            "path" : "20"
+            },
+          "value" : 0.91656141630580834,
+          "constraint" : "PointOnPath",
+          "style" : {
+            "hidden" : true
+            }
+          },
+        "24" : {
+          "kind" : "AngleMarker",
+          "genus" : "AngleMarker",
+          "parents" : {
+            "p0" : "23",
+            "p1" : "7",
+            "p2" : "8"
+            },
+          "constraint" : "AngleMarker_Simple",
+          "style" : {
+            "hidden" : true,
+            "opacity" : 0.25,
+            "width" : 5
+            }
+          },
+        "25" : {
+          "kind" : "Text",
+          "genus" : "Caption",
+          "constraint" : "Free",
+          "geom" : {
+            "loc" : {
+              "x" : 467,
+              "y" : 103
+              }
+            },
+          "textMFS" : "<VL<T'﻿ɸ'>>",
+          "style" : {
+            "font-size" : 16,
+            "font-weight" : "normal"
+            }
+          },
+        "26" : {
+          "kind" : "Text",
+          "genus" : "Caption",
+          "constraint" : "Free",
+          "geom" : {
+            "loc" : {
+              "x" : 426,
+              "y" : 82
+              }
+            },
+          "textMFS" : "<VL<H<!70><T'-'><!6A>>>",
+          "style" : {
+            "font-size" : 16,
+            "font-weight" : "normal"
+            }
+          },
+        "27" : {
+          "kind" : "Text",
+          "genus" : "Caption",
+          "constraint" : "Free",
+          "geom" : {
+            "loc" : {
+              "x" : 400,
+              "y" : 161
+              }
+            },
+          "textMFS" : "<H<\/<!70><T'2'>><T'-'><!61>>",
+          "style" : {
+            "font-weight" : "normal"
+            }
+          },
+        "28" : {
+          "kind" : "Text",
+          "genus" : "Caption",
+          "constraint" : "Free",
+          "geom" : {
+            "loc" : {
+              "x" : 373,
+              "y" : 144
+              }
+            },
+          "textMFS" : "<!71>",
+          "style" : {
+            "font-size" : 18
+            }
+          },
+        "29" : {
+          "kind" : "Text",
+          "genus" : "Caption",
+          "constraint" : "Free",
+          "geom" : {
+            "loc" : {
+              "x" : 539,
+              "y" : 115
+              }
+            },
+          "textMFS" : "<H<!71><T'-'><!67>>",
+          "style" : {
+            "font-size" : 18
+            }
+          },
+        "30" : {
+          "kind" : "Text",
+          "genus" : "Caption",
+          "constraint" : "Free",
+          "geom" : {
+            "loc" : {
+              "x" : 427,
+              "y" : 38
+              }
+            },
+          "textMFS" : "<!67>",
+          "style" : {
+            "font-size" : 18
+            }
+          }
+        }
+      }
+    ]
+  }
