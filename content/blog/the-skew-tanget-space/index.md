@@ -85,7 +85,7 @@ Or formulating via the dot product
 
 $$ \frac{e^1 \cdot e^2}{|e^1||e^2|} = \cos\alpha= \frac{\gamma}{\theta}\sin\phi$$
 
-$$e^1 \cdot e^2=\frac{\gamma}{\theta} \frac{\sin\phi}{\sin\theta}$$
+$$e^1 \cdot e^2=|e^1||e^2|\cos\alpha= \frac{\gamma}{\theta} \sin\phi \sin\theta$$
 
 
 # Next Up
