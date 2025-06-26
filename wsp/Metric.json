@@ -1,0 +1,426 @@
+{
+  "metadata" : {
+    "width" : 478,
+    "height" : 327,
+    "wsp-version" : "4.8.0",
+    "exporter-version" : "5.10",
+    "exporter-build" : "3058",
+    "exporter-debug" : false,
+    "original-document-name" : "Metric",
+    "start-page" : "1"
+    },
+  "resources" : {
+    "fontList" : [
+      "\"Times New Roman\", serif"
+      ]
+    },
+  "pages" : [
+    {
+      "metadata" : {
+        "title" : "1",
+        "id" : "1",
+        "sketchRect" : {
+          "top" : 62,
+          "left" : 119,
+          "bottom" : 389,
+          "right" : 597
+          }
+        },
+      "preferences" : {
+        "units" : {
+          "length" : "px",
+          "angle" : "rad"
+          },
+        "precision" : {
+          "length" : 2,
+          "angle" : 2,
+          "scalar" : 2
+          },
+        "colorableComponents" : {
+          "ActionButton" : {
+            "color" : "rgb(255,128,0)"
+            }
+          },
+        "text" : {
+          "mathItalicization" : true,
+          "textTypes" : {
+            "Label" : {
+              "font-family" : "\"Times New Roman\", serif"
+              },
+            "Caption" : {
+              "font-family" : "\"Times New Roman\", serif",
+              "font-size" : 10,
+              "font-weight" : "bold"
+              },
+            "Measurement" : {
+              "font-family" : "\"Times New Roman\", serif"
+              },
+            "Action" : {
+              "label" : {
+                "font-family" : "\"Arial\", sans-serif"
+                }
+              },
+            "Table" : {
+              "font-family" : "\"Arial\", sans-serif"
+              },
+            "AxisTicksAndOptionalLabel" : {
+              "font-family" : "\"Arial\", sans-serif"
+              }
+            }
+          }
+        },
+      "objects" : {
+        "1" : {
+          "kind" : "Point",
+          "genus" : "Point",
+          "constraint" : "Free",
+          "geom" : {
+            "loc" : {
+              "x" : 162,
+              "y" : 266
+              }
+            },
+          "label" : "A",
+          "style" : {
+            "label" : {
+              "showLabel" : true,
+              "labelOffsetX" : -25,
+              "labelOffsetY" : -5
+              }
+            }
+          },
+        "2" : {
+          "kind" : "Point",
+          "genus" : "Point",
+          "constraint" : "Free",
+          "geom" : {
+            "loc" : {
+              "x" : 248,
+              "y" : 107
+              }
+            },
+          "label" : "B",
+          "style" : {
+            "label" : {
+              "showLabel" : true,
+              "labelOffsetX" : -9,
+              "labelOffsetY" : -31
+              }
+            }
+          },
+        "3" : {
+          "kind" : "Straight",
+          "genus" : "Segment",
+          "parents" : {
+            "p0" : "1",
+            "p1" : "2"
+            },
+          "constraint" : "Segment",
+          "label" : "e¹",
+          "style" : {
+            "width" : 5
+            }
+          },
+        "4" : {
+          "kind" : "Point",
+          "genus" : "Point",
+          "constraint" : "Free",
+          "geom" : {
+            "loc" : {
+              "x" : 367,
+              "y" : 271
+              }
+            },
+          "label" : "C",
+          "style" : {
+            "label" : {
+              "showLabel" : true,
+              "labelOffsetX" : 5,
+              "labelOffsetY" : -3
+              }
+            }
+          },
+        "5" : {
+          "kind" : "Straight",
+          "genus" : "Segment",
+          "parents" : {
+            "p0" : "1",
+            "p1" : "4"
+            },
+          "constraint" : "Segment",
+          "label" : "b",
+          "style" : {
+            "label" : {
+              "showLabel" : true,
+              "labelOffsetX" : 0,
+              "labelOffsetY" : 5,
+              "labelParam" : 0.43959571938168845
+              },
+            "width" : 5
+            }
+          },
+        "6" : {
+          "kind" : "Straight",
+          "genus" : "Parallel",
+          "parents" : {
+            "p0" : "4",
+            "line" : "3"
+            },
+          "constraint" : "Parallel",
+          "label" : "l",
+          "style" : {
+            "hidden" : true,
+            "line-style" : "dashed"
+            }
+          },
+        "7" : {
+          "kind" : "Straight",
+          "genus" : "Parallel",
+          "parents" : {
+            "p0" : "2",
+            "line" : "5"
+            },
+          "constraint" : "Parallel",
+          "style" : {
+            "hidden" : true,
+            "line-style" : "dashed"
+            }
+          },
+        "8" : {
+          "kind" : "Point",
+          "genus" : "Intersection",
+          "parents" : {
+            "line0" : "7",
+            "line1" : "6"
+            },
+          "constraint" : "Intersection",
+          "label" : "D",
+          "style" : {
+            "label" : {
+              "showLabel" : true,
+              "labelOffsetX" : -2,
+              "labelOffsetY" : 3
+              }
+            }
+          },
+        "9" : {
+          "kind" : "Straight",
+          "genus" : "Segment",
+          "parents" : {
+            "p0" : "8",
+            "p1" : "2"
+            },
+          "constraint" : "Segment"
+          },
+        "10" : {
+          "kind" : "Straight",
+          "genus" : "Segment",
+          "parents" : {
+            "p0" : "8",
+            "p1" : "4"
+            },
+          "constraint" : "Segment",
+          "label" : "a",
+          "style" : {
+            "label" : {
+              "showLabel" : true,
+              "labelOffsetX" : 8,
+              "labelOffsetY" : 4,
+              "labelParam" : 0.40679988983076781
+              }
+            }
+          },
+        "11" : {
+          "kind" : "AngleMarker",
+          "genus" : "AngleMarker",
+          "parents" : {
+            "p0" : "4",
+            "p1" : "1",
+            "p2" : "2"
+            },
+          "constraint" : "AngleMarker_Simple",
+          "style" : {
+            "opacity" : 0.25
+            }
+          },
+        "12" : {
+          "kind" : "AngleMarker",
+          "genus" : "AngleMarker",
+          "parents" : {
+            "p0" : "8",
+            "p1" : "4",
+            "p2" : "1"
+            },
+          "constraint" : "AngleMarker_Simple",
+          "style" : {
+            "opacity" : 0.25
+            }
+          },
+        "13" : {
+          "kind" : "Straight",
+          "genus" : "Segment",
+          "parents" : {
+            "p0" : "1",
+            "p1" : "8"
+            },
+          "constraint" : "Segment",
+          "label" : "s",
+          "style" : {
+            "label" : {
+              "showLabel" : true,
+              "labelOffsetX" : -16,
+              "labelOffsetY" : -31,
+              "labelParam" : 0.53369558198105116
+              }
+            }
+          },
+        "14" : {
+          "kind" : "Measure",
+          "genus" : "AngleMeasure",
+          "parents" : {
+            "marker" : "11"
+            },
+          "constraint" : "MeasurementAngleMarker",
+          "geom" : {
+            "loc" : {
+              "x" : 10,
+              "y" : 5
+              }
+            },
+          "label" : "α",
+          "style" : {
+            "hidden" : true,
+            "precision" : 2,
+            "nameOrigin" : "namedFromLabel"
+            }
+          },
+        "15" : {
+          "kind" : "Measure",
+          "genus" : "AngleMeasure",
+          "parents" : {
+            "marker" : "12"
+            },
+          "constraint" : "MeasurementAngleMarker",
+          "geom" : {
+            "loc" : {
+              "x" : 10,
+              "y" : 27
+              }
+            },
+          "style" : {
+            "hidden" : true,
+            "precision" : 2,
+            "nameOrigin" : "namedFromTemplate"
+            }
+          },
+        "16" : {
+          "kind" : "Measure",
+          "genus" : "DistanceMeasure",
+          "parents" : {
+            "path" : "13"
+            },
+          "constraint" : "MeasurementLength",
+          "geom" : {
+            "loc" : {
+              "x" : 10,
+              "y" : 49
+              }
+            },
+          "label" : "m[4]",
+          "style" : {
+            "hidden" : true,
+            "precision" : 2,
+            "nameOrigin" : "namedFromTemplate"
+            }
+          },
+        "17" : {
+          "kind" : "Measure",
+          "genus" : "DistanceMeasure",
+          "parents" : {
+            "path" : "5"
+            },
+          "constraint" : "MeasurementLength",
+          "geom" : {
+            "loc" : {
+              "x" : 10,
+              "y" : 73
+              }
+            },
+          "label" : "m[1]",
+          "style" : {
+            "hidden" : true,
+            "precision" : 2,
+            "nameOrigin" : "namedFromTemplate"
+            }
+          },
+        "18" : {
+          "kind" : "Measure",
+          "genus" : "DistanceMeasure",
+          "parents" : {
+            "path" : "10"
+            },
+          "constraint" : "MeasurementLength",
+          "geom" : {
+            "loc" : {
+              "x" : 10,
+              "y" : 97
+              }
+            },
+          "label" : "m[2]",
+          "style" : {
+            "hidden" : true,
+            "precision" : 2,
+            "nameOrigin" : "namedFromTemplate"
+            }
+          },
+        "19" : {
+          "kind" : "Expression",
+          "genus" : "ScalarMeasure",
+          "parents" : {
+            "0" : "17",
+            "1" : "18",
+            "2" : "14",
+            "3" : "16"
+            },
+          "constraint" : "Calculation",
+          "geom" : {
+            "loc" : {
+              "x" : 147,
+              "y" : 322
+              }
+            },
+          "expressionType" : "UniMeasure_ExprType",
+          "expression" : "round((@0^2+@1^2+2*@0*@1*cos(@2))-@3^2)",
+          "style" : {
+            "precision" : 2,
+            "nameOrigin" : "namedFromTemplate"
+            }
+          },
+        "20" : {
+          "kind" : "Straight",
+          "genus" : "Ray",
+          "parents" : {
+            "p0" : "4",
+            "p1" : "8"
+            },
+          "constraint" : "Ray",
+          "style" : {
+            "line-style" : "dashed"
+            }
+          },
+        "21" : {
+          "kind" : "Straight",
+          "genus" : "Ray",
+          "parents" : {
+            "p0" : "2",
+            "p1" : "8"
+            },
+          "constraint" : "Ray",
+          "style" : {
+            "line-style" : "dashed"
+            }
+          }
+        }
+      }
+    ]
+  }
