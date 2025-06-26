@@ -13,9 +13,9 @@ At every point of our coordinate space, we can use the tangent space to define t
 
 We can represent the quadratic form as a [symmetric matrix](https://en.wikipedia.org/wiki/Quadratic_form#Associated_symmetric_matrix)
 
-For a general tangent space with basis $\{e^i\}$, and (infinitesmal) displacements along those basis vectors $\{dx^i\}$, then the square of the distance is:
+For a general tangent space with basis $\{e_i\}$, and (infinitesmal) displacements along those basis vectors $\{dx^i\}$, then the square of the distance is:
 $$ds^2=\sum_{ij}g_{ij}{dx}^i {dx}^j$$
-where $g=\{g_{ij}\}$ is our matrix and $g_{ij}=e^i\cdot e^j$
+where $g=\{g_{ij}\}$ is our matrix and $g_{ij}=e_i\cdot e_j$
 
 ## Law of Cosines
 
