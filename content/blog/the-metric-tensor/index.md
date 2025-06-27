@@ -17,6 +17,15 @@ For a general tangent space with basis $\{e_i\}$, and (infinitesmal) displacemen
 $$ds^2=\sum_{ij}g_{ij}{dx}^i {dx}^j$$
 where $g=\{g_{ij}\}$ is our matrix and $g_{ij}=e_i\cdot e_j$
 
+and if $x=x^i e_i$ and $y=y^i e_i$, then we can define the dot product
+
+$$x \cdot y = \sum_{ij}g_{i j} x^i y^j$$
+
+which also lets us define the angle $\theta$ between $x$ and $y$ since we can take 
+$$x\cdot y=|x||y|\cos\theta$$
+as a definition.
+
+
 ## Law of Cosines
 
 We can figure these out in our examples using the [Law of cosines](https://en.wikipedia.org/wiki/Law_of_cosines).
