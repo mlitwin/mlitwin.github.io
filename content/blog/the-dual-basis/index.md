@@ -1,6 +1,6 @@
 ---
 title: "The Dual Basis"
-date: "2025-06-24"
+date: "2025-06-25"
 ---
 
 The tangent space and the metric lets us do basic calculus at a point on our surface: vector displacements with the metric telling us distances and angles.
@@ -14,7 +14,7 @@ The next step is to "do calculus" with scalar functions on our surface. At a poi
 If we have a real valued function $F$ on our surface, we can
 consider at any point a [Linear Functional](https://en.wikipedia.org/wiki/Linear_form) f on the tangent space $V$ which approximates it: $f(x+y)=f(x)+f(y)$ and $f(\lambda x)=\lambda f(x)$
 
-If $v = \sum_i{x^i e_i}$ then $f(v) = \sum_i A_i x^i$, where $A_i = f(e_i)$
+If $v = \sum_i x^i e_i$ then $f(v) = \sum_i A_i x^i$, where $A_i = f(e_i)$
 
 Conversely we can define a linear functional by its action on the $\{e_i\}$
 $$
@@ -35,7 +35,7 @@ and if $x=x^i e_i$ and $y=y^i e_i$, then
 
 $$x \cdot y = g_{i j} x^i y^j$$
 
-As special case for a vector $v=\sum_i x^i e_i$ we can define it's length
+As special case for a vector $v=\sum_i x^i e_i$ we can define its length
 
 $$v \cdot v = |v|^2 = g_{i j} x^i x^j$$
 
@@ -109,12 +109,12 @@ $$
 and now dotting with $e_j$
 
 $$
-\delta^i_j = e_j \cdot e^i = \sum_k \alpha^{ik}(e_j \cdot e_k) \sum_k \alpha^{ik}g_{jk}
+\delta^i_j = e_j \cdot e^i = \sum_k \alpha^{ik}(e_j \cdot e_k) = \sum_k \alpha^{ik}g_{jk}  = \sum_k \alpha^{ik}g_{kj}
 $$
 
 Which in matrix terms means
 $$
-\mathbf{\alpha} \mathbf{g} = \mathrm{Identity}
+\mathbf{\alpha} \mathbf{g} = \mathrm{I}
 $$
 
 
