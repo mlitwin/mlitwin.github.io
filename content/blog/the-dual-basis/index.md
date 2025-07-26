@@ -5,9 +5,12 @@ date: "2025-06-25"
 
 The tangent space and the metric lets us do basic calculus at a point on our surface: vector displacements with the metric telling us distances and angles.
 
-The next step is to "do calculus" with scalar functions on our surface. At a point on our surface, we can approximate a scalar function with a [Linear Functional](https://en.wikipedia.org/wiki/Linear_form): $f(x+y)=f(x)+f(y)$ and $f(\lambda x)=\lambda f(x)$. These are what we are going to need.
+The next step is to "do calculus" with scalar functions on our surface. At a point on our surface, we can approximate a scalar function with a [Linear Functional](https://en.wikipedia.org/wiki/Linear_form) These are what we are going to need:
 
 <!-- more -->
+
+$$f(x+y)=f(x)+f(y)$$
+$$f(\lambda x)=\lambda f(x)$$
 
 ## The Dual Space
 
