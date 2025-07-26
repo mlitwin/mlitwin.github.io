@@ -48,8 +48,8 @@ $$
 ## Tangent Space for non-skew Sphere
 
 We have calculated:
-* $|e^1|=1$
-* $|e^2|=\sin\theta$
+* $|e_1|=1$
+* $|e_2|=\sin\theta$
 
 which give us
 
@@ -64,9 +64,9 @@ $$
 ## Tangent Space for skew Sphere
 
 We have calculated:
-* $|e^1|=1$
-* $|e^2|=\sin\theta$
-* $|e^1||e^2|\cos\alpha = \frac{\gamma}{\theta} \sin\phi \sin\theta$
+* $|e_1|=1$
+* $|e_2|=\sin\theta$
+* $|e_1||e_2|\cos\alpha = \frac{\gamma}{\theta} \sin\phi \sin\theta$
 
 which give us
 

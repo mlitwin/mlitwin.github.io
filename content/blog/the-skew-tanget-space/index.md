@@ -27,17 +27,17 @@ In our example we will let $r=1$.
 
 ### Tangent Space
 
-At each pont you have basis vectors of the tangent space: $\{e^1,e^2\}$.
+At each pont you have basis vectors of the tangent space: $\{e_1,e_2\}$.
 
 For our sphere, the basis vectors are not in general perpendicular, so this is a non-cartesian coordinate system.
 
 ![Sphere](https://antoninus.org/svg-gen/images/sphereskew-tangent.svg)'
 
-$e^1$ is a tangent along a great circle through the magnetic pole, so take that as our unit length a in the cartesian case.
+$e_1$ is a tangent along a great circle through the magnetic pole, so take that as our unit length a in the cartesian case.
 
-$e^2$ is the same as our cartesian case, so we can take it as a unit vector in the x / horizontal direction of magnitude $\sin\theta$. 
+$e_2$ is the same as our cartesian case, so we can take it as a unit vector in the x / horizontal direction of magnitude $\sin\theta$. 
 
-We need the angle between $e^1$ and $e^2$. This is an exercise in [spherical trigonometry](https://en.wikipedia.org/wiki/Spherical_trigonometry):
+We need the angle between $e_1$ and $e_2$. This is an exercise in [spherical trigonometry](https://en.wikipedia.org/wiki/Spherical_trigonometry):
 
 <div class="sketch_canvas"  data-url="/wsp/SkewTriangle.json"></div>
 
@@ -77,15 +77,15 @@ Which is the angle we seek.
 
 So in summary we have
 
-* $|e^1|=1$
-* $|e^2|=\sin\theta$
+* $|e_1|=1$
+* $|e_2|=\sin\theta$
 * $\cos\alpha= \frac{\gamma}{\theta}\sin\phi$
 
 Or formulating via the dot product
 
-$$ \frac{e^1 \cdot e^2}{|e^1||e^2|} = \cos\alpha= \frac{\gamma}{\theta}\sin\phi$$
+$$ \frac{e_1 \cdot e_2}{|e_1||e_2|} = \cos\alpha= \frac{\gamma}{\theta}\sin\phi$$
 
-$$e^1 \cdot e^2=|e^1||e^2|\cos\alpha= \frac{\gamma}{\theta} \sin\phi \sin\theta$$
+$$e_1 \cdot e_2=|e_1||e_2|\cos\alpha= \frac{\gamma}{\theta} \sin\phi \sin\theta$$
 
 
 # Next Up

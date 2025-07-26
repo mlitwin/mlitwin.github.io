@@ -31,7 +31,7 @@ For the conversion to cartesian coordinates we have:
 
 ### Tangent Space
 
-At each pont you have basis vectors of the tangent space: $\{e^1,e^2\}$.
+At each pont you have basis vectors of the tangent space: $\{e_1,e_2\}$.
 
 For our sphere, the basis vectors are perpendicular, so this is a cartesian coordinate system.
 
@@ -39,12 +39,12 @@ For our sphere, the basis vectors are perpendicular, so this is a cartesian coor
 
 But how long are they are they?
 
-Let $e^1$ be our line of longitude, which is a great circle, so a constant diameter for all points. Take our unit of distance so $|e^1|=1$.
+Let $e_1$ be our line of longitude, which is a great circle, so a constant diameter for all points. Take our unit of distance so $|e_1|=1$.
 
-Now for $e^2$ or line of latitude, we have to be a little careful since its radius depends on $\theta$, it's only a great circle along the equator $\theta=\pi/2$. Looking at the cartesian coordinates, $z$ is constant, and you are left with a circle of radius $r \sin \theta$.
+Now for $e_2$ or line of latitude, we have to be a little careful since its radius depends on $\theta$, it's only a great circle along the equator $\theta=\pi/2$. Looking at the cartesian coordinates, $z$ is constant, and you are left with a circle of radius $r \sin \theta$.
 
-* $|e^1|=1$
-* $|e^2|=\sin \theta$
+* $|e_1|=1$
+* $|e_2|=\sin \theta$
 
 Well that's enough for tonight. 
 
