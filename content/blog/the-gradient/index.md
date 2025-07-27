@@ -94,8 +94,7 @@ $$
 so plugging in this $t$ we have
 
 $$
-\frac{{\langle u,v \rangle}^2}{\langle u,u \rangle}\
--2 \frac{{\langle u,v \rangle}^2}{\langle u,u \rangle} + {\langle v,v \rangle} \geq 0
+\frac{\langle u,v \rangle^2}{\langle u,u \rangle} -2 \frac{\langle u,v \rangle^2}{\langle u,u \rangle} + {\langle v,v \rangle} \geq 0
 $$
 
 Multiplying by $\langle u,u \rangle$ and simplifying and rearranging 
