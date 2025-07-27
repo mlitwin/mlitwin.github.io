@@ -51,7 +51,9 @@ $$\nabla_v F = \nabla_{\lambda v} F$$
 
 and thus for any set of $\{\lambda v_0\}$ we can pick a $\lambda$ and thus a $v = \lambda v_0$ with
 
-$$\lambda = \frac{\nabla_{v_0} F}{|v_0|} \implies |v| = \nabla_v F$$ 
+$$
+\lambda = \frac{\nabla_{v_0} F}{|v_0|} \implies |v| = \nabla_v F
+$$
 
 Now we can consider set $\mathcal{D}$ of all vectors such vectors $v$ in the tangent space such that
 $$
