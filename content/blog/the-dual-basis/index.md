@@ -1,6 +1,6 @@
 ---
 title: "The Dual Basis"
-date: "2025-06-25"
+date: "2025-07-25"
 ---
 
 The tangent space and the metric lets us do basic calculus at a point on our surface: vector displacements with the metric telling us distances and angles.

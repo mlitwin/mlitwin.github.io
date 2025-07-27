@@ -4,8 +4,7 @@ date: "2025-06-22"
 wsp: true
 --- 
 
-At every point of our coordinate space, we can use the tangent space to define the distance in any (infinitesimal) direction. In general the square of the distance will be a [quadratic form](Quadratic_form) in the (infinitesimal) coordinate displacements along the basis vectors of the tangent space.
-
+At every point of our coordinate space, we can use the tangent space to define the distance in any (infinitesimal) direction. In general the square of the distance will be a [quadratic form](https://en.wikipedia.org/wiki/Quadratic_form) in the (infinitesimal) coordinate displacements along the basis vectors of the tangent space.
 
 <!-- more -->
 
@@ -13,13 +12,17 @@ At every point of our coordinate space, we can use the tangent space to define t
 
 We can represent the quadratic form as a [symmetric matrix](https://en.wikipedia.org/wiki/Quadratic_form#Associated_symmetric_matrix)
 
-For a general tangent space with basis $\{e_i\}$, and (infinitesmal) displacements along those basis vectors $\{dx^i\}$, then the square of the distance is:
+For a general tangent space with basis $\{e_i\}$, and (infinitesimal) displacements along those basis vectors $\{dx^i\}$, then the square of the distance is:
 $$ds^2=\sum_{ij}g_{ij}{dx}^i {dx}^j$$
 where $g=\{g_{ij}\}$ is our matrix and $g_{ij}=e_i\cdot e_j$
 
-and if $x=x^i e_i$ and $y=y^i e_i$, then we can define the dot product
+and if $x=x^i e_i$ and $y=y^i e_i$, then we can define the dot product by
 
-$$x \cdot y = \sum_{ij}g_{i j} x^i y^j$$
+$$
+
+\langle x,y \rangle = x \cdot y = \sum_{ij}g_{i j} x^i y^j
+
+$$
 
 which also lets us define the angle $\theta$ between $x$ and $y$ since we can take 
 $$x\cdot y=|x||y|\cos\theta$$
