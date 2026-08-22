@@ -1,0 +1,64 @@
+{
+	"posts": [
+		{
+			"title": "The Einstein Summation Convention",
+			"date": "2025-08-04",
+			"path": "/blog/the-einstein-summation-convention/"
+		},
+		{
+			"title": "The Gradient",
+			"date": "2025-07-27",
+			"path": "/blog/the-gradient/"
+		},
+		{
+			"title": "The Dual Basis",
+			"date": "2025-07-25",
+			"path": "/blog/the-dual-basis/"
+		},
+		{
+			"title": "The Metric Tensor",
+			"date": "2025-06-22",
+			"path": "/blog/the-metric-tensor/"
+		},
+		{
+			"title": "The Skew Tangent Space",
+			"date": "2025-06-18",
+			"path": "/blog/the-skew-tanget-space/"
+		},
+		{
+			"title": "The Tangent Space",
+			"date": "2025-05-24",
+			"path": "/blog/the-tangent-space/"
+		},
+		{
+			"title": "Interlude in the House of SVG",
+			"date": "2025-05-20",
+			"path": "/blog/interlude-svg/"
+		},
+		{
+			"title": "Tensor Calculus",
+			"date": "2025-04-04",
+			"path": "/blog/tensor-calculus/"
+		},
+		{
+			"title": "Cyclic Motion and the Arrow of Time",
+			"date": "2023-10-25",
+			"path": "/blog/arrow-of-time/"
+		},
+		{
+			"title": "Terraform is a JSON transformation language with side-effects",
+			"date": "2021-04-17",
+			"path": "/blog/terraform-is-a-json-transformation-language/"
+		},
+		{
+			"title": "Web Sketchpad",
+			"date": "2021-04-03",
+			"path": "/blog/web-sketchpad/"
+		},
+		{
+			"title": "Preliminaries to a Software Testing Manifesto",
+			"date": "2018-09-30",
+			"path": "/blog/preliminaries-to-a-software-testing-manifesto/"
+		}
+	]
+}
