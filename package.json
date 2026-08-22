@@ -7,8 +7,7 @@
 		"build-lib": "node scripts/build-lib.js",
 		"assemble": "node scripts/assemble.js",
 		"build": "npm run build-lib && npm run assemble",
-		"start": "npm run build && npx serve _site",
-		"migrate": "node scripts/migrate.js"
+		"start": "npm run build && npx serve _site"
 	},
 	"license": "MIT",
 	"engines": {
@@ -19,7 +18,6 @@
 		"@zachleat/heading-anchors": "^1.0.1",
 		"esbuild": "^0.24.0",
 		"katex": "^0.16.11",
-		"marked": "^14.1.3",
 		"prismjs": "^1.29.0"
 	}
 }

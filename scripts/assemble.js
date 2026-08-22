@@ -5,5 +5,6 @@ mkdirSync("_site");
 cpSync("content", "_site", { recursive: true });
 cpSync("lib", "_site/lib", { recursive: true });
 cpSync("public", "_site", { recursive: true });
+cpSync("Cyclades", "_site/Cyclades", { recursive: true });
 
 console.log("_site/ assembled.");

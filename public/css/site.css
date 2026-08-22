@@ -1,3 +1,60 @@
+/* Theme: Harbor (cool slate + teal) */
+:root:not([data-theme="dark"]) {
+	--pico-background-color: #eef2f3;
+	--pico-color: #212b2e;
+	--pico-muted-color: #5c6b6e;
+	--pico-muted-border-color: #c9d6d6;
+
+	--pico-primary: #0f766e;
+	--pico-primary-background: #0f766e;
+	--pico-primary-border: var(--pico-primary-background);
+	--pico-primary-underline: rgba(15, 118, 110, 0.5);
+	--pico-primary-hover: #0c5c56;
+	--pico-primary-hover-background: #0c5c56;
+	--pico-primary-hover-border: var(--pico-primary-hover-background);
+	--pico-primary-hover-underline: var(--pico-primary-hover);
+	--pico-primary-focus: rgba(15, 118, 110, 0.375);
+	--pico-primary-inverse: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme]) {
+		--pico-background-color: #101a1c;
+		--pico-color: #d9e4e2;
+		--pico-muted-color: #8fa8a4;
+		--pico-muted-border-color: #2a3d3d;
+
+		--pico-primary: #14b8a6;
+		--pico-primary-background: #14b8a6;
+		--pico-primary-border: var(--pico-primary-background);
+		--pico-primary-underline: rgba(20, 184, 166, 0.5);
+		--pico-primary-hover: #2dd4bf;
+		--pico-primary-hover-background: #2dd4bf;
+		--pico-primary-hover-border: var(--pico-primary-hover-background);
+		--pico-primary-hover-underline: var(--pico-primary-hover);
+		--pico-primary-focus: rgba(20, 184, 166, 0.375);
+		--pico-primary-inverse: #06211d;
+	}
+}
+
+[data-theme="dark"] {
+	--pico-background-color: #101a1c;
+	--pico-color: #d9e4e2;
+	--pico-muted-color: #8fa8a4;
+	--pico-muted-border-color: #2a3d3d;
+
+	--pico-primary: #14b8a6;
+	--pico-primary-background: #14b8a6;
+	--pico-primary-border: var(--pico-primary-background);
+	--pico-primary-underline: rgba(20, 184, 166, 0.5);
+	--pico-primary-hover: #2dd4bf;
+	--pico-primary-hover-background: #2dd4bf;
+	--pico-primary-hover-border: var(--pico-primary-hover-background);
+	--pico-primary-hover-underline: var(--pico-primary-hover);
+	--pico-primary-focus: rgba(20, 184, 166, 0.375);
+	--pico-primary-inverse: #06211d;
+}
+
 main.container {
 	max-width: 50em;
 }
