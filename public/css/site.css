@@ -20,3 +20,16 @@ img {
 	max-width: 100%;
 	height: auto;
 }
+
+.links-nextprev {
+	display: flex;
+	justify-content: space-between;
+	gap: 0.5em 1em;
+	margin-top: 2em;
+	padding-top: 1em;
+	border-top: 1px dashed var(--pico-muted-border-color);
+}
+
+.links-nextprev a:last-child {
+	text-align: right;
+}

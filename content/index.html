@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="/lib/pico.min.css">
   <link rel="stylesheet" href="/css/site.css">
   <script src="/js/site-components.js"></script>  <!-- synchronous: no defer, no async -->
+  <script src="/js/post-list-components.js"></script>
 </head>
 <body>
   <site-nav></site-nav>
@@ -21,11 +22,7 @@
     </ul>
 
     <h2>Latest Posts</h2>
-    <ul>
-      <li><a href="/blog/the-einstein-summation-convention/">The Einstein Summation Convention</a> — <time datetime="2025-08-04">August 4, 2025</time></li>
-      <li><a href="/blog/the-gradient/">The Gradient</a> — <time datetime="2025-07-27">July 27, 2025</time></li>
-      <li><a href="/blog/the-dual-basis/">The Dual Basis</a> — <time datetime="2025-07-25">July 25, 2025</time></li>
-    </ul>
+    <recent-posts count="3"></recent-posts>
     <p>More posts can be found in <a href="/blog.html">the archive</a>.</p>
   </main>
 

@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Terraform is a JSON transformation language with side-effects – Matthew Litwin</title>
   <meta name="date" content="2021-04-17">
-  <link rel="stylesheet" href="/lib/pico.min.css">
-  <link rel="stylesheet" href="/lib/katex.min.css">
-  <link rel="stylesheet" href="/lib/prism-okaidia.min.css">
+  <link rel="stylesheet" href="/lib/post.css">
   <link rel="stylesheet" href="/css/site.css">
   <script src="/js/site-components.js"></script>  <!-- synchronous: no defer, no async -->
 </head>
@@ -62,15 +60,15 @@ tf_apply -- apply --> infrastructure1
 <p>But <code>tf.state</code> is the key to understanding what terraform is doing. Basically, it&#39;s just taking <code>tf.state</code>, applying a program (defined by your <code>.tf</code> files), and updating to a new <code>tf.state</code>. What happens to your infrastructure is just a happy side effect. This is I think a weakness of the terraform model - that you have two sources of truth - the state file, and the actual infrastructure. I wonder if for AWS at least, you could tag the infrastructure terraform created with enough metadata so that you could get rid of <code>tf.state</code>.</p>
 
       </heading-anchors>
+
+      <post-nav></post-nav>
     </article>
   </main>
 
   <site-footer></site-footer>
 
-  <script src="/lib/katex.min.js"></script>
-  <script src="/lib/katex-auto-render.min.js"></script>
-  <script src="/lib/prism.min.js"></script>
-  <script type="module" src="/js/site-runtime.js"></script>
+  <script src="/lib/vendor.js"></script>
+  <script src="/js/post-list-components.js"></script>
   <script type="module">
     import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
     mermaid.initialize({ startOnLoad: true });

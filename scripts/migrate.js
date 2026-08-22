@@ -90,9 +90,7 @@ function renderShell({ title, datetime, display, bodyHtml, hasMermaid, hasWsp })
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title} – Matthew Litwin</title>
   <meta name="date" content="${datetime}">
-  <link rel="stylesheet" href="/lib/pico.min.css">
-  <link rel="stylesheet" href="/lib/katex.min.css">
-  <link rel="stylesheet" href="/lib/prism-okaidia.min.css">
+  <link rel="stylesheet" href="/lib/post.css">
   <link rel="stylesheet" href="/css/site.css">
   <script src="/js/site-components.js"></script>  <!-- synchronous: no defer, no async -->
 </head>
@@ -109,15 +107,15 @@ function renderShell({ title, datetime, display, bodyHtml, hasMermaid, hasWsp })
       <heading-anchors>
 ${bodyHtml}
       </heading-anchors>
+
+      <post-nav></post-nav>
     </article>
   </main>
 
   <site-footer></site-footer>
 
-  <script src="/lib/katex.min.js"></script>
-  <script src="/lib/katex-auto-render.min.js"></script>
-  <script src="/lib/prism.min.js"></script>
-  <script type="module" src="/js/site-runtime.js"></script>${mermaidScript}${wspScripts}
+  <script src="/lib/vendor.js"></script>
+  <script src="/js/post-list-components.js"></script>${mermaidScript}${wspScripts}
 </body>
 </html>
 `;
