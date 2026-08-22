@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Einstein Summation Convention – Matthew Litwin</title>
+  <meta name="date" content="2025-08-04">
+  <link rel="stylesheet" href="/lib/pico.min.css">
+  <link rel="stylesheet" href="/lib/katex.min.css">
+  <link rel="stylesheet" href="/lib/prism-okaidia.min.css">
+  <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/site-components.js"></script>  <!-- synchronous: no defer, no async -->
+</head>
+<body>
+  <site-nav></site-nav>
+
+  <main class="container">
+    <article>
+      <header>
+        <h1>The Einstein Summation Convention</h1>
+        <p><time datetime="2025-08-04">August 4, 2025</time></p>
+      </header>
+
+      <heading-anchors>
+<blockquote>
+
+<p>&quot;I have made a great discovery in mathematics; I have suppressed the summation sign every time that the summation must be made over an index which occurs twice...&quot; Albert Einstein <a href="https://mathworld.wolfram.com/EinsteinSummation.html">(Kollros 1956; Pais 1982, p. 216)</a>.</p>
+</blockquote>
+
+
+
+<p>The <a href="https://en.wikipedia.org/wiki/Einstein_notation">Einstein summation notation</a> simplifies expressions involving sums over multiple indices. Typically, such expressions are sums of products, with some indices summed over (&quot;dummy&quot; indices) and others left free (&quot;free&quot; indices).</p>
+<p>The convention is: <em>if an index appears exactly twice in a term, summation over that index is implied.</em></p>
+<p>Dummy indices can be renamed without changing the meaning; free indices remain unchanged. In tensor notation, summed indices often pair as one superscript (upper) and one subscript (lower).</p>
+<h2>Cheat-sheet</h2>
+<table>
+<thead>
+<tr>
+<th align="left">Type</th>
+<th align="left">Expression</th>
+<th align="left">Summation Notation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Vector</td>
+<td align="left">$v$</td>
+<td align="left">$x^i e_i$</td>
+</tr>
+<tr>
+<td align="left">Co-Vector</td>
+<td align="left">$f$</td>
+<td align="left">$y_i e^i$</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left">$f = g^{-1} e$</td>
+<td align="left">$e^i = g^{ij} e_j$</td>
+</tr>
+<tr>
+<td align="left">Dot Product</td>
+<td align="left">$\langle x, y \rangle = x \cdot y$</td>
+<td align="left">$g_{ij} x^i y^j$</td>
+</tr>
+<tr>
+<td align="left">Change of Basis</td>
+<td align="left">$e' = A e$</td>
+<td align="left">$u'_i = A^i_k e_k$</td>
+</tr>
+<tr>
+<td align="left">Matrix Multiplication</td>
+<td align="left">$C = A B$</td>
+<td align="left">$C^i_j = A^i_k B^k_j$</td>
+</tr>
+<tr>
+<td align="left">Matrix Inverse</td>
+<td align="left">$A^{-1} A = I$</td>
+<td align="left">$A^i_k (A^{-1})^k_j = \delta^i_j$</td>
+</tr>
+<tr>
+<td align="left">Conjugate  Transpose</td>
+<td align="left">$A^{T} g A$</td>
+<td align="left">$ A g_{kj} A$</td>
+</tr>
+</tbody></table>
+
+      </heading-anchors>
+    </article>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="/lib/katex.min.js"></script>
+  <script src="/lib/katex-auto-render.min.js"></script>
+  <script src="/lib/prism.min.js"></script>
+  <script type="module" src="/js/site-runtime.js"></script>
+</body>
+</html>

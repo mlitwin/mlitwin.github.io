@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Skew Tangent Space – Matthew Litwin</title>
+  <meta name="date" content="2025-06-18">
+  <link rel="stylesheet" href="/lib/pico.min.css">
+  <link rel="stylesheet" href="/lib/katex.min.css">
+  <link rel="stylesheet" href="/lib/prism-okaidia.min.css">
+  <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/site-components.js"></script>  <!-- synchronous: no defer, no async -->
+</head>
+<body>
+  <site-nav></site-nav>
+
+  <main class="container">
+    <article>
+      <header>
+        <h1>The Skew Tangent Space</h1>
+        <p><time datetime="2025-06-18">June 18, 2025</time></p>
+      </header>
+
+      <heading-anchors>
+<p><img src="https://antoninus.org/svg-gen/images/sphereskew.svg" alt="Sphere"></p>
+<h3>Coordinates</h3>
+<p>Define a <a href="https://en.wikipedia.org/wiki/Spherical_coordinate_system">Spherical Coordinate System</a>. For a given point take:</p>
+<ul>
+<li>$r =$ radius</li>
+<li>$\theta =$ polar angle (angle from the north pole)</li>
+<li>$\phi =$ azimuth angle from the prime meridian, which we will take as the great circle through the north pole and the geomagnetic pole at a distance $\gamma$ from the north pole.</li>
+</ul>
+<p>In our example we will let $r=1$.</p>
+<h4>Coordinate System</h4>
+<ul>
+<li>The lines of longitude ($\theta$ is constant) are great circles through the poles</li>
+<li>The lines of latitude ($\phi$ is constant) are at different angles to the longitudes.</li>
+</ul>
+<h3>Tangent Space</h3>
+<p>At each pont you have basis vectors of the tangent space: $\{e_1,e_2\}$.</p>
+<p>For our sphere, the basis vectors are not in general perpendicular, so this is a non-cartesian coordinate system.</p>
+<p><img src="https://antoninus.org/svg-gen/images/sphereskew-tangent.svg" alt="Sphere">&#39;</p>
+<p>$e_1$ is a tangent along a great circle through the magnetic pole, so take that as our unit length a in the cartesian case.</p>
+<p>$e_2$ is the same as our cartesian case, so we can take it as a unit vector in the x / horizontal direction of magnitude $\sin\theta$. </p>
+<p>We need the angle between $e_1$ and $e_2$. This is an exercise in <a href="https://en.wikipedia.org/wiki/Spherical_trigonometry">spherical trigonometry</a>:</p>
+<div class="sketch_canvas"  data-url="/wsp/SkewTriangle.json"></div>
+
+<p>Given</p>
+<ul>
+<li>$P =$ North Pole</li>
+<li>$M =$ Magnetic Pole.</li>
+<li>$\gamma = $ angle from $P$ to $M$ along our prime meridian</li>
+</ul>
+<p>Let</p>
+<ul>
+<li>$A=$ point of contact / origin of our tangent space</li>
+<li>$B=$ intersection of latitude line from $A$ to the prime meridian</li>
+<li>$\theta=$ polar angle from $P$ to $A$</li>
+<li>$\phi=$ azimuth around $M$ from $B$ to $A$</li>
+<li>$\alpha = \angle MAB$ which is the angle we seek.</li>
+</ul>
+<p>Let&#39;s figure out some of the angles here:</p>
+<ul>
+<li>Both arc $PA$ and arc $PMB$ are arcs of great circles through the pole $P$, so they intersect the longitude arc $AB$ at right angles.</li>
+<li>arc $AM$ and $PMB$ are arcs of great circles, so $\angle PMA + \angle AMB = \pi$</li>
+</ul>
+<p>And now we can apply the <a href="https://en.wikipedia.org/wiki/Law_of_sines#Spherical_law_of_sines">spherical law of sines</a> and some basic trig</p>
+<p>$$\frac{\sin(\pi/2-\alpha)}{\gamma} = 
+\frac{\sin\pi-\phi}{\theta}
+$$</p>
+<p>$$\frac{\cos\alpha}{\gamma} = 
+\frac{\sin\phi}{\theta}
+$$</p>
+<p>$$ \cos\alpha= \frac{\gamma}{\theta}\sin\phi$$</p>
+<p>Which is the angle we seek.</p>
+<p>So in summary we have</p>
+<ul>
+<li>$|e_1|=1$</li>
+<li>$|e_2|=\sin\theta$</li>
+<li>$\cos\alpha= \frac{\gamma}{\theta}\sin\phi$</li>
+</ul>
+<p>Or formulating via the dot product</p>
+<p>$$ \frac{e_1 \cdot e_2}{|e_1||e_2|} = \cos\alpha= \frac{\gamma}{\theta}\sin\phi$$</p>
+<p>$$e_1 \cdot e_2=|e_1||e_2|\cos\alpha= \frac{\gamma}{\theta} \sin\phi \sin\theta$$</p>
+<h1>Next Up</h1>
+<p>Next up will be &quot;The Riemannian Metric&quot;</p>
+
+      </heading-anchors>
+    </article>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="/lib/katex.min.js"></script>
+  <script src="/lib/katex-auto-render.min.js"></script>
+  <script src="/lib/prism.min.js"></script>
+  <script type="module" src="/js/site-runtime.js"></script>
+  <script src="/wsp/jquery-2.1.0.min.js"></script>
+  <script src="/wsp/wsp-min.js"></script>
+  <script src="/wsp/wsp-runner.js"></script>
+</body>
+</html>

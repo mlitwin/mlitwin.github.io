@@ -1,0 +1,22 @@
+main.container {
+	max-width: 50em;
+}
+
+article header time {
+	color: var(--pico-muted-color);
+	font-size: 0.875em;
+}
+
+pre {
+	overflow-x: auto;
+}
+
+.katex-display {
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}

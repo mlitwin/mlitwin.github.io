@@ -1,0 +1,2304 @@
+<!DOCTYPE html>
+<html style="height: 100%;"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<title>Cycle Detection</title>
+	<link rel="stylesheet" href="CycleDetection_files/style.css">
+<meta content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" name="viewport"><style id="wsp-css-4-5-0">/* For now, these are not in less. Just import them raw. */
+/*!
+  Web Sketchpad. Copyright &copy; 2016 KCP Technologies, a McGraw-Hill Education Company. All rights reserved.
+  Version: Release: 2015Q4Update1, Semantic Version: 4.5.0-alpha, Build Number: 1012, Build Stamp: sneferu.local/20160302142059
+*/
+
+/*
+ * Styles governing drawing contexts. Within the node we are given we
+ * construct a relatively positioned base node. It contains an absolutely
+ * positioned node that is used for clipping. All drawing context nodes
+ * (canvas layers, html layers) are created within the
+ * clipping node and are absolutely positioned. They must correspond exactly
+ * to the height and width of the clipping node.
+ */
+.wsp-version-4-5-0.wsp-base-node {
+    position: relative;
+    display: inline-block;
+    cursor: default;
+    vertical-align: top;
+    font-size: 0px; /* inline-block adds grot heights for whitespace without this */
+    overflow: visible; /* prevents inheritance of overflow: scroll, which can
+                          cause layout issues */
+
+    /* Reset to default in case our containing elt has modified. */
+    white-space: normal;
+}
+
+.wsp-version-4-5-0 .wsp-transform-node {
+  transform-origin: top left;
+  -webkit-transform-origin: top left;
+  -ms-transform-origin: top left;
+  position:absolute;
+  display: inline;
+  border-collapse: collapse;
+  border-spacing: 0px;
+  top: 0px; left: 0px;
+  padding: 0px; margin: 0px;
+}
+
+.wsp-version-4-5-0 .wsp-main-row {
+}
+
+.wsp-version-4-5-0 .wsp-sketch-container {
+  display: table-cell;
+  position: relative;
+  vertical-align: top;
+}
+
+.wsp-version-4-5-0 .wsp-text-layer .wsp-responsive-borderwidth {
+  border-width: 1px;
+}
+
+.wsp-version-4-5-0 .wsp-transform-large {
+  display: inline-block;
+}
+.wsp-version-4-5-0  .wsp-transform-medium {
+  display: none;
+}
+.wsp-version-4-5-0 .wsp-transform-small {
+  display: none;
+}
+
+
+.wsp-version-4-5-0 .wsp-clip-node {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.wsp-version-4-5-0 .wsp-clip-node canvas, .wsp-version-4-5-0 .wsp-text-layer, .wsp-version-4-5-0 .wsp-effects {
+    position: absolute;
+    left: 0; top: 0;
+    z-index: 0;
+}
+
+.wsp-version-4-5-0 .sketch_canvas {
+    -webkit-user-select: none;
+    -moz-user-select: -moz-none;
+}
+
+/*
+ * Styles governing html-layer sketch objects.
+ */
+.wsp-version-4-5-0 .wsp-Measure, .wsp-version-4-5-0 .wsp-Point,
+.wsp-version-4-5-0 .wsp-Text, .wsp-version-4-5-0 .wsp-Param,
+.wsp-version-4-5-0 .wsp-Button, .wsp-version-4-5-0 .wsp-Expression,
+.wsp-version-4-5-0 .wsp-Label, .wsp-version-4-5-0 .wsp-Table {
+    /*-webkit-touch-callout: none*/
+    /*-moz-touch-callout: none;*/
+    position:absolute;
+}
+
+
+/*
+  Buttons - see comment in wsp-skin.css for details
+*/
+
+.wsp-version-4-5-0 .wsp-Button {
+    display: table;
+    border-collapse: separate;
+    border-spacing: 0px;
+}
+
+.wsp-version-4-5-0 .wsp-Button-row {
+  display: table-row;
+}
+
+.wsp-version-4-5-0 .wsp-Button-drag-handle {
+  display: table-cell;
+  content: "";
+  height:100%;
+}
+
+.wsp-version-4-5-0 .wsp-Button-label-frame {
+  display: table-cell;
+}
+
+.wsp-version-4-5-0 .wsp-Measure, .wsp-version-4-5-0 .wsp-Text, .wsp-version-4-5-0 .wsp-Param, .wsp-version-4-5-0 .wsp-Expression, .wsp-version-4-5-0 .wsp-Label {
+    font-size: 12px;
+    border: none;
+    margin: 0;
+    padding: 0;
+    background-color:transparent;
+    overflow-x: visible;
+    white-space: pre;
+}
+
+.wsp-version-4-5-0 .wsp-Measure, .wsp-version-4-5-0 .wsp-Text {
+    cursor: default;
+}
+
+.wsp-version-4-5-0 .wsp-Measure {
+    line-height: 1;
+}
+
+.wsp-version-4-5-0 .wsp-Point {
+    cursor: pointer;
+    font-size: 8px;
+}
+
+.wsp-version-4-5-0 .wsp-Expression .mfs-input {
+    cursor: text;
+}
+
+/* styles for MFS to HTML conversion */
+.wsp-version-4-5-0 .mfs {
+    /*
+      border: solid thin red;
+    */
+    display: run-in;
+}
+
+.wsp-version-4-5-0 .mfs-bracket:before {
+    content: '[';
+}
+
+.wsp-version-4-5-0 .mfs-bracket:after {
+    content: ']';
+}
+
+.wsp-version-4-5-0 .mfs-curly:before {
+    content: '{';
+}
+
+.wsp-version-4-5-0 .mfs-curly:after {
+    content: '}';
+}
+
+.wsp-version-4-5-0 .mfs-tightness-normal {
+    letter-spacing: normal;
+}
+.wsp-version-4-5-0 .mfs-tightness-condensed {
+    letter-spacing: -0.1em;
+}
+.wsp-version-4-5-0 .mfs-tightness-expanded {
+    letter-spacing: .2em;
+}
+
+.wsp-version-4-5-0 .mfs-frac {
+    display: inline-block;
+    font-size: 90%;
+    vertical-align: middle;
+    text-align: center;
+}
+
+
+.wsp-version-4-5-0 .mfs-paren + .mfs-exponent,
+.wsp-version-4-5-0 .mfs-abs + .mfs-exponent,
+.wsp-version-4-5-0 .mfs-root + .mfs-exponent {
+    vertical-align: .9em;
+}
+
+.wsp-version-4-5-0 .mfs-exponent{
+    vertical-align: super;
+    font-size: 70%;
+}
+
+.wsp-version-4-5-0 .mfs-frac .mfs-numr, .wsp-version-4-5-0 .mfs-frac .mfs-denm{
+    display: block;
+}
+
+.wsp-version-4-5-0 .mfs-super-group, .wsp-version-4-5-0 .mfs-sub-group, .wsp-version-4-5-0 .mfs-horizontal, .wsp-version-4-5-0 .mfs-root, .wsp-version-4-5-0 .mfs-paren,
+.wsp-version-4-5-0 .mfs-bracket, .wsp-version-4-5-0 .mfs-curly, .wsp-version-4-5-0 .mfs-abs {
+    display: inline-block;
+    text-decoration: inherit;
+}
+.wsp-version-4-5-0 .mfs-horizontal {
+  white-space: pre;
+}
+.wsp-version-4-5-0 .mfs-param {
+    /*
+     * background-color: lightgray;
+     */
+    display: inline-block;
+}
+
+.wsp-version-4-5-0 tbody { vertical-align: baseline; }
+
+.wsp-version-4-5-0 .mfs-paren, .wsp-version-4-5-0 .mfs-root,
+.wsp-version-4-5-0 .mfs-abs {
+    display: inline-table;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+.wsp-version-4-5-0 .mfs-paren td, .wsp-version-4-5-0 .mfs-root td,
+.wsp-version-4-5-0 .mfs-abs td {
+    padding: 0px;
+}
+
+.wsp-version-4-5-0 .mfs-paren td.mfs-left-paren,
+.wsp-version-4-5-0 .mfs-paren td.mfs-right-paren,
+.wsp-version-4-5-0 .mfs-abs td.mfs-abs-bar
+ {
+    background-size: 100% 100%;
+}
+
+.wsp-version-4-5-0 .mfs-root td.mfs-left-root {
+    background-size: 105% 100%;
+}
+
+.wsp-version-4-5-0 .mfs-root td.mfs-right-root {
+    background-size: 100% 100%;
+}
+
+.wsp-version-4-5-0 td.mfs-right-root {
+    padding-top: .15em;
+}
+
+/* Paren TD's have a dummy span under them, which fixes a rendering
+issue with chrome. If you set the width of the TD itself, chrome adds
+an extra two pixels to the adjoing td containing the parenthesized
+expression! */
+.wsp-version-4-5-0 .mfs-paren td.mfs-left-paren >span,
+.wsp-version-4-5-0 .mfs-paren td.mfs-right-paren >span
+{
+    display: inline-block;
+    width: .35em;
+}
+
+/* See above comment on paren TD's */
+.wsp-version-4-5-0 .mfs-root td.mfs-left-root >span
+{
+    display: inline-block;
+    width: .7em;
+}
+
+/* See above comment on paren TD's */
+.wsp-version-4-5-0 .mfs-abs td.mfs-abs-bar >span
+{
+    display: inline-block;
+    width: .2em;
+}
+
+.wsp-version-4-5-0 .mfs-subscript {
+    font-size: smaller;
+    vertical-align: sub;
+}
+.wsp-version-4-5-0 .mfs-style {
+    display: inline;
+}
+
+.wsp-version-4-5-0 .mfs-overbar-arc, .wsp-version-4-5-0 .mfs-overbar-ray, .wsp-version-4-5-0 .mfs-overbar-line,
+.wsp-version-4-5-0 .mfs-overbar-seg {
+    display: inline-block;
+    line-height: 1.4;
+    background-repeat: no-repeat;
+}
+
+.wsp-version-4-5-0 .mfs-overbar-ray, .wsp-version-4-5-0 .mfs-overbar-line {
+    background-size: 100% .3em;
+    padding-top: .02em;
+}
+
+.wsp-version-4-5-0 .mfs-overbar-arc {
+    background-size: 100% .7em;
+    padding-top: .55em;
+}
+
+.wsp-version-4-5-0 .mfs-overbar-seg {
+    background-size: 100% 100%;
+}
+
+.wsp-version-4-5-0 .mfs-overbar-line > .mfs-horizontal .mfs-text:last-child:after,
+.wsp-version-4-5-0 .mfs-overbar-ray > .mfs-horizontal .mfs-text:last-child:after {
+    content: "\200A\200A"; /* two hair spaces */
+}
+
+.wsp-version-4-5-0 .mfs-overbar-seg > .mfs-horizontal .mfs-text:last-child:after {
+    content: "\200A"; /* one hair space */
+}
+
+.wsp-version-4-5-0 .mfs-underbar-seg {
+    border-bottom-width: thin;
+    border-bottom-color: black;
+    border-bottom-style: solid;
+    line-height: 0.9;
+    display: inline-block;
+}
+
+.wsp-version-4-5-0 .mfs-text {
+    display: inline;
+}
+
+/* Add some padding to the left of italic text, to workaround
+  WSP-1751 "In Safari, screen garbage left behind when you drag a parameter"
+*/
+.wsp-version-4-5-0 .wsp-Expression > .mfs-horizontal:first-child > .mfs-text.mfs-text-italic:first-child,
+.wsp-version-4-5-0 .wsp-Expression > .mfs-horizontal:first-child > .mfs-horizontal:first-child > .mfs-text.mfs-text-italic:first-child,
+.wsp-version-4-5-0 .wsp-Expression > .mfs-horizontal:first-child > .mfs-sub-group:first-child > .mfs-text.mfs-text-italic:first-child,
+.wsp-version-4-5-0 .wsp-Expression > .mfs-horizontal:first-child > .mfs-horizontal:first-child > .mfs-sub-group:first-child > .mfs-text.mfs-text-italic:first-child,
+.wsp-version-4-5-0 .wsp-Measure > .mfs-horizontal:first-child > .mfs-horizontal:first-child > .mfs-text.mfs-text-italic:first-child
+ {
+    padding-left: 0.2em;
+}
+
+.wsp-version-4-5-0 .mfs-vertical-group {
+    display: inline-block;
+}
+
+/* This allows us to use a negative margin to shrink the size,
+accomodating borders. If we're a child of an mfs-vertical-group, this property
+is overridden by that child selector. */
+.wsp-version-4-5-0  .wsp-mfs-reference {
+    display: inline-block;
+}
+
+.wsp-version-4-5-0 .mfs-vertical-group > * {
+    display: block;
+}
+
+.wsp-version-4-5-0 .wsp-text-layer * {
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.wsp-version-4-5-0 .wsp-text-layer {
+    line-height: normal;
+    pointer-events: none;
+}
+
+.wsp-version-4-5-0 .mfs-input {
+    font-size: inherit;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: visible;
+}
+
+.wsp-version-4-5-0 .wsp-numeric {
+     position: absolute;
+   }
+
+.wsp-version-4-5-0 .wsp-numfield-text {
+    white-space: nowrap;
+}
+
+@-webkit-keyframes blinker { from {opacity:1.0;} to {opacity:0.0;} }
+          @keyframes blinker { from {opacity:1.0;} to {opacity:0.0;} }
+.wsp-version-4-5-0 .wsp-blink {
+    font-size: larger;
+    color: black;
+    font-stretch: ultra-condensed;
+    /*text-decoration:blink;*/
+
+    -webkit-animation-name:blinker;
+            animation-name:blinker;
+    -webkit-animation-iteration-count:infinite;
+            animation-iteration-count:infinite;
+    -webkit-animation-timing-function:cubic-bezier(1.0,0,0,1.0);
+            animation-timing-function:cubic-bezier(1.0,0,0,1.0);
+    -webkit-animation-duration:1s;
+            animation-duration:1s;
+}
+
+.wsp-version-4-5-0 .wsp-selected {
+    background-color: yellow;
+}
+.wsp-version-4-5-0 .wsp-Numberpad {
+    position: absolute;
+    pointer-events: auto;
+    -webkit-user-drag: element;
+}
+
+.wsp-version-4-5-0 .wsp-Numberpad:focus {
+    outline: 0;
+    border: 1px solid black;
+}
+
+.wsp-version-4-5-0 .wsp-Numberpad, .wsp-version-4-5-0 .wsp-Numberpad *,
+.wsp-version-4-5-0 .wsp-Numberpad *:before, .wsp-version-4-5-0 .wsp-Numberpad *:after {
+    /** needs to be set to default in case it has been changed by any plugins/frameworks **/
+    /* Bootstrap changes the setting of box-sizing, which is a setting
+       that tells browser whether to take margin, padding into account when imposing the
+       height/width property. */
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+/* The body of the Numberpad */
+.wsp-version-4-5-0 .wsp-Numberpad-body {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    -webkit-justify-content: space-around;
+    justify-content: space-around;
+}
+
+/* A row of Buttons */
+.wsp-version-4-5-0 .wsp-Numberpad-row {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: space-around;
+    justify-content: space-around;
+}
+
+.wsp-version-4-5-0 .wsp-error-message {
+  text-align: center;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  color: red;
+  font-size: 125%;
+}
+
+.wsp-version-4-5-0 .wsp-tool-container {
+  display: table-cell;
+ }
+
+.wsp-version-4-5-0 .wsp-tool-container .wsp-tool-column .wsp-tool.wsp-draggable-toolButton {
+  position: absolute;
+  /* Set the z-index. The stacking context is the wsp-transform-node. We
+  need our z-index to place us above the wsp-sketch-container, over
+  which we will be dragged. Otherwise, a sketch with a non-transparent
+  background will occlude us. */
+  z-index: 1;
+}
+
+
+.wsp-version-4-5-0 .wsp-tool > img {
+  display: block;
+}
+
+
+.wsp-version-4-5-0 .wsp-text-target-highlight {
+  background-color: rgba(255,0,0,0.5) !important;
+}
+
+/* We could, if desired, move the wsp-Transform section into
+ * wsp-skin.css and make the transform skinnable.
+ * For that to be worthwhile, we would need to make the scale factors
+ * used customizable. The css transform isn't a problem - customizers
+ * just change it. But wsp.js needs to know that at init time, and it's
+ * a bit tricky to encode something in css readable by js (e.g. hiding some info
+ * in a hidden node is stymied by browsers that don't set properties until the node
+ * is displayed. You could stash something in content::after but querying that isn't
+ * supported on IE). Best I can think of here is to have a wsp-responsize-size-small-factor
+ * class (and medium, etc.), with some property like opacity set to [0,1]. Code would then sniff that
+ * by inserting a node into the DOM. This would have to match the value used in transform: scale();
+ */
+/* Section Start: wsp-Transform */
+
+/* The transform node is the target for css transforms that
+  scale down the content to fit in smaller form factor devices.
+
+  CSS transforms are used for the scaling - but since those
+  do not change the content size of their targets, we need
+  to fix our content size too. The technique used is to take
+  the actual content containing wsp-transform-node out of the flow,
+  and create sibling DOM elements (wsp-transform-large, wsp-transform-medium,
+  wsp-transform-small) of appropriate size, and make sure the right one is displayed
+  while the rest are not.
+*/
+
+/* .wsp-transform-node will be position: absolute, with transform-origin: top left
+  wsp-transform-large by default is display: inline-block,
+  wsp-transform-medium, wsp-transform-small are display: none
+  Turn on large, medium, small using media queries - you'll need to override the
+  default ones.
+*/
+
+/*
+ *  For our default sizing, some assumptions and numbers.
+ *  For a normal desktop sketch, we'll take a usual width as 800px (Mac window is 780x540 by default)
+ *
+ *  For a mobile friendly document, we'll take as a baseline iPad landscape width (1024), where our ideal sketch width is 600px.
+ *  On iPad portrate width (768px = 75% of 1024px), our ideal sketch width is 400px (75% of 600px)
+ *  On Smartphone portrate (480px = 46.875% of 1024px), our ideal sketch width is 300px (50% of 600px)
+ *
+ *  The media queries are conditionalized by several classes on the root node.
+ *  wsp-responsiveSizing: must be present for responsive sizing to be in effect
+ *  wsp-responsiveSizing-small-size: support the 50% size;
+ *  wsp-responsiveSizing-medium-size: support the 75% size;
+ *  wsp-responsiveSizing-medium-break: if present, a break at the medium device width
+ *    chooses medium size if available, otherwise small size
+ *  wsp-responsiveSizing-small-break: if present, a break at the small device width
+ *    chooses small size if available, otherwise medium size
+ *
+ */
+
+/*
+ * First break half way between iPad landscape and iPad Portrate
+ * ideal sketch width: 400px;
+ * max-width: 892px
+ * scale factor: 0.75;
+*/
+@media only screen and (max-width: 892px) {
+
+
+  /* Small size default if .wsp-responsiveSizing-medium-size*/
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-medium-break.wsp-responsiveSizing-small-size .wsp-transform-large {
+    display: none;
+  }
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-medium-break.wsp-responsiveSizing-small-size .mfs-responsive-borderwidth {
+    border-width: 2px;
+  }
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-medium-break.wsp-responsiveSizing-small-size .wsp-transform-medium {
+    display: none;
+  }
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-medium-break.wsp-responsiveSizing-small-size .wsp-transform-small {
+    display: inline-block;
+  }
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-medium-break.wsp-responsiveSizing-small-size .wsp-transform-node {
+    transform: scale(0.5);
+    -webkit-transform: scale(0.5);
+    -ms-transform: scale(0.5);
+  }
+
+  /* Override with medium size if wsp-responsiveSizing-medium-size */
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-medium-break.wsp-responsiveSizing-medium-size .wsp-transform-large {
+    display: none;
+  }
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-medium-break.wsp-responsiveSizing-medium-size .mfs-responsive-borderwidth {
+    border-width: 2px;
+  }
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-medium-break.wsp-responsiveSizing-medium-size .wsp-transform-medium {
+    display: inline-block;
+  }
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-medium-break.wsp-responsiveSizing-medium-size .wsp-transform-small {
+    display: none;
+  }
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-medium-break.wsp-responsiveSizing-medium-size .wsp-transform-node {
+    transform: scale(0.75);
+    -webkit-transform: scale(0.75);
+    -ms-transform: scale(0.75);
+  }
+}
+
+/*
+ * Second break half way between iPad portrate and Smartphone portrate
+ * ideal sketch width: 300px;
+ * max-width: 624px
+ * scale factor: 0.5;
+*/
+@media only screen and (max-width: 624px) {
+
+  /* Default to medium size if .wsp-responsiveSizing-medium-size */
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-small-break.wsp-responsiveSizing-medium-size .wsp-transform-large {
+    display: none;
+  }
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-small-break.wsp-responsiveSizing-medium-size .mfs-responsive-borderwidth {
+    border-width: 2px;
+  }
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-small-break.wsp-responsiveSizing-medium-size .wsp-transform-medium {
+    display: inline-block;
+  }
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-small-break.wsp-responsiveSizing-medium-size .wsp-transform-small {
+    display: none;
+  }
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-small-break.wsp-responsiveSizing-medium-size .wsp-transform-node {
+    transform: scale(0.75);
+    -webkit-transform: scale(0.75);
+    -ms-transform: scale(0.75);
+  }
+
+  /* Override to small size if .wsp-responsiveSizing-small-size */
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-small-break.wsp-responsiveSizing-small-size .wsp-transform-large {
+    display: none;
+  }
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-small-break.wsp-responsiveSizing-small-size .mfs-responsive-borderwidth {
+    border-width: 2px;
+  }
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-small-break.wsp-responsiveSizing-small-size .wsp-transform-medium {
+    display: none;
+  }
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-small-break.wsp-responsiveSizing-small-size .wsp-transform-small {
+    display: inline-block;
+  }
+  .wsp-version-4-5-0.wsp-responsiveSizing.wsp-responsiveSizing-small-break.wsp-responsiveSizing-small-size .wsp-transform-node {
+    transform: scale(0.5);
+    -webkit-transform: scale(0.5);
+    -ms-transform: scale(0.5);
+  }
+}
+/* Section End: wsp-Transform */
+
+/* Section Start: wsp-Calculator */
+/* On mobile safari, there's an annoying dark background tap effect
+   in our mathquill edit area. Turn if off */
+.wsp-version-4-5-0 .wsp-Calculator-display {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+/* Section End: wsp-Calculator */
+
+/* CSS Utilities */
+
+/* A version of the clearfix a la https://css-tricks.com/snippets/css/clear-fix/ */
+.wsp-version-4-5-0 .wsp-clearfix-group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.wsp-version-4-5-0 {
+  /*
+  Web Sketchpad. Copyright &copy; 2016 KCP Technologies, a McGraw-Hill Education Company. All rights reserved.
+  Version: Release: 2015Q4Update1, Semantic Version: 4.5.0-alpha, Build Number: 1012, Build Stamp: sneferu.local/20160302142059
+*/
+  /* Section Start: wsp-Button */
+  /*
+
+  The outer element of a button will have class .wsp-Button
+  Additional modifiers will be added as classes
+  .wsp-appearance-drag: The button is being dragged / moved;
+  .wsp-appearance-unselect: The button is not arrow selectable
+    and thus not draggable;
+  .wsp-appearance-short: The button is < 28 pixels high;
+  .wsp-appearance-pressed: The button is depressed by user action;
+  .wsp-appearance-active: The button is performing its action, which may
+    continue after it's been clicked;
+
+
+  Within the button we have some substructure to allow
+  for a drag handle, a row of mfs text, and allow for the text
+  top to move down one pixel during a click as part of it's depressed
+  appearance.
+
+  wsp-Button contains a wsp-Button-row
+  wsp-Button-row contains a wsp-Button-drag-handle and a wsp-Button-label-frame
+  wsp-Button-label-frame contains a wsp-Button-label
+
++-------------------wsp-Button--------------------------+
+o--wsp-Button-row-x------wsp-Button-label-frame--------o|
+||                |                                    ||
+||                +------------------------------------||
+|| wsp-Button-    |                                    ||
+|| drag-handle    |                                    ||
+||                |    wsp-Button-label                ||
+||                |                                    ||
+||                |                                    ||
+o-----------------x------------------------------------o|
++-------------------------------------------------------+
+
+*/
+  /* base style for the whole button */
+  /* When it's dragging about, lighten it up */
+  /* Styles for the handle - the dragable bit on the left of the button */
+  /* When the button is short (< 28 px high) */
+  /* Non-arrow selectable buttons don't have a full sided drag handle.
+ It just becomes a narrow vertical strip */
+  /* frame the button label (where the text is).
+ The frame is the part that's stable when the button is pressed down,
+ so it's just responsible for the top border */
+  /* Some padding and border for the interior portion of the label */
+  /* When pressed the frame lets the the label handle the
+ border so it can move down a pixel */
+  /* Add the border on the top now that the frame has punted it to us */
+  /* When the button is working, a background */
+  /* When the button is working, it looks pressed */
+  /*
+If you want to remove the drag handle completely, here is one approach:
+
+.wsp-Button-drag-handle {
+  display: none !important;
+}
+
+.wsp-Button-label-frame {
+  border-left: 2px solid #c2b892 !important;
+  border-bottom-left-radius: 5px !important;
+  border-top-left-radius: 5px !important;
+}
+
+.wsp-Button-label {
+  padding: 0px 3px 0px 3px !important;
+}
+*/
+  /* Section End: wsp-Button */
+  /* Section Start: wsp-HotText */
+  /*
+  Tweak the "hot" part of the appearance of a hot-text caption.
+*/
+  /* Section End: wsp-HotText */
+  /* Section Start: wsp-Tool */
+  /*
+
+.wsp-tool-container contains a .wsp-tool-column
+.wsp-tool-column contains a number of individual .wsp-tool's
+
+A .wsp-tool is an instance of a tool.
+
+Note that Numpad and Tools share a png of a "X"
+
+
+To move the tool pallet to the right, you will need change the float
+of the .wsp-sketch-container and .wsp-tool-container, and change some padding and
+margins.
+
+.wsp-sketch-container {
+  float: left!important;
+}
+.wsp-tool-container {
+  float: right!important;
+  padding-right: 0px!important;
+  margin-right: 0px!important;
+  padding-left: 10px!important;
+  margin-left: 5px!important;
+}
+
+*/
+  /* colors */
+  /* default background */
+  /* active tool text color */
+  /* new look tools: border color */
+  /* undo/redo background color */
+  /* Toolplay Standard Look: Background to blend in with box-shadow -
+  you see this outside the rounded border */
+  /* Toolplay New Look: Tool text color */
+  /* a common background color */
+  /* Toolplay new look: Background color for undo/redo hover */
+  /* These tool styles are shared between new and standard looks. */
+  /* Section End: wsp-Tool */
+  /* Section Start: wsp-Parameter */
+  /*
+  Styles for the box around editable values in the sketch
+*/
+  /* Section End: wsp-Parameter */
+  /* Section Start: wsp-Numberpad */
+  /*
+  A numeric entry keypad or "Numberpad" has a header and a body. The
+  body contains rows of entries, which are either keys or blank
+  spaces.
+
+ *
+ *  +-wsp-Numberpad------------------------------------------------------------------+
+ *  | +-wsp-Numberpad-header-------------------------------------------------------+ |
+ *  | |                                                                            | |
+ *  | |                                                       wsp-Numberpad-cancel | |
+ *  | |                                                           +--------------+ | |
+ *  | |                                                           |              | | |
+ *  | |                                                           |       X      | | |
+ *  | |                                                           +--------------+ | |
+ *  | +----------------------------------------------------------------------------+ |
+ *  | +-wsp-Numberpad-Body---------------------------------------------------------+ |
+ *  | | +wsp-Numberpad-Row-------------------------------------------------------+ | |
+ *  | | | +wsp-Numberpad-key/element/key-1-----+           +-----------+         | | |
+ *  | | | |          |             |           |           |           |         | | |
+ *  | | | |    1     |             |      2    |           |     3     |         | | |
+ *  | | | +----------+             +-----------+           +-----------+         | | |
+ *  | | +------------------------------------------------------------------------+ | |
+ *  | | +------------------------------------------------------------------------+ | |
+ *  | | |  +----------+             +----------+           +-----------+         | | |
+ *  | | |  |          |             |          |           |           |         | | |
+ *  | | |  |    4     |             |     5    |           |     6     |         | | |
+ *  | | |  +----------+             +----------+           +-----------+         | | |
+ *  | | +------------------------------------------------------------------------+ | |
+ *  | | +-----------------------------------------------------------------------+  | |
+ *  | | +  +----------+             +----------+           +-----------+        |  | |
+ *  | | |  |          |             |          |           |           |        |  | |
+ *  | | |  |    7     |             |     8    |           |     9     |        |  | |
+ *  | | |  +----------+             +----------+           +-----------+        |  | |
+ *  | | +-----------------------------------------------------------------------+  | |
+ *  | | +-----------------------------------------------------------------------+  | |
+ *  | | |  +----------+             +-----------+          +-----------+        |  | |
+ *  | | |  |          |             |           |          |           |        |  | |
+ *  | | |  |    .     |             |     0     |          |    +/-    |        |  | |
+ *  | | |  +----------+             +-----------+          +-----------+        |  | |
+ *  | | +-----------------------------------------------------------------------+  | |
+ *  | |                                                                            | |
+ *  | | +-----------------------------------------------------------------------+  | |
+ *  | | |  +---------+                                     +-----------+        |  | |
+ *  | | |  |         |                                     |           |        |  | |
+ *  | | |  | clear   |                                     |delete-left|        |  | |
+ *  | | |  +---------+                                     +-----------+        |  | |
+ *  | | +-----------------------------------------------------------------------+  | |
+ *  | |                                                                            | |
+ *  | |                                                                            | |
+ *  | +----------------------------------------------------------------------------+ |
+ *  +--------------------------------------------------------------------------------+
+ *
+ *
+ *
+ */
+  /* The Numberpad as a whole */
+  /* The Numberpad header bar. Contains the cancel button. */
+  /* The "cancel" button in the header, contains an "x" */
+  /* The "erase to left" button */
+  /* The clear button */
+  /* A pressable key, like a number or a control key */
+  /* A pressable key or empty space between keys */
+  /* Each key contains its button text as an attribute. Remove or
+   override this to change how keys look. */
+  /* You can override the key text for any key. */
+  /* These keys are not present by default, but can be enabled with
+javascript (see section on Javascript customization). */
+  /* Style for a pressed key */
+  /* One of the special control keys: delete left, clear, or "+-". These
+   control key elements also have the wsp-Numberpad-key class, but the
+   style rule below will override styles applied only to that class. */
+  /* Section End: wsp-Numberpad */
+  /* Section Start: misc */
+  /*
+  Various misc. styles
+*/
+  /* In sketch text for error messages e.g. when the document has an unsupported version. */
+  /* Section End: misc */
+  /* Tables */
+  /* Calculators */
+  /* override  bootstrap within a calculator */
+  /* Render styles */
+  /* Insert new styles ABOVE this line to keep version scoping */
+}
+.wsp-version-4-5-0 .wsp-Button {
+  cursor: pointer;
+}
+.wsp-version-4-5-0 .wsp-Button.wsp-appearance-drag {
+  opacity: .8;
+}
+.wsp-version-4-5-0 .wsp-Button-drag-handle {
+  width: 10px;
+  min-width: 10px;
+  padding: 0px;
+  margin: 0px;
+  border: 1px solid;
+  border-bottom: 3px solid;
+  border-color: rgba(0, 0, 0, 0.2);
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+}
+.wsp-version-4-5-0 .wsp-appearance-unselectable .wsp-Button-drag-handle {
+  background-image: none;
+  width: 5px;
+  min-width: 5px;
+}
+.wsp-version-4-5-0 .wsp-Button-label-frame {
+  border-top: 1px solid #c2b892;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: #f5f5ed;
+}
+.wsp-version-4-5-0 .wsp-Button-label {
+  padding-left: 2px;
+  padding-right: 2px;
+  border-style: solid;
+  border-color: #c2b892;
+  border-left-width: 0px;
+  border-right-width: 1px;
+  border-top-width: 0px;
+  border-bottom-width: 3px;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.wsp-version-4-5-0 .wsp-appearance-pressed .wsp-Button-label-frame {
+  border-top-color: transparent;
+}
+.wsp-version-4-5-0 .wsp-appearance-pressed .wsp-Button-label {
+  padding-top: 1px;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+.wsp-version-4-5-0 .wsp-appearance-active .wsp-Button-label-frame {
+  border-top-color: transparent;
+  opacity: 1;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAoCAIAAACw1AcgAAAKmWlDQ1BpY2MAAHjalZZ3UJPpFsbP933phZaAgJTQO1KkCyT0AArSwUZIAgRCjCFBBGzI4gqsBRURrOiiiIKrUmQtiAXbItiwb5BFRV1FXWyo3D+4xHvv3Dt39sy8M78588zzvue8/zwAtL08qVSMagDkSOSymNAAVlJyCov4AChAAxKogQ2PnyvlREdHwv+s97cBAQC44cCTSsXw90pTIMzlAyDRAJAmyOXnACDHAJAyvlQmB8DYAGC+WC6VA2ACAGDKkpJTALB8AGBmTHAFADDTJngXADBlcTGBANgxABKNx5NlAFA7AYCVx8+QA1CVAOAkEYgkADQNAPDjZ/IEALRoALDPyVkoAKAVAYB12r/4ZPybZ5rKk8fLUPHELAAAQAoS5UrFvCV/cx3/v3LEisk7jACAlpsdGwEAWgBIPp8XHDvJmUJu5CRL5QExkyySc+NUGkVY/CQrsuM5k5y9MEKll6TNilL55wamTHJBZlziJAuEQcGTLFsYo9Ln5sUGf9cHzprkLF549CTzZACTLBSHxnx/c7TqnRLxLNUs6bIQlUaY+31eeWZcmIplcSpNuiiEq5pXFvbdXxyt8pQpYlR7EEriVZ4CXpBqtxAIIpCAEHKABywIgyAAuTBfDgAQuFC6RCbKyJSzOFKpWGjP4kr4jvYsFydnF0hKTmFNfNe7O4AAAKJD+t4rPAnAKQRAI773EmwBGnoBmAu+98xfAzBbAE4U8xWyvIkeDgAADxRQBybogRGYgTU4gAu4gw+wIRjCIQriIBnmAx8yIQdksBiKYCWUQjmsh81QAzthD+yHQ3AE2uAEnIELcAV64RbcByUMwQsYgfcwhiAIEaEjDEQPMUYsEDvEBfFE/JBgJBKJQZKRVCQDkSAKpAhZhZQjlUgNshtpQH5BjiNnkEtIH3IXGUCGkbfIZxRDaSgTNUQt0WmoJ8pBI9A4dB6agS5CC9ASdC1ajdahB9FW9Ax6Bb2FKtEX6CgGGBXTwUwwB8wTC8SisBQsHZNhy7AyrAqrw5qwDqwbu4EpsZfYJxwBx8CxcA44H1wYLh7Hxy3CLcNV4Gpw+3GtuHO4G7gB3AjuG56ON8Db4b3xXHwSPgO/GF+Kr8LX41vw5/G38EP49wQCQYdgRfAghBGSCVmEQkIFYTuhmdBJ6CMMEkaJRKIe0Y7oS4wi8ohyYilxK/Eg8TTxOnGI+JFEJRmTXEghpBSShFRMqiIdIJ0iXSc9JY2RNcgWZG9yFFlAXkJeR95L7iBfIw+RxyiaFCuKLyWOkkVZSammNFHOUx5Q3lGpVFOqF3U2VURdQa2mHqZepA5QP9G0aLa0QNpcmoK2lraP1km7S3tHp9Mt6Wx6Cl1OX0tvoJ+lP6J/VGOoOapx1QRqy9Vq1VrVrqu9UierW6hz1OerF6hXqR9Vv6b+UoOsYakRqMHTWKZRq3Fco19jVJOh6awZpZmjWaF5QPOS5jMtopalVrCWQKtEa4/WWa1BBsYwYwQy+IxVjL2M84whJoFpxeQys5jlzEPMHuaItpb2dO0E7XztWu2T2kodTMdSh6sj1lmnc0Tnts7nKYZTOFOEU9ZMaZpyfcoH3am6bF2hbplus+4t3c96LL1gvWy9DXpteg/1cfq2+rP1F+vv0D+v/3Iqc6rPVP7UsqlHpt4zQA1sDWIMCg32GFw1GDU0Mgw1lBpuNTxr+NJIx4htlGW0yeiU0bAxw9jPWGS8yfi08XOWNovDErOqWedYIyYGJmEmCpPdJj0mY6ZWpvGmxabNpg/NKGaeZulmm8y6zEbMjc1nmheZN5rfsyBbeFpkWmyx6Lb4YGllmWi52rLN8pmVrhXXqsCq0eqBNd3a33qRdZ31TRuCjadNts12m15b1NbNNtO21vaaHWrnbiey227XZ4+397KX2NfZ9zvQHDgOeQ6NDgOOOo6RjsWObY6vpplPS5m2YVr3tG9Obk5ip71O9521nMOdi507nN+62LrwXWpdbrrSXUNcl7u2u76ZbjddOH3H9DtuDLeZbqvduty+unu4y9yb3Ic9zD1SPbZ59HsyPaM9KzwveuG9AryWe53w+uTt7i33PuL92sfBJ9vngM+zGVYzhDP2zhj0NfXl+e72Vfqx/FL9dvkp/U38ef51/o/ZZmwBu579lGPDyeIc5LwKcAqQBbQEfAj0Dlwa2BmEBYUGlQX1BGsFxwfXBD8KMQ3JCGkMGQl1Cy0M7QzDh0WEbQjr5xpy+dwG7ki4R/jS8HMRtIjYiJqIx5G2kbLIjpnozPCZG2c+mGUxSzKrLQqiuFEbox5GW0Uviv51NmF29Oza2U9inGOKYrpjGbELYg/Evo8LiFsXdz/eOl4R35WgnjA3oSHhQ2JQYmWiMmla0tKkK8n6yaLk9hRiSkJKfcronOA5m+cMzXWbWzr39jyrefnzLs3Xny+ef3KB+gLegqOp+NTE1AOpX3hRvDreaBo3bVvaCD+Qv4X/QsAWbBIMC32FlcKn6b7plenPMnwzNmYMZ/pnVmW+FAWKakRvssKydmZ9yI7K3pc9Lk4UN+eQclJzjku0JNmScwuNFuYv7JPaSUulykXeizYvGpFFyOpzkdx5ue1yplwqv6qwVvygGMjzy6vN+7g4YfHRfM18Sf7VJbZL1ix5WhBS8HMhrpBf2FVkUrSyaGApZ+nuZciytGVdy82WlywfWhG6Yv9Kysrslb8VOxVXFv+1KnFVR4lhyYqSwR9Cf2gsVSuVlfav9lm980fcj6Ife9a4rtm65luZoOxyuVN5VfmXCn7F5Z+cf6r+aXxt+tqede7rdqwnrJesv73Bf8P+Ss3KgsrBjTM3tm5ibSrb9NfmBZsvVU2v2rmFskWxRVkdWd2+1Xzr+q1fajJrbtUG1DZvM9i2ZtuH7YLt13ewdzTtNNxZvvPzLtGuO7tDd7fWWdZV7SHsydvzZG/C3u6fPX9uqNevL6//uk+yT7k/Zv+5Bo+GhgMGB9Y1oo2KxuGDcw/2Hgo61N7k0LS7Wae5/DAcVhx+/kvqL7ePRBzpOup5tOmYxbFtLYyWslakdUnrSFtmm7I9ub3vePjxrg6fjpZfHX/dd8LkRO1J7ZPrTlFOlZwaP11werRT2vnyTMaZwa4FXffPJp29eW72uZ7zEecvXgi5cLab0336ou/FE5e8Lx2/7Hm57Yr7ldarbldbfnP7raXHvaf1mse19l6v3o6+GX2nrvtfP3Mj6MaFm9ybV27NutV3O/72nf65/co7gjvP7orvvrmXd2/s/ooH+AdlDzUeVj0yeFT3u83vzUp35cmBoIGrj2Mf3x/kD774I/ePL0MlT+hPqp4aP2145vLsxHDIcO/zOc+HXkhfjL0s/VPzz22vrF8de81+fXUkaWTojezN+NuKd3rv9v01/a+u0ejRR+9z3o99KPuo93H/J89P3Z8TPz8dW/yF+KX6q83Xjm8R3x6M54yPS3kyHgAAYACApqcDvN0HQE8GYPQCUNQm8i4AACATGR1gIoP8d57IxAAA4A6wpxMgsRMgvBNgBxvAgg3AAIBoNkAcG1BXV9X5Z+Wmu7pMeFHbAPBV4+PvEgGINgBf+8fHx9rGx7/WA2D3ADrfT+RsAACCBkClGbrCpep06/oV/5l3/wHNmfXlY/st0gAAAAlwSFlzAAAASAAAAEgARslrPgAAAAl2cEFnAAAAAQAAACgAg9PABgAAADBJREFUCNdjWPjgPxMjAwMTEyMDEzOUZmJkYGJGphmIE4OJMzMhyRNhJgwzMmCYBQDI9ANK1RWWcgAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxMi0xMi0xOFQxNjoxNDowOS0wODowMMK1MMQAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTItMTItMThUMTY6MTQ6MDktMDg6MDCz6Ih4AAAAAElFTkSuQmCC');
+  background-repeat: no;
+  background-size: 100% 100%;
+}
+.wsp-version-4-5-0 .wsp-appearance-active .wsp-Button-label {
+  padding-top: 1px;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+.wsp-version-4-5-0 .wsp-mfs-reference-tracking {
+  outline: 1px solid rgba(255, 0, 0, 0.1);
+}
+.wsp-version-4-5-0 .wsp-mfs-reference {
+  background-color: rgba(255, 0, 0, 0.01);
+  border: 1px solid rgba(255, 0, 0, 0.1);
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  /* Cancel the bottom border-radii for numerators */
+  /* No top border or radius for denominators */
+  margin: -1px;
+}
+.wsp-version-4-5-0 .wsp-mfs-reference.mfs-numr {
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  -moz-border-bottom-right-radius: 0px;
+  -moz-border-bottom-left-radius: 0px;
+  -webkit-border-bottom-right-radius: 0px;
+  -webkit-border-bottom-left-radius: 0px;
+}
+.wsp-version-4-5-0 .wsp-mfs-reference.mfs-denm {
+  border-top-style: none;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+  -moz-border-top-right-radius: 0px;
+  -moz-border-top-left-radius: 0px;
+  -webkit-border-top-right-radius: 0px;
+  -webkit-border-top-left-radius: 0px;
+}
+.wsp-version-4-5-0 .wsp-mfs-reference:hover {
+  background-color: rgba(255, 0, 0, 0.1);
+}
+.wsp-version-4-5-0 .wsp-mfs-reference.wsp-mfs-reference-hot {
+  background-color: rgba(255, 0, 0, 0.5);
+  border-color: #ff0000;
+}
+.wsp-version-4-5-0 .wsp-sketch-container {
+  float: right;
+}
+.wsp-version-4-5-0 .wsp-tool-container {
+  vertical-align: top;
+  float: left;
+}
+.wsp-version-4-5-0 .wsp-tool-container .wsp-tool-column .wsp-undo-redo {
+  background-color: #FFFFFF;
+}
+.wsp-version-4-5-0 .wsp-tool-container .wsp-tool-column .wsp-tool-overflow-y.wsp-user-tools {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.wsp-version-4-5-0 .wsp-tool-container .wsp-tool-column .wsp-tool-logo {
+  display: none;
+}
+.wsp-version-4-5-0 .wsp-tool-container .wsp-tool-column .wsp-undo-button:hover,
+.wsp-version-4-5-0 .wsp-tool-container .wsp-tool-column .wsp-redo-button:hover {
+  background-color: #FFFFFF;
+  cursor: pointer;
+}
+.wsp-version-4-5-0 .wsp-tool-container .wsp-tool-column .wsp-undo-button:focus,
+.wsp-version-4-5-0 .wsp-tool-container .wsp-tool-column .wsp-redo-button:focus {
+  outline: 0;
+  /* gets rid of blue box around focusables in chrome */
+}
+.wsp-version-4-5-0 .wsp-tool-container .wsp-tool-column .wsp-undo-disabled .wsp-undo-button,
+.wsp-version-4-5-0 .wsp-tool-container .wsp-tool-column .wsp-redo-disabled .wsp-redo-button {
+  opacity: .3;
+}
+.wsp-version-4-5-0 .wsp-tool-container .wsp-tool-column .wsp-undo-disabled .wsp-undo-button:hover,
+.wsp-version-4-5-0 .wsp-tool-container .wsp-tool-column .wsp-redo-disabled .wsp-redo-button:hover {
+  cursor: default;
+}
+.wsp-version-4-5-0 .wsp-tool-container .wsp-tool-column .wsp-tool {
+  background-color: white;
+  word-wrap: break-word;
+  white-space: normal;
+}
+.wsp-version-4-5-0 .wsp-tool-container .wsp-tool-column .wsp-tool.wsp-draggable-toolButton {
+  box-sizing: content-box;
+  /* This simplifies dynamic sizing of the draggable */
+  border: 2px solid #0087FF;
+}
+.wsp-version-4-5-0 .wsp-tool-container .wsp-tool-column .wsp-tool.wsp-tool-active img {
+  opacity: 0.4;
+}
+.wsp-version-4-5-0 .wsp-tool-container .wsp-tool-column .wsp-tool.wsp-tool-active .wsp-tool-text {
+  color: #cdcdcd;
+}
+.wsp-version-4-5-0 .wsp-tools-standardLook {
+  background-color: #F5F5F5;
+  padding-right: 10px;
+  margin-right: 5px;
+  min-width: 100px;
+  /* Box shadow for standardLook. Some oddities here: when we set overflow
+    to auto/scroll on an element, that seems to kill the box shadow. So
+    when there's overflow, we put the box shadow on the enclosing element
+    which in this case will be the same size as the visible portion of
+    .wsp-tools-inner */
+  /* Leave 1px space to alight right edge with right edge of user tools */
+}
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-tool-column {
+  border-radius: 5px;
+}
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-tool-column.wsp-no-tool-icons {
+  width: 125px;
+}
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-fixed-tool,
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-tools-inner,
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-tool-overflow-y.wsp-user-tools {
+  box-shadow: 3px 3px 7px black;
+}
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-fixed-tool {
+  margin-right: 1px;
+}
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-tools-inner {
+  background-color: #393838;
+}
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-undo-redo-bottom {
+  display: none;
+}
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-tool-image {
+  margin: auto;
+}
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-tool {
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 200;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-undo-redo button {
+  width: 50%;
+  height: 44px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-origin: content-box;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-undo-redo button .wsp-inner-icon,
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-undo-redo button .wsp-inner-text {
+  display: none;
+}
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-undo-redo.wsp-undo-disabled .wsp-undo-button,
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-undo-redo.wsp-redo-disabled .wsp-redo-button {
+  background-color: #F5F5F5;
+}
+.wsp-version-4-5-0 .wsp-tools-newLook {
+  padding-right: 0px;
+  margin-right: 0px;
+  border-left: 2px solid #cdcdcd;
+  border-bottom: 2px solid #cdcdcd;
+  border-right: 2px solid #cdcdcd;
+}
+.wsp-version-4-5-0 .wsp-tools-newLook,
+.wsp-version-4-5-0 .wsp-tools-newLook *,
+.wsp-version-4-5-0 .wsp-tools-newLook *:before,
+.wsp-version-4-5-0 .wsp-tools-newLook *:after {
+  box-sizing: border-box;
+}
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-user-tools {
+  background-color: white;
+}
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-tools-inner > :last-child {
+  border-bottom: 2px solid #cdcdcd;
+}
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-tools-inner .wsp-tool {
+  display: table;
+  width: 220px;
+  border-top: 2px solid #cdcdcd;
+  padding-right: 20px;
+  min-height: 58px;
+}
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-tools-inner .wsp-tool .wsp-tool-media {
+  width: 40px;
+  height: 40px;
+  display: table-cell;
+  vertical-align: middle;
+  padding: 5px 0px 0px 7px;
+}
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-tools-inner .wsp-tool .wsp-tool-text {
+  display: table-cell;
+  max-width: 109px;
+  word-wrap: break-word;
+  padding: 7px 10px 7px 10px;
+  vertical-align: middle;
+  font-family: 'Proxima Nova', arial, sans-serif;
+  color: #2d2d2d;
+  font-size: 18px;
+}
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-undo-redo-top {
+  display: none;
+}
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-undo-redo .wsp-undo-button {
+  margin-right: 2px;
+}
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-undo-redo .wsp-undo-button,
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-undo-redo .wsp-redo-button {
+  width: 109px;
+  background-color: white;
+  position: relative;
+  border: none;
+  height: 58px;
+  padding: 0px;
+}
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-undo-redo .wsp-undo-button:hover,
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-undo-redo .wsp-redo-button:hover {
+  background-color: #f0f0f0;
+}
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-undo-redo .wsp-undo-button .wsp-inner-icon,
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-undo-redo .wsp-redo-button .wsp-inner-icon,
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-undo-redo .wsp-undo-button .wsp-inner-text,
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-undo-redo .wsp-redo-button .wsp-inner-text {
+  position: absolute;
+}
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-undo-redo .wsp-undo-button .wsp-inner-icon,
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-undo-redo .wsp-redo-button .wsp-inner-icon {
+  width: 20px;
+  height: 20px;
+  left: 40px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  top: 12px;
+}
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-undo-redo .wsp-undo-button .wsp-inner-text,
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-undo-redo .wsp-redo-button .wsp-inner-text {
+  top: 33px;
+  font-size: 14px;
+  left: 33px;
+}
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-undo-redo.wsp-undo-disabled .wsp-undo-button,
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-undo-redo.wsp-redo-disabled .wsp-redo-button {
+  background-color: white;
+}
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-undo-button {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAABYCAQAAADbnPi/AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQffBBYQOhiFrU+GAAAEnklEQVRo3u2Z3WsdRRiHn53dU2zqR61gtBQsKi1t1Ua8EUEQ03/AOylU8aONEiGxYi9V8E4Q0ys1qUIEb0Sai1xFChEvFKRKY0UvilA/oB8cJBITmuzMvl7s7DknJ7vJfirC/JYDh2V35jm/eeedd+aAk5OTk5OTk5OTk5OTU0fqvwYoJg9QRDW36K27I/ZTkx7D7+ugHKZPQJA5XoqAoI6ePL5hjrcI0CVbUCiinjFqcRu3MMA2PIQ1VljiL8LM5wsqYIU3WWSiBLJCYWznOxniMAc5wB52soOW9VIIWWaRP/iZn1jgAotEdkRKYs8jCCeBoMBbPr6FfoBTnKONbLiilHttznGKQzZ0klYK6UuE1ULIvo3F3bzGeYxFMYSEaOt51IGOiDBoQsKeZ89zkt3W6YLQ8wgajfBqDmRlmx9imiWLFKJT3ZRU1zWhfXqJaYasBQWS6zyCIcqFHDd8mBlMBzUfaP+VYBtmeKjHiNzAsiVy3OQgU4Q2APK6mu12HCSaKQbz+5wAJ8jjqchx1D5PuxNAdV0ag9DmOeKILgCcjRwAg8zW5GyW07MMkmPi9wInyGM9L3oEwDBXkJ55XgUv7QcbQoQrDAPB5uvheuB+5HiQxojs/XKI2qa8brKLk2CI6cHXRESMdwIwJ3AvcgsfmCjtrUl5z2xwuJvoYp/fA1QWclrEeCgME8BpfD7hGOFWw7RBgkGhUMAiC1zkF37lKsus4XETO9nDXvYzxD5aAGgUCo+Qce7gGRQZNd5Gh7sujzKJsFZiEsWOXeJdhtm1yQ9T3McxzrJovda2v0+zXU4HjuMsXlbLpKlVPueI9a5bXPrWdWWLUb9TPd/JKBetUYY1hClIT3JZwDFyMdx4XEKm2Q94eDlqYEVgwQKeYgHBoFlDeDs9ZLOBi08xjfAVD5MUNfnj3rPFv88IbYSQEOHZNOS6gDXCMqNAwWKmBzqu3O7irM1LKzzChl1nPcAhwo8cgs4Al5Nn89ErtrC6wAB9e8Q6gEOEWW5my1UqlxQB8ARtDMJp+iZfdeAQ4WNyli451QIO8htCxJPrkasCh50UVO8JRwDcz2WEb22RUAtwiPAZmyylFZEf5BrCaK/HVYA1wtdsp6nzowA4gvA7t3c9Lg8cIVznXqgxdvvVAsYQXqeTkcsDG4SnKXY8UFw+MEebHYnHZYE1cYnSnLuxFHAPmpGkr3LAEUKbvfwbp58B8AY/xA6X7S4C5rhMq9aTz3QZ4B0CHkfwywL7CEd5mbDhCAYQfG4wxVHAq5olXqLpSUeMyS5m2F41Ag3vM4JuHFnw+ZPveLQacLz3+4ARdGdv0RwyfMG+qg4nyCcaj+UIWEBVT0ox8oecaNxlxSpXubu6LwkyTFb44yGfLnFrHWk/QT7eqMsCXKNVzzoVI09yvMFYFmCpvoW1i9xkkltlqb5KIEF+scHAEP5W9ks9yB6GKV5oMDBuJA0XQ87aDikEwxngo5r/EE6kA3u6VdeOzMNHOIPPZCPI2zwOMEBUCFgwmyJH+Ci+rx0Wmt8uFFDOUfZQeDVNuvVqvrB3cnJycnJycnJycnJy+p/pHzDs9DpRnhI/AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE1LTA0LTIyVDE2OjU4OjI0LTA0OjAwOz+VcAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxNS0wNC0yMlQxNjo1ODoyNC0wNDowMEpiLcwAAAAASUVORK5CYII=);
+}
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-redo-button {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAABYCAQAAADbnPi/AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQffBBYQOCnmRS0+AAAElElEQVRo3u3YT6gd5R3G8c+8M0fQaBuzMFYESy0t/k20i3ZTECN03Z0IUqw1USLcaKnLIrgrFHVl6y2FFLopYhZZKVKlCxfFQtKWFnUTWsEqF0m5NSR3/rxdzNyTc5Nz7p1zZkYQ5hkOHM6Z8853nnne3/s7L6NGjRo1atSoUaNGjRo16kuqkPQ4WNK8Lis2r95wVd2BE0GCSrXgIgFR1Rk9EXy3C3AQdmBOfNUNrnONRLTlgk3/lS88fzllCs/7wWrAQVA2ju132CF3usOt9ttn0sQiyn3uvI/80z+cdcb5xqd0BexM4YQX/XF52FTaQN/lOW/ZEK86qjmfbXjLc+4WdozSFpdnRdHby8MmuMWz3lM2KKVcrlCqVFPY+n2pkMtnzn3PT93SON0Oehv3kuid9rChGf6wkzYbpFwx18041/VC3py96aTDjQWhBe4zokKxjMP1wPc6pZyitgO98tjGLp1yaMaIvXArZVvgesiD1hVNANq6utjtOiS5dQd38XkWN7YFrlP7mA1RubKv870uRBt+rE70PNwTU9yWwBkOOt2Ts4ucPu1gc63FuC2AExmO+Ficmec7L9j9Fkq56GNHkE2X9gxrO3D3BK4f0gmVaiYIVVPEcuVMASuawrYqfqFSWZsGcB7uHsCJgBdnvJ1XGaqrfC8XPIt2Pr+E1GQubgOcLcBNVH7nUblMolLJZMh94Iz3nfOR8y6KrrHPzW5zu3scsl9QN0KpZZb9IJFbc8BjcmteUjZNVQvV7v5etDWdy9F5r3vU7bsW+gOO+KUPp09k2YhsiV51fI67u0YixbpoS9n88G+Ou8l2x5vKZFKhOdLmk+1bmXjIay5ZpQyWzYJezf1uLnCGF0RbCqXorB82BSedgVo8UTOJBN92Ur7Aq92RywW/mAuc4UeiXC7acEyKMFNw2kRqu0m6z5/E5sa7H3OAA77jQjNnX3ezyx3astruEY77XOxlhbwKOMF1zqgblKfVS0eX/ySpDHf5uyjvHzjFy6LShgfYM7Ht4pHheqd7QL4COMWDKtG/3IlJZ9jLIyf4bWfkHcD1gvhn0TnfdGUj0lVhWiq7IO8ATnFc9Il7esetDQn4QyfkGeAEN/q36KFBcGuXuda7HSrGDHCGn4nW9JndK5XiGz4VV+zqpsAJ9tnwRjPocMrwcHPpDsApjinc1jy4IZWq26pVYrHD4b/6uaHSO6uAr9tYKRal6O0gFX1f5hcoBweuTJzzBqvusdVN8iPWXZTqc2t0vjK5pzwidpkt1zrlAJ26hra4PNmtSgR8z1989gX4mykc80q34AV8y5v63Smfp4nCMb9a5r/aIuDgrJUnQUtlcke74xJ8zX9cGrj+ThSO+nV3XIKv+HBQ2G13e8ElmPjEkAmeKDzRF26d4c0BgTO5J7zaFy7BpksDwdaFrFdcgv8N5u5E4Sf94hJcHAg3k3vcurLZWOmuWA9bDIIbFB73mz3cXenZ3jAILkdX7hl26yXeSaQDNZX3q5TCri4ut6cUBRfandpXCnvQcCBDLPbJF9Cxjxo1atSoUaNGjRo1atSowfR/LRgeDFizcN0AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTUtMDQtMjJUMTY6NTY6NDEtMDQ6MDCxoYPjAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE1LTA0LTIyVDE2OjU2OjQxLTA0OjAwwPw7XwAAAABJRU5ErkJggg==);
+}
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-undo-button .wsp-inner-icon {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAWCAQAAACBf8+OAAAAtUlEQVR4AbXTVwHEIBBF0SthJEQCEpCABKTEARIiYSUgAQmRMBLSt6XXM588OtCxCD3BE4hdBTzCjEhCEHKUiorUxauuimmXPlJSEXF8ua6TYvnhqOjLM2XR/5bAO54QpoQSxUAvUf10mGNQ4rvvOxhwCPNyKlzfs8CTsU5QXhxQUHGAp8Kwm6XCPhZ/L+aJrR46yPc17fN+BP/9DfOy3yf2pihuzwPumZ3f423/5/vt4ta+dg3LzGOPpQRi5AAAAABJRU5ErkJggg==);
+}
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-redo-button .wsp-inner-icon {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAWCAQAAACBf8+OAAAAu0lEQVR4AbXTBxmFIBQF4BPhRjDCjUAEIhDFBkQwwotABCIYgQi+87n39ncxDrgxI3DwCPXiWZa+3SyjBap6CVxiXUrIIVwiWyYMUh206LEc2Fa2Q0dcPZPBEnvapZ9IGS0hWBLEPu7RCowrVvRhLizXLIs51gl7fT9IQD8kFvZlcCigoIqF05Rxh9MM4+az+MWLuXir5x5kr39N5/UfwQn9J5Zt9uagcx+wReJC538PBZ3/+Xr7v7adR/85A2OP4hj58QAAAABJRU5ErkJggg==);
+}
+.wsp-version-4-5-0 .wsp-Numberpad-cancel {
+  cursor: pointer ;
+  display: block ;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAB4ElEQVQ4y61UvWsUQRx9s1mEIyF6FpYKFxvB2ORSBgu54giYIoWg/0Caa201nVUqMWksgohY2KlXuFttkBR3CSQHFprAFRZinHXvbm/d25t5FnGP2w8ICz4YmHnDvPl9zBsBSyKNzr3LtVsw1oMx6rMzuAoAvoIsmWh+gX532/Y+ZQ7BkpNRpaoEig4vQKDoVKkq02cnkza5wiLQWrbJlYRQlapCrSWLQmsZR2YAgKONXQhRRlEIUXa0sXteWKpa5iZ3KNsejxJcNCLP9KsgJ7AOVQ2K3EmwfT+K8377m12SpBqRn+UTWBLrX/k6LaTIHSMYo54I95JpEmgAwIMW7kDzJVqDZ2KITQC4P4/FdIbBGHVBzT4E5hI7oxGw7zdEhOfT9PZiubtxDdcztSIG+UIA4A8h9kMRLxdulN9/u4nV3KITfcNXyD5tHQFH4dNp6qSLR28kvDwdX8E1SiaaCXYcAc5gM64J785vcRaPAdd7eOhe+djDcVqoZKKZbX9vEMRd2z7717UwJC3ZgCWBDl/kth+WRMZfP/3vH36l3lEYkj/0Vi/Hd1mLFLVJ2iIt2zs9EGKtkE1I90CItZbtnQI4FwKAJdt1lqEXIo29izT+aOwtC1aXbNeZ2O5/fWx/AXUQdBRBFjTDAAAAAElFTkSuQmCC);
+}
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-tool-cancel > .wsp-inner-icon,
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-tool-cancel,
+.wsp-version-4-5-0 .wsp-sketch-container .wsp-tool-cancel {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wwcFx4ZWcAjlgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAADyUlEQVRo3t1aT0gUURj/xi7TFkoLKxiMePLPShAiUogFgoKIeOjQRSoPnrzEijcPHRW6JEQX9eDFi4c8dJEIF4KNkBTEDrUHdTUwMWHezu46O29+Hd7kmm26M/Mmt/1gYRnevPn93nzv+37f90YhCQZAI6L7RNRBRFEiaiCiWiIKOUMyRPSdiLaI6DMRfSSiuKIoKbosAxAGEAOQgHdLOHOE/yVwDcA0AAvyzHLm1IIGPyEZeDEiE0EAb/PpKl5cq00W+KGAV/28tzHkF3wMl2+x/xm8NxKO25SbFXUnpdiGdRLNFSov40TUoSjKp9MXq4oMfFmG4MnB9PLsxaqzcZ6I7lD52p2/5gknw14YLq2vX2H09oLv7UlxbL63B6OnB1Yy6Sa8asUITJdyt9HdDaaqSLe2+ibBd3eRbm0FU1UYvb1ubp0uJsxKSlZWMgnW0FAgsbvrHXw0Kua5fRv82ze3SS7sOeZbm5tgN2+Kh0ejrknwVKoAvqMD/ODAX27wonOstTWw2loBoqUFPJUqHXxLi3Cbe/fAj44866XTm9eT5RMJsHC4QGJn53zwOztINzef+DxnzG8M0Hxn3fy7d9BragSJ5ua/kuDb2wXwg4Ows1k52bnU6HOemW/eQL9+vUBie/tP8E1NYKqKzMOHsE1TlryYJgBvZcxkLi5CD4UEiaamExJ8a6sAfngYtiVVmb8lAElZs5nz89BVVZBobEQ+Hke6sRFMVZEdHYVt27IFXpIA6DJnPH71Cswh8euXHR8PSqHqFES1lXv+/AR87tmzQKu2qkAkVy5X+G+agbdJ5LrQixdi9TUN+eVlME1D9unTIPz/xIWkbeLjmRkBPhKBtb4u3vH6OlgkguzICGzOA9nEcsLowgL0q1eh19QgH4//nuxWVqBXVyMzNAQ7n5ceRv0nsqUl6NeuQQ+FYC4tFR/z+jX0UAiZBw9g53JSE5k/KbG8DL26GkxVcTw3d76Lzc4KKdHfD9swpEkJ72Lu/XvoN26IcDk1VVqInZwUJLq7wXXf8UPzLqdXV8EiEZGoxsZc3ZuNxQSJzk7wHz/8yWlPBc3GBlhdndA3jx+7DpG2bSPz6JGQHO3t4Pv7vgua0kvKL1/A6uvFCg4MeFaWtmnCGBgQJG7dclvVWX+cKbgt6o2uLt8bkafTMLq6xHw9Pd6LeldtlWQSRl8f+OGhnLbK4SGMvj7/bZVTBxjlbhMX9UYTZdyd+6Aoyt3Kbu46A56U4eo/OQu+cg84KuKIqSIO+SrimLUiDror5lODcvzYQ/nfP7f5Cce8asR3hlrBAAAAAElFTkSuQmCC);
+}
+.wsp-version-4-5-0 .wsp-tools-newLook .wsp-tool-ok > .wsp-inner-icon,
+.wsp-version-4-5-0 .wsp-tools-standardLook .wsp-tool-ok,
+.wsp-version-4-5-0 .wsp-sketch-container .wsp-tool-ok {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wwcFwczGXtDWAAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAADqklEQVRo3t2aXYgbVRTHfzuzIKNZkIFkRmTFUKSgMShIwz4HpeC8VCHgILoQYfXNKQgDAYtQykJx8QNcCj4UBH0QhUVRH7b65toHcbEpYgsbZF9mMrgg2ZKH7vT2JZHpNbXJzNxssxcuzD1zz+F/zj3n3Dv3zBw5NN/3a1EULYdhuBQEwWK3213Y29ub7/f7cwCGYQjTNA9KpVLPtu1dy7K2isXixdXV1cscVmu1Wsdc192oVqs9QKTp1Wq157ruRqvVOjY14L7v1xzH2dZ1XaQFLndd14XjONu+79eUgm80Gpt5Ah+lSKPR2MwduOd5bhZXSeNanue5uYBvNpvrKq3+f6vRbDbXM4F3XXdj2sDlPsAwm+BTKzFYOnE/9bHdyfM89zB8fpyYGCuwp5lt0mSne+b5qQE6gWAdwc8I/kDww3h8d90nfN+vTc11XkBwHcFOovvju1Jyx9aGD+12+0Icx+rPIiZwDtATtOvA2njscRzTbrcv/OdgNjXrfyxZ/hqCpycP6OEBUAPodDprU7H+88CLEm0duDKZmDiO6XQ6a9PNPAUEW5L1v0GgZ8xIg4BQ7zr+CNc5nk2m7/s1LYqiZeWu8yjwukT7DPgzm9goipa1MAyXlCvwDvBAYvw38EF2sWEYLmlBECwqBV8FHIl2HuhlFx0EwaLW7XYXlCrgJXcb4Hfgy3xEd7vdBQqFwi1lgfukFLg7CJ7JT36hULilDa8+lLQ3pfEmsJ2f+H6/Pzc/MdfDwGvAc8CNgT/vjJj3GHBSon2Yv43mDcMQ+/v746/C18DjUpC+BITSvDeApHkuAVfzBW8YhtBM0zyYiOsnafwI8ClgJGgPAqekeR8pOBea5oFWKpUmS2hnge8l2lPA+4nxKeAhSekr+StQKpV6mm3buxNxCeBt4BeJfhJ4ZfD8qvTuEzU5wrbtXc2yrK2JOW8CbwF/yRemQAM4nqBdA35Vo4BlWVtasVi8mIr7n0Gg3pB8f1Wa97m6PfJf7JmO0y+P2KyG/SqCBbUf+BpApVL5MbUZvgK+u8u7b/M584xqQ8waQLlcPq3renpp7wJ7I+hfqAGv6zrlcvn0HUTHcbYzLWsdweXBbcNvCN5T93E0wHrnrUSlUlnJtAqXgBrwBPAscEad9SuVysrhX2yl7PcsgMza1aImE+r1ejZXQp3r1Ov1laN/vX4kChxHosSUdKeZLfIlqzYzW2aV94mZLHTLhZCZ/dVArincDz97zOW1Kof1u81tdvvvyyQ7/+AAAAAASUVORK5CYII=);
+}
+.wsp-version-4-5-0 .wsp-ok-cancel-mode > .wsp-undo-button,
+.wsp-version-4-5-0 .wsp-ok-cancel-mode > .wsp-redo-button {
+  display: none;
+}
+.wsp-version-4-5-0 .wsp-sketch-container .wsp-tool-cancel {
+  cursor: pointer;
+  display: block;
+  top: 0px;
+  right: 0px;
+}
+.wsp-version-4-5-0 .wsp-sketch-container .wsp-tool-cancel .wsp-inner-text {
+  display: none;
+}
+.wsp-version-4-5-0 .wsp-sketch-container .wsp-tool-ok {
+  cursor: pointer;
+  display: block;
+  top: 0px;
+  right: 38px;
+}
+.wsp-version-4-5-0 .wsp-sketch-container .wsp-tool-ok .wsp-inner-text {
+  display: none;
+}
+.wsp-version-4-5-0 .wsp-sketch-container .wsp-ok-cancel-button {
+  position: absolute;
+  margin-right: 10px;
+  margin-top: 10px;
+  height: 28px;
+  width: 28px;
+  background-size: 28px, 28px;
+  background-color: #888888;
+  border-radius: 14px;
+  border-color: #888888;
+  border-style: solid;
+  border-width: thin;
+  box-shadow: 3px 3px 7px #888888;
+}
+.wsp-version-4-5-0 .wsp-tool-background {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.wsp-version-4-5-0 .mfs-input {
+  background-color: white;
+  border: thin solid;
+  padding: 2px;
+  margin: 2px;
+  vertical-align: middle;
+  min-width: .6em;
+  min-height: 1.2em;
+}
+.wsp-version-4-5-0 .wsp-Numberpad {
+  width: 172px;
+  height: 298px;
+  background-color: #00bdec;
+  border-radius: 9px;
+  border: thin gray solid;
+  padding: 0px 8px 8px 8px;
+}
+.wsp-version-4-5-0 .wsp-Numberpad-header {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMDAlJyBoZWlnaHQ9JzI1Jz48cmVjdCBmaWxsPSd3aGl0ZScgeD0nNicgeT0nNicgd2lkdGg9JzkwJScgaGVpZ2h0PScyJy8+PHJlY3QgZmlsbD0nd2hpdGUnIHg9JzYnIHk9JzEyJyB3aWR0aD0nOTAlJyBoZWlnaHQ9JzInLz48cmVjdCBmaWxsPSd3aGl0ZScgeD0nNicgeT0nMTknIHdpZHRoPSc5MCUnIGhlaWdodD0nMicvPjwvc3ZnPgo=");
+  background-repeat: no-repeat;
+  background-color: #00bdec;
+  height: 25px;
+  margin-bottom: 8px;
+}
+.wsp-version-4-5-0 .wsp-Numberpad-cancel {
+  margin-left: auto ;
+  text-align: center ;
+  vertical-align: middle ;
+  font-weight: bold ;
+  font-size: larger ;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #00bdec;
+  border-color: #00bdec;
+  height: 28px;
+  width: 28px;
+  border-style: solid;
+  border-width: thick;
+  border-radius: 16px;
+}
+.wsp-version-4-5-0 .wsp-Numberpad-erase-to-left {
+  /* the following is an svg image of the 'erase to left' unicode character,
+       \u232b, base64 encoded. To see original, cut out the quoted part after
+       base64, then un-base64 encode.  */
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgCnhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbC1vcGFjaXR5PSIxIiBjb2xvci1yZW5kZXJpbmc9ImF1dG8iCmNvbG9yLWludGVycG9sYXRpb249ImF1dG8iIHN0cm9rZT0iYmxhY2siIHRleHQtcmVuZGVyaW5nPSJhdXRvIgpzdHJva2UtbGluZWNhcD0ic3F1YXJlIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHN0cm9rZS1vcGFjaXR5PSIxIgpzaGFwZS1yZW5kZXJpbmc9ImF1dG8iIGZpbGw9ImJsYWNrIiBzdHJva2UtZGFzaGFycmF5PSJub25lIiBzdHJva2Utd2lkdGg9IjEiCnN0cm9rZS1saW5lam9pbj0ibWl0ZXIiIHN0cm9rZS1kYXNob2Zmc2V0PSIwIiBpbWFnZS1yZW5kZXJpbmc9ImF1dG8iCndpZHRoPSIxMDBweCIgaGVpZ2h0PSIxMDBweCIgdmlld0JveD0iMCAwIDI3NyAyMDAiID4KPHBhdGggZD0iTTI2MiAxODYKTDEwMSAxODYKTDE1ICAxMDAKTDEwMSAgMTMKTDI2MiAgMTMKTDI2MiAxODYKWk0yNDggMTcyIApMMjQ4ICAyNwpMMTA3ICAyNwpMMzUgIDEwMApMMTA3IDE3MgpMMjQ4IDE3MgpaTTIxNyAxMzMKTDIwNyAxNDMKTDE3NCAxMDkKTDE0MCAxNDMKTDEzMSAxMzMKTDE2NCAxMDAKTDEzMSAgNjYKTDE0MCAgNTYgCkwxNzQgIDkwCkwyMDcgIDU2CkwyMTcgIDY2CkwxODMgMTAwCkwyMTcgMTMzIFoiIHN0cm9rZT0ibm9uZSIvPgo8L3N2Zz4K");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 30px;
+}
+.wsp-version-4-5-0 .wsp-Numberpad-clear {
+  /* the following is an svg image of the 'circled latin capital letter c'
+       unicode character, \u2428, base64 encoded. To see original, cut out
+       the quoted part after base64, then un-base64 encode.  */
+  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+Cgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4nICdodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCc+CjxzdmcgZmlsbC1vcGFjaXR5PSIxIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIKY29sb3ItcmVuZGVyaW5nPSJhdXRvIiBjb2xvci1pbnRlcnBvbGF0aW9uPSJhdXRvIiBzdHJva2U9ImJsYWNrIgp0ZXh0LXJlbmRlcmluZz0iYXV0byIgc3Ryb2tlLWxpbmVjYXA9InNxdWFyZSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIgpzdHJva2Utb3BhY2l0eT0iMSIgc2hhcGUtcmVuZGVyaW5nPSJhdXRvIiBmaWxsPSJibGFjayIgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIKc3Ryb2tlLXdpZHRoPSIxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiCnN0cm9rZS1kYXNob2Zmc2V0PSIwIiBpbWFnZS1yZW5kZXJpbmc9ImF1dG8iIHdpZHRoPSIxMDBweCIgaGVpZ2h0PSIxMDBweCIKdmlld0JveD0iMCAxNTMgMjg3IDI4NyI+CjxwYXRoIGQ9Ik0xNDQgMTc2IApRMTc2IDE3NiAyMDQgMTkyIApRMjMyLjMxMjUgMjA4LjY4NzUgMjQ4IDIzNyAKUTI2NC42NTYyIDI2NC42NTYyIDI2NSAyOTcgClEyNjQuNjU2MiAzMjguOTIxOSAyNDggMzU3IApRMjMyLjE3MTkgMzg0Ljg5MDYgMjA0IDQwMSAKUTE3Ni4wNjI1IDQxNy4yMzQ0IDE0NCA0MTcgClExMTEuOTM3NSA0MTcuMjM0NCA4NCA0MDEgClE1NS44MjgxIDM4NC44OTA2IDQwIDM1NyAKUTIzLjM0MzggMzI4LjkyMTkgMjMgMjk3IApRMjMuMzQzOCAyNjQuNjU2MiA0MCAyMzcgClE1NS42ODc1IDIwOC41NDY5IDg0IDE5MiAKUTExMS43OTY5IDE3NiAxNDQgMTc2IApaTTE0NCAzOTkgClExODUuOTA2MiAzOTkgMjE2IDM2OSAKUTI0Ni41MTU2IDMzOC43NjU2IDI0NyAyOTcgClEyNDYuNTE1NiAyNjkuNTc4MSAyMzMgMjQ2IApRMjE4Ljk1MzEgMjIxLjkwNjIgMTk1IDIwOCAKUTE3MS4yODEyIDE5NC4zNDM4IDE0NCAxOTQgClExMDEuODEyNSAxOTQuMzQzOCA3MiAyMjUgClE0MS40ODQ0IDI1NC44MTI1IDQxIDI5NyAKUTQxLjQ4NDQgMzM4Ljc2NTYgNzEgMzY5IApRMTAyIDM5OSAxNDQgMzk5IApaTTIwMyAzMjAKUTE5Ni41OTM4IDM0Mi44NDM4IDE4MiAzNTQgClExNjcuMzQzOCAzNjUuMjAzMSAxNDcgMzY1IApRMTE0LjA0NjkgMzY1LjIwMzEgOTkgMzQ0IApRODQuMDkzOCAzMjMuNTc4MSA4NCAyOTUgClE4NC4wOTM4IDI2Mi44MjgxIDEwMiAyNDUgClExMTkuMzkwNiAyMjYuNTQ2OSAxNDcgMjI3IApRMTY2Ljc4MTIgMjI2LjU0NjkgMTgxIDIzNyAKUTE5NC42MjUgMjQ2LjUxNTYgMjAwIDI2NiAKTDE4MyAyNzAgClExNzguMzEyNSAyNTUuNzk2OSAxNjkgMjQ5IApRMTYwLjQ1MzEgMjQxLjU5MzggMTQ3IDI0MiAKUTEyNS4xNTYyIDI0MS41OTM4IDExNCAyNTYgClExMDIuNTE1NiAyNzAuMjgxMiAxMDMgMjk1IApRMTAyLjUxNTYgMzIzLjE1NjIgMTE0IDMzNyAKUTEyNi40MjE5IDM0OS44NzUgMTQ1IDM0OS44NzUgClExNjEuMDE1NiAzNDkuODc1IDE3MSAzNDEgClExODAuODQzOCAzMzIuODU5NCAxODUgMzE2IApMMjAzIDMyMCBaCiIgc3Ryb2tlPSJub25lIiAvPgo8L3N2Zz4K");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 30px;
+}
+.wsp-version-4-5-0 .wsp-Numberpad-key {
+  cursor: pointer;
+  background-color: #eee;
+  border: thin black solid;
+  border-radius: 8px;
+  font-family: Lucida Grande, sans-serif;
+  font-size: 20px;
+  color: black;
+  text-align: center;
+}
+.wsp-version-4-5-0 .wsp-Numberpad-element {
+  margin: 1px;
+  width: 44px;
+  height: 44px;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 48px;
+}
+.wsp-version-4-5-0 .wsp-Numberpad-key:after {
+  content: attr(data-keyText);
+}
+.wsp-version-4-5-0 .wsp-Numberpad-key:active,
+.wsp-version-4-5-0 .wsp-Numberpad-key-down {
+  background-color: #636568;
+  border-color: transparent;
+  color: white;
+}
+.wsp-version-4-5-0 div.wsp-Numberpad-control-key {
+  background-color: #c5dee5;
+  border-radius: 5px;
+}
+.wsp-version-4-5-0 .wsp-error-message {
+  text-align: center;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  color: red;
+  font-size: 125%;
+}
+.wsp-version-4-5-0 .wsp-Table > table {
+  border-collapse: collapse;
+}
+.wsp-version-4-5-0 .wsp-Table {
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+}
+.wsp-version-4-5-0 .wsp-Table > table,
+.wsp-version-4-5-0 .wsp-Table > table > tbody > tr > th,
+.wsp-version-4-5-0 .wsp-Table > table > tbody > tr > td {
+  border: 1px solid;
+  text-align: center;
+}
+.wsp-version-4-5-0 .wsp-Table > table > tbody > tr > td.wsp-final-row-cell {
+  opacity: 0.5;
+}
+.wsp-version-4-5-0 .wsp-Table > table > tbody > tr > td {
+  padding: .1em .4em .1em .4em;
+}
+.wsp-version-4-5-0 .wsp-Table > table > tbody > tr > th {
+  font-weight: normal;
+  font-style: italic;
+  padding: .2em .3em;
+}
+.wsp-version-4-5-0 .wsp-Calculator {
+  width: 389px;
+  height: 356px;
+  background-color: #00bdec;
+  border-radius: 9px;
+  border: thin gray solid;
+  padding: 0px 6px 10px 8px;
+  cursor: default;
+}
+.wsp-version-4-5-0 .wsp-Calculator-title {
+  background-color: #ecf8ff;
+  text-align: center;
+  border-radius: 5px;
+  margin-top: 4px;
+  padding: 2px 0;
+}
+.wsp-version-4-5-0 .wsp-Calculator-display {
+  border-radius: 4px;
+  height: 80px;
+  background-color: white;
+  margin: 7px 0;
+  overflow: auto;
+  font-size: 18px;
+}
+.wsp-version-4-5-0 .wsp-Calculator-display-wrapper {
+  position: relative;
+}
+.wsp-version-4-5-0 .wsp-Calculator-body-wrapper {
+  display: inline-block;
+}
+.wsp-version-4-5-0 .wsp-Calculator-body-wrapper > .wsp-Calculator-body {
+  display: inline-block;
+  margin-left: 7px;
+  /* The default vertical-align for display:inline-block is
+     baseline. This leaves room at the bottom for letters like "j."
+     Setting vertical-align to "top" eliminates the spacing. */
+  vertical-align: top;
+}
+.wsp-version-4-5-0 .wsp-Calculator-left {
+  display: inline-block;
+  border-radius: 4px;
+  vertical-align: top;
+  width: 140px;
+  height: 186px;
+  background-color: #ecf8ff;
+  margin-top: 3px;
+}
+.wsp-version-4-5-0 .wsp-Calculator-label-insert {
+  width: 50%;
+  text-align: center;
+  margin: 35px auto 10px auto;
+}
+.wsp-version-4-5-0 .wsp-Calculator-textual {
+  font-family: Lucida Grande, sans-serif;
+  font-size: 16px;
+}
+.wsp-version-4-5-0 .wsp-Calculator button.dropdown-toggle {
+  background-color: #f0f0f0;
+  border: 2px outset #f0f0f0;
+}
+.wsp-version-4-5-0 .wsp-Calculator .dropdown-toggle {
+  width: 110px;
+  white-space: nowrap;
+}
+.wsp-version-4-5-0 .wsp-Calculator-left .dropdown-toggle {
+  height: 24px;
+}
+.wsp-version-4-5-0 .wsp-Calculator .dropdown {
+  display: inline-block;
+}
+.wsp-version-4-5-0 .wsp-Calculator .wsp-select-function ul {
+  top: -220px;
+  left: 110px;
+}
+.wsp-version-4-5-0 .wsp-Calculator .wsp-select-units ul {
+  top: -70px;
+  left: 110px;
+}
+.wsp-version-4-5-0 .wsp-Calculator-select-equation ul {
+  top: -170px;
+  left: 135px;
+}
+.wsp-version-4-5-0 .wsp-Calculator-topmost-select-for-insert,
+.wsp-version-4-5-0 .wsp-Calculator-select-for-insert {
+  margin-top: 10px;
+}
+.wsp-version-4-5-0 .wsp-Calculator .wsp-Calculator-left .dropdown {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+.wsp-version-4-5-0 .wsp-Calculator .wsp-Calculator-select-for-insert > button,
+.wsp-version-4-5-0 .wsp-Calculator .wsp-Calculator-topmost-select-for-insert > button {
+  box-sizing: border-box;
+}
+.wsp-version-4-5-0 .wsp-Calculator-bottom {
+  margin-top: 15px;
+}
+.wsp-version-4-5-0 .wsp-Calculator-select-equation {
+  margin-left: 30px;
+}
+.wsp-version-4-5-0 .wsp-Calculator-bottom-button {
+  margin-left: 30px;
+  border-radius: 5px;
+  padding: 2px 10px 3px;
+  background-color: #C0C0C0;
+  border: 2px outset #C0C0C0;
+  height: 19px;
+}
+.wsp-version-4-5-0 .wsp-Calculator-ok-button-inner {
+  padding: 0 10px;
+}
+.wsp-version-4-5-0 .wsp-Calculator .dropdown a {
+  cursor: pointer;
+  margin-left: 3px;
+}
+.wsp-version-4-5-0 .wsp-Calculator .selected a {
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+Cjxzdmcgd2lkdGg9IjE5LjIxMzE1IiBoZWlnaHQ9IjE4LjI5NDk5NCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KIDxtZXRhZGF0YSBpZD0ibWV0YWRhdGE3Ij5pbWFnZS9zdmcreG1sPC9tZXRhZGF0YT4KCiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPGcgaWQ9ImxheWVyMSI+CiAgIDxwYXRoIGQ9Im00Ljc3NDY5LDE4LjI5NDk3OWMtMC4yNzUwMSwtMC4wMDM1NCAtMS40NjE4MSwtMS43Nzg0MzkgLTIuNjM3MzQsLTMuOTQ0MTQ5bC0yLjEzNzM0LC0zLjkzNzgxbDAuNTU0MDIsLTAuNTUzOTZjMC4zMDQ2OSwtMC4zMDQ3NSAxLjEyMzY3LC0wLjU1NDAyIDEuODE5OTUsLTAuNTU0MDJsMS4yNjU5NSwwbDAuNjM2MzgsMi4wMDUwN2wwLjYzNjM4LDIuMDA1MDdsNS4wNjQ0OCwtNS41NDEzMmMyLjc4NTQ1LC0zLjA0NzczIDYuMDAzMDcsLTYuMDQzNjQgNy4xNTAyNDEsLTYuNjU3NTlsMi4wODU3NDksLTEuMTE2MjdsLTQuMjA5NDM5LDQuNzgyMTdjLTIuMzE1MiwyLjYzMDI1IC01LjQ1MTM1LDYuNzQ4MDUgLTYuOTY5MjQsOS4xNTA3NmMtMS41MTc4OCwyLjQwMjcxIC0yLjk4NDc5LDQuMzY1NjYgLTMuMjU5NzgsNC4zNjIwNjFsLTAuMDAwMDEsLTAuMDAwMDExeiIgaWQ9InBhdGgyMjIzIiBmaWxsPSIjMDAwMDAwIi8+CiAgPC9nPgogPC9nPgo8L3N2Zz4=);
+  background-repeat: no-repeat;
+  background-position: left;
+  background-size: 16px 16px;
+}
+.wsp-version-4-5-0 .wsp-Calculator .mathquill-rendered-math sup {
+  margin-top: 0.5em;
+}
+.wsp-version-4-5-0 .wsp-Calculator .mathquill-rendered-math sup {
+  margin-top: 0.5em;
+}
+.wsp-version-4-5-0 .wsp-Calculator .mathquill-editable.hasCursor {
+  box-shadow: none;
+}
+.wsp-version-4-5-0 .wsp-Calculator .wsp-calculator-edited {
+  padding: 5px;
+  min-width: 364px;
+  min-height: 69px;
+}
+.wsp-version-4-5-0 .wsp-Calculator .wsp-calculator-edited .mq-blob > .wsp-ref {
+  background-color: rgba(238, 238, 238, 0.8);
+  display: inline-block;
+  margin: 0px 2px;
+  min-width: 0.7em;
+  text-align: center;
+  padding: 0 1px;
+}
+.wsp-version-4-5-0 .wsp-Calculator .mathquill-rendered-math .numerator {
+  padding: 0.1em 0.1em;
+}
+.wsp-version-4-5-0 .wsp-Calculator,
+.wsp-version-4-5-0 .wsp-Calculator *,
+.wsp-version-4-5-0 .wsp-Calculator *:before,
+.wsp-version-4-5-0 .wsp-Calculator *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+.wsp-version-4-5-0 .wsp-Calculator .wsp-independent-variable {
+  font-style: italic;
+}
+.wsp-version-4-5-0 .wsp-Calculator .wsp-syntax-error-notice {
+  display: none;
+}
+.wsp-version-4-5-0 .wsp-Calculator .wsp-syntax-error-notice:after {
+  content: '!';
+}
+.wsp-version-4-5-0 .wsp-Calculator.wsp-syntax-error .wsp-syntax-error-notice {
+  color: red;
+  background-color: #f8f8f8;
+  font-size: 24px;
+  display: inline;
+  padding: 4px;
+  position: absolute;
+  right: 20px;
+  border: 2px solid red;
+  top: 10px;
+}
+.wsp-version-4-5-0 .wsp-Calculator .mq-root-block .mq-hasCursor {
+  -webkit-box-shadow: inset #68b4df 0 0 2px 1px;
+  -moz-box-shadow: inset #68b4df 0 0 2px 1px;
+  box-shadow: inset #68b4df 0 0 2px 1px;
+}
+.wsp-version-4-5-0 .wsp-Calculator .mq-math-mode .mq-editable-field.mq-focused,
+.wsp-version-4-5-0 .wsp-Calculator .mq-editable-field.mq-focused {
+  box-shadow: none;
+  border: none;
+}
+.wsp-version-4-5-0 .wsp-Calculator .mq-math-mode .mq-sqrt-prefix {
+  top: .18em;
+}
+.wsp-version-4-5-0 .wsp-Calculator .dropdown-menu > li > a {
+  padding: 3px 19px;
+}
+.wsp-version-4-5-0 .wsp-Calculator .wsp-missing {
+  color: red;
+}
+.wsp-version-4-5-0 .wsp-Calculator .mq-editable-field .mq-textarea {
+  /* Mathquill sets position to relative, but we were seeing premature
+   * scrollbars from IE (WSP-1578) as the selection area grew. This
+   * fixes the issue, perhaps because 1) the textarea is filled with
+   * increasingly more text as the selection is expanded, and 2)
+   * relative positioning inserts the element into the flow for a
+   * time, and thus impacts sizing enough to trigger scrolling. */
+  position: absolute;
+}
+.wsp-version-4-5-0 .wsp-Calculator .mq-editable-field .mq-textarea > * {
+  z-index: -999;
+  /* Mathquill uses a tiny (1px x 1px) textarea for cut/paste event handling, and
+  this triggered a bug. Chrome got confused when selecting, then blurring, then
+  focusing this textarea whenever it contained any text. Empirically, setting the
+  textarea to overflow: hidden fixes the bug; so that is what we do. */
+  overflow: hidden;
+}
+.wsp-version-4-5-0 .wsp-Calculator .mq-non-leaf + .mq-sup-only {
+  vertical-align: .9em;
+  font-size: 85%;
+}
+.wsp-version-4-5-0 .wsp-label-edit {
+  border: 1px solid black;
+  padding: 3px;
+  width: 415px;
+  background-color: #fafafa;
+}
+.wsp-version-4-5-0 .wsp-label-edit button {
+  float: right;
+}
+.wsp-version-4-5-0 .wsp-label-edit * {
+  font-size: 15px;
+  margin: 5px;
+  padding: 5px;
+}
+.wsp-version-4-5-0 .wsp-text-target-highlight,
+.wsp-version-4-5-0 .wsp-text-unmatched-given,
+.wsp-version-4-5-0 .wsp-text-fancy-pulse {
+  border-style: solid !important;
+  border-width: 2px !important;
+  border-radius: 5px !important;
+  box-shadow: 3px 3px 7px black !important;
+}
+.wsp-version-4-5-0 .wsp-text-target-highlight,
+.wsp-version-4-5-0 .wsp-text-unmatched-given {
+  border-color: rgba(255, 0, 0, 0.5) !important;
+}
+.wsp-version-4-5-0 .wsp-text-fancy-pulse {
+  border-color: rgba(255, 215, 0, 0.5) !important;
+}
+.wsp-version-4-5-0 .wsp-text-unmatched-given {
+  -webkit-animation: wsp-version-4-5-0FlickerAnimation 5s infinite;
+  -moz-animation: wsp-version-4-5-0FlickerAnimation 5s infinite;
+  -o-animation: wsp-version-4-5-0FlickerAnimation 5s infinite;
+  animation: wsp-version-4-5-0FlickerAnimation 5s infinite;
+}
+@keyframes wsp-version-4-5-0FlickerAnimation {
+  0% {
+    background-color: rgba(255, 0, 0, 0);
+  }
+  10% {
+    background-color: rgba(255, 0, 0, 0.5);
+  }
+  20% {
+    background-color: rgba(255, 0, 0, 0);
+  }
+}
+@-o-keyframes wsp-version-4-5-0FlickerAnimation {
+  0% {
+    background-color: rgba(255, 0, 0, 0);
+  }
+  10% {
+    background-color: rgba(255, 0, 0, 0.5);
+  }
+  20% {
+    background-color: rgba(255, 0, 0, 0);
+  }
+}
+@-moz-keyframes wsp-version-4-5-0FlickerAnimation {
+  0% {
+    background-color: rgba(255, 0, 0, 0);
+  }
+  10% {
+    background-color: rgba(255, 0, 0, 0.5);
+  }
+  20% {
+    background-color: rgba(255, 0, 0, 0);
+  }
+}
+@-webkit-keyframes wsp-version-4-5-0FlickerAnimation {
+  0% {
+    background-color: rgba(255, 0, 0, 0);
+  }
+  10% {
+    background-color: rgba(255, 0, 0, 0.5);
+  }
+  20% {
+    background-color: rgba(255, 0, 0, 0);
+  }
+}
+.wsp-version-4-5-0 .wsp-text-fancy-pulse {
+  -webkit-animation: wsp-version-4-5-0FlickerAnimationGold 2s infinite;
+  -moz-animation: wsp-version-4-5-0FlickerAnimationGold 2s infinite;
+  -o-animation: wsp-version-4-5-0FlickerAnimationGold 2s infinite;
+  animation: wsp-version-4-5-0FlickerAnimationGold 2s infinite;
+}
+@keyframes wsp-version-4-5-0FlickerAnimationGold {
+  0% {
+    background-color: rgba(255, 215, 0, 0);
+  }
+  10% {
+    background-color: rgba(255, 215, 0, 0.5);
+  }
+  20% {
+    background-color: rgba(255, 215, 0, 0);
+  }
+}
+@-o-keyframes wsp-version-4-5-0FlickerAnimationGold {
+  0% {
+    background-color: rgba(255, 215, 0, 0);
+  }
+  10% {
+    background-color: rgba(255, 215, 0, 0.5);
+  }
+  20% {
+    background-color: rgba(255, 215, 0, 0);
+  }
+}
+@-moz-keyframes wsp-version-4-5-0FlickerAnimationGold {
+  0% {
+    background-color: rgba(255, 215, 0, 0);
+  }
+  10% {
+    background-color: rgba(255, 215, 0, 0.5);
+  }
+  20% {
+    background-color: rgba(255, 215, 0, 0);
+  }
+}
+@-webkit-keyframes wsp-version-4-5-0FlickerAnimationGold {
+  0% {
+    background-color: rgba(255, 215, 0, 0);
+  }
+  10% {
+    background-color: rgba(255, 215, 0, 0.5);
+  }
+  20% {
+    background-color: rgba(255, 215, 0, 0);
+  }
+}
+.wsp-version-4-5-0 .wsp-effects {
+  border: 4px dashed transparent;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+.wsp-version-4-5-0 .wsp-drop-target .wsp-effects {
+  border-color: blue;
+}
+/*
+ * MathQuill: http://mathquill.com
+ * by Jay and Han (laughinghan@gmail.com)
+ *
+ * This Source Code Form is subject to the terms of the
+ * Mozilla Public License, v. 2.0. If a copy of the MPL
+ * was not distributed with this file, You can obtain
+ * one at http://mozilla.org/MPL/2.0/.
+ */
+@font-face {
+  font-family: Symbola;
+  src: local("Symbola Regular"), local("Symbola");
+}
+.mq-editable-field {
+  display: -moz-inline-box;
+  display: inline-block;
+}
+.mq-editable-field .mq-root-block {
+  display: -moz-inline-box;
+  display: inline-block;
+  width: 100%;
+  padding: 2px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  white-space: pre;
+  overflow: hidden;
+  vertical-align: middle;
+}
+.mq-editable-field .mq-root-block:after {
+  content: '';
+}
+.mq-editable-field .mq-cursor {
+  border-left: 1px solid black;
+  margin-left: -1px;
+  position: relative;
+  z-index: 1;
+  padding: 0;
+  display: -moz-inline-box;
+  display: inline-block;
+}
+.mq-editable-field .mq-cursor.mq-blink {
+  visibility: hidden;
+}
+.mq-editable-field,
+.mq-math-mode .mq-editable-field {
+  border: 1px solid gray;
+}
+.mq-editable-field.mq-focused,
+.mq-math-mode .mq-editable-field.mq-focused {
+  -webkit-box-shadow: #8bd 0 0 1px 2px, inset #6ae 0 0 2px 0;
+  -moz-box-shadow: #8bd 0 0 1px 2px, inset #6ae 0 0 2px 0;
+  box-shadow: #8bd 0 0 1px 2px, inset #6ae 0 0 2px 0;
+  border-color: #709AC0;
+  border-radius: 1px;
+}
+.mq-math-mode .mq-editable-field {
+  margin: 1px;
+}
+.mq-editable-field .mq-latex-command-input {
+  color: inherit;
+  font-family: "Courier New", monospace;
+  border: 1px solid gray;
+  padding-right: 1px;
+  margin-right: 1px;
+  margin-left: 2px;
+}
+.mq-editable-field .mq-latex-command-input.mq-empty {
+  background: transparent;
+}
+.mq-editable-field .mq-latex-command-input.mq-hasCursor {
+  border-color: ActiveBorder;
+}
+.mq-editable-field.mq-empty:after,
+.mq-editable-field.mq-text-mode:after,
+.mq-math-mode .mq-empty:after {
+  visibility: hidden;
+  content: 'c';
+}
+.mq-editable-field .mq-cursor:only-child:after,
+.mq-editable-field .mq-textarea + .mq-cursor:last-child:after {
+  visibility: hidden;
+  content: 'c';
+}
+.mq-editable-field .mq-text-mode .mq-cursor:only-child:after {
+  content: '';
+}
+.mq-editable-field.mq-text-mode {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.mq-math-mode {
+  font-variant: normal;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 115%;
+  line-height: 1;
+  display: -moz-inline-box;
+  display: inline-block;
+}
+.mq-math-mode .mq-non-leaf,
+.mq-math-mode .mq-scaled {
+  display: -moz-inline-box;
+  display: inline-block;
+}
+.mq-math-mode var,
+.mq-math-mode .mq-text-mode,
+.mq-math-mode .mq-nonSymbola {
+  font-family: "Times New Roman", Symbola, serif;
+  line-height: .9;
+}
+.mq-math-mode * {
+  font-size: inherit;
+  line-height: inherit;
+  margin: 0;
+  padding: 0;
+  border-color: black;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+.mq-math-mode .mq-empty {
+  background: #ccc;
+}
+.mq-math-mode .mq-empty.mq-root-block {
+  background: transparent;
+}
+.mq-math-mode.mq-empty {
+  background: transparent;
+}
+.mq-math-mode .mq-text-mode {
+  font-size: 87%;
+}
+.mq-math-mode .mq-font {
+  font: 1em "Times New Roman", Symbola, serif;
+}
+.mq-math-mode .mq-font * {
+  font-family: inherit;
+  font-style: inherit;
+}
+.mq-math-mode b,
+.mq-math-mode b.mq-font {
+  font-weight: bolder;
+}
+.mq-math-mode var,
+.mq-math-mode i,
+.mq-math-mode i.mq-font {
+  font-style: italic;
+}
+.mq-math-mode var.mq-florin {
+  display: -moz-inline-box;
+  display: inline-block;
+  width: .3em;
+  position: relative;
+  left: -0.1em;
+}
+.mq-math-mode big {
+  font-size: 125%;
+}
+.mq-math-mode .mq-roman {
+  font-style: normal;
+}
+.mq-math-mode .mq-sans-serif {
+  font-family: sans-serif, Symbola, serif;
+}
+.mq-math-mode .mq-monospace {
+  font-family: monospace, Symbola, serif;
+}
+.mq-math-mode .mq-overline {
+  border-top: 1px solid black;
+  margin-top: 1px;
+}
+.mq-math-mode .mq-underline {
+  border-bottom: 1px solid black;
+  margin-bottom: 1px;
+}
+.mq-math-mode .mq-binary-operator {
+  padding: 0 0.2em;
+  display: -moz-inline-box;
+  display: inline-block;
+}
+.mq-math-mode .mq-supsub {
+  font-size: 90%;
+  vertical-align: -0.5em;
+}
+.mq-math-mode .mq-supsub.mq-limit {
+  font-size: 80%;
+  vertical-align: -0.4em;
+}
+.mq-math-mode .mq-supsub.mq-sup-only {
+  vertical-align: .5em;
+}
+.mq-math-mode .mq-supsub.mq-sup-only .mq-sup {
+  display: inline-block;
+  vertical-align: text-bottom;
+}
+.mq-math-mode .mq-supsub .mq-sup {
+  display: block;
+}
+.mq-math-mode .mq-supsub .mq-sub {
+  display: block;
+  float: left;
+}
+.mq-math-mode .mq-supsub.mq-limit .mq-sub {
+  margin-left: -0.25em;
+}
+.mq-math-mode .mq-supsub .mq-binary-operator {
+  padding: 0 .1em;
+}
+.mq-math-mode .mq-supsub .mq-fraction {
+  font-size: 70%;
+}
+.mq-math-mode sup.mq-nthroot {
+  font-size: 80%;
+  vertical-align: 0.8em;
+  margin-right: -0.6em;
+  margin-left: .2em;
+  min-width: .5em;
+}
+.mq-math-mode .mq-paren {
+  padding: 0 .1em;
+  vertical-align: top;
+  -webkit-transform-origin: center .06em;
+  -moz-transform-origin: center .06em;
+  -ms-transform-origin: center .06em;
+  -o-transform-origin: center .06em;
+  transform-origin: center .06em;
+}
+.mq-math-mode .mq-paren.mq-ghost {
+  color: silver;
+}
+.mq-math-mode .mq-paren + span {
+  margin-top: .1em;
+  margin-bottom: .1em;
+}
+.mq-math-mode .mq-array {
+  vertical-align: middle;
+  text-align: center;
+}
+.mq-math-mode .mq-array > span {
+  display: block;
+}
+.mq-math-mode .mq-operator-name {
+  font-family: Symbola, "Times New Roman", serif;
+  line-height: .9;
+  font-style: normal;
+}
+.mq-math-mode var.mq-operator-name.mq-first {
+  padding-left: .2em;
+}
+.mq-math-mode var.mq-operator-name.mq-last {
+  padding-right: .2em;
+}
+.mq-math-mode .mq-fraction {
+  font-size: 90%;
+  text-align: center;
+  vertical-align: -0.4em;
+  padding: 0 .2em;
+}
+.mq-math-mode .mq-fraction,
+.mq-math-mode .mq-large-operator,
+.mq-math-mode x:-moz-any-link {
+  display: -moz-groupbox;
+}
+.mq-math-mode .mq-fraction,
+.mq-math-mode .mq-large-operator,
+.mq-math-mode x:-moz-any-link,
+.mq-math-mode x:default {
+  display: inline-block;
+}
+.mq-math-mode .mq-numerator,
+.mq-math-mode .mq-denominator {
+  display: block;
+}
+.mq-math-mode .mq-numerator {
+  padding: 0 0.1em;
+}
+.mq-math-mode .mq-denominator {
+  border-top: 1px solid;
+  float: right;
+  width: 100%;
+  padding: .15em .1em 0 .1em;
+  margin-right: -0.1em;
+  margin-left: -0.1em;
+}
+.mq-math-mode .mq-sqrt-prefix {
+  padding-top: 0;
+  position: relative;
+  top: .05em;
+  vertical-align: top;
+  -webkit-transform-origin: top;
+  -moz-transform-origin: top;
+  -ms-transform-origin: top;
+  -o-transform-origin: top;
+  transform-origin: top;
+}
+.mq-math-mode .mq-sqrt-stem {
+  border-top: 1px solid;
+  margin-top: 1px;
+  padding-left: .15em;
+  padding-right: .2em;
+  margin-right: .1em;
+  padding-top: 1px;
+}
+.mq-math-mode .mq-vector-prefix {
+  display: block;
+  text-align: center;
+  line-height: .25em;
+  margin-bottom: -0.1em;
+  font-size: 0.75em;
+}
+.mq-math-mode .mq-vector-stem {
+  display: block;
+}
+.mq-math-mode .mq-large-operator {
+  text-align: center;
+}
+.mq-math-mode .mq-large-operator .mq-from,
+.mq-math-mode .mq-large-operator big,
+.mq-math-mode .mq-large-operator .mq-to {
+  display: block;
+}
+.mq-math-mode .mq-large-operator .mq-from,
+.mq-math-mode .mq-large-operator .mq-to {
+  font-size: 80%;
+}
+.mq-math-mode .mq-large-operator .mq-from {
+  float: right;
+  /* take out of normal flow to manipulate baseline */
+  width: 100%;
+}
+.mq-math-mode,
+.mq-math-mode .mq-editable-field {
+  cursor: text;
+  font-family: Symbola, "Times New Roman", serif;
+}
+.mq-math-mode .mq-selection,
+.mq-editable-field .mq-selection,
+.mq-math-mode .mq-selection .mq-non-leaf,
+.mq-editable-field .mq-selection .mq-non-leaf,
+.mq-math-mode .mq-selection .mq-scaled,
+.mq-editable-field .mq-selection .mq-scaled {
+  background: #B4D5FE !important;
+  background: Highlight !important;
+  color: HighlightText;
+  border-color: HighlightText;
+}
+.mq-math-mode .mq-selection .mq-matrixed,
+.mq-editable-field .mq-selection .mq-matrixed {
+  background: #39F !important;
+}
+.mq-math-mode .mq-selection .mq-matrixed-container,
+.mq-editable-field .mq-selection .mq-matrixed-container {
+  filter: progid:DXImageTransform.Microsoft.Chroma(color='#3399FF') !important;
+}
+.mq-math-mode .mq-selection.mq-blur,
+.mq-editable-field .mq-selection.mq-blur,
+.mq-math-mode .mq-selection.mq-blur .mq-non-leaf,
+.mq-editable-field .mq-selection.mq-blur .mq-non-leaf,
+.mq-math-mode .mq-selection.mq-blur .mq-scaled,
+.mq-editable-field .mq-selection.mq-blur .mq-scaled,
+.mq-math-mode .mq-selection.mq-blur .mq-matrixed,
+.mq-editable-field .mq-selection.mq-blur .mq-matrixed {
+  background: #D4D4D4 !important;
+  color: black;
+  border-color: black;
+}
+.mq-math-mode .mq-selection.mq-blur .mq-matrixed-container,
+.mq-editable-field .mq-selection.mq-blur .mq-matrixed-container {
+  filter: progid:DXImageTransform.Microsoft.Chroma(color='#D4D4D4') !important;
+}
+.mq-editable-field .mq-textarea,
+.mq-math-mode .mq-textarea {
+  position: relative;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  user-select: text;
+}
+.mq-editable-field .mq-textarea *,
+.mq-math-mode .mq-textarea *,
+.mq-editable-field .mq-selectable,
+.mq-math-mode .mq-selectable {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  user-select: text;
+  position: absolute;
+  clip: rect(1em 1em 1em 1em);
+  resize: none;
+  width: 1px;
+  height: 1px;
+}
+.mq-math-mode .mq-matrixed {
+  background: white;
+  display: -moz-inline-box;
+  display: inline-block;
+}
+.mq-math-mode .mq-matrixed-container {
+  filter: progid:DXImageTransform.Microsoft.Chroma(color='white');
+  margin-top: -0.1em;
+}
+
+/* Import only the bits of bootstrap needed for our components. Code
+is not generated as css output unless actually referenced. */
+/* Components we adopt from bootstrap. */
+.caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 4px solid;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+}
+.dropdown {
+  position: relative;
+}
+.dropdown-toggle:focus {
+  outline: 0;
+}
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  list-style: none;
+  font-size: 14px;
+  text-align: left;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  background-clip: padding-box;
+}
+.dropdown-menu.pull-right {
+  right: 0;
+  left: auto;
+}
+.dropdown-menu .divider {
+  height: 1px;
+  margin: 9px 0;
+  overflow: hidden;
+  background-color: #e5e5e5;
+}
+.dropdown-menu > li > a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: #333333;
+  white-space: nowrap;
+}
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  text-decoration: none;
+  color: #262626;
+  background-color: #f5f5f5;
+}
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus {
+  color: #fff;
+  text-decoration: none;
+  outline: 0;
+  background-color: #337ab7;
+}
+.dropdown-menu > .disabled > a,
+.dropdown-menu > .disabled > a:hover,
+.dropdown-menu > .disabled > a:focus {
+  color: #777777;
+}
+.dropdown-menu > .disabled > a:hover,
+.dropdown-menu > .disabled > a:focus {
+  text-decoration: none;
+  background-color: transparent;
+  background-image: none;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  cursor: not-allowed;
+}
+.open > .dropdown-menu {
+  display: block;
+}
+.open > a {
+  outline: 0;
+}
+.dropdown-menu-right {
+  left: auto;
+  right: 0;
+}
+.dropdown-menu-left {
+  left: 0;
+  right: auto;
+}
+.dropdown-header {
+  display: block;
+  padding: 3px 20px;
+  font-size: 12px;
+  line-height: 1.42857143;
+  color: #777777;
+  white-space: nowrap;
+}
+.dropdown-backdrop {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 990;
+}
+.pull-right > .dropdown-menu {
+  right: 0;
+  left: auto;
+}
+.dropup .caret,
+.navbar-fixed-bottom .dropdown .caret {
+  border-top: 0;
+  border-bottom: 4px solid;
+  content: "";
+}
+.dropup .dropdown-menu,
+.navbar-fixed-bottom .dropdown .dropdown-menu {
+  top: auto;
+  bottom: 100%;
+  margin-bottom: 2px;
+}
+@media (min-width: 768px) {
+  .navbar-right .dropdown-menu {
+    left: auto;
+    right: 0;
+  }
+  .navbar-right .dropdown-menu-left {
+    left: 0;
+    right: auto;
+  }
+}
+</style></head>
+
+<body class="impress-supported impress-enabled impress-on-introstep" style="height: 100%; overflow: hidden;">
+
+	<div id="impress" style="position: absolute; transform-origin: left top 0px; transition: 500ms ease-in-out 250ms; transform-style: preserve-3d; top: 50%; left: 50%; transform: perspective(2151.26px) scale(0.464844);"><div style="position: absolute; transform-origin: left top 0px; transition: 500ms ease-in-out; transform-style: preserve-3d; transform: rotateZ(0deg) rotateY(0deg) rotateX(0deg) translate3d(2000px, 1500px, 0px);">
+		<div id="introstep" class="step present active" data-x="-2000" data-y="-1500" style="position: absolute; transform: translate(-50%, -50%) translate3d(-2000px, -1500px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); transform-style: preserve-3d;">
+			<div class="blurb">
+				<div>Ok I was interested in learning some algorithms. The "Tortoise and hare" Cycle detection algorithms seemed cool,
+				so off to <a href="https://en.wikipedia.org/wiki/Cycle_detection" target="_blank">Wikipedia</a>! Read through that, and I understood.
+				</div>
+				<div>A few days later ...</div>
+			</div>
+		</div>
+
+		<div id="introstep2" class="step future" data-x="-2000" data-y="-1000" style="position: absolute; transform: translate(-50%, -50%) translate3d(-2000px, -1000px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); transform-style: preserve-3d;">
+			<div class="blurb">
+				<div>... I couldn't really tell you why they worked. So I need to dig further into it: try to think about it on my own terms,
+			 		and maybe play with an implementation.
+		 		</div>
+			</div>
+		</div>
+
+		<div id="introstep3" class="step future" data-x="0" data-y="-1500" style="position: absolute; transform: translate(-50%, -50%) translate3d(0px, -1500px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); transform-style: preserve-3d;">
+			<p>First, while I love abstraction, the explanation in terms of 
+iterated functions was too abstract for me. So, a more concrete case to 
+think
+				about: a nice linked list:
+			</p>
+			<div class="sketch_canvas" data-var="llsketch"><div class="wsp-base-node wsp-version-4-5-0"><div class="wsp-transform-node"><div class="wsp-main-row wsp-clearfix-group"><div class="wsp-sketch-container"><div class="wsp-clip-node" style="width: 760px; height: 199px; clip: rect(auto, auto, auto, auto); user-select: none; touch-action: none;"><canvas width="1520" height="398" style="position: absolute; top: 0px; left: 0px; width: 760px; height: 199px; overflow: hidden;"></canvas><canvas width="1520" height="398" style="position: absolute; top: 0px; left: 0px; width: 760px; height: 199px; overflow: hidden;"></canvas><div class="wsp-text-layer" style="width: 100%; height: 100%;"><div wsp-id="207" class="wsp-Button" type="button" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: normal; font-size: 24px; text-decoration: none; z-index: 138; left: 548px; top: 120px; opacity: 1;"><span class="wsp-Button-row"><span class="wsp-Button-drag-handle" style="background-color: fuchsia;"></span><div class="wsp-Button-label-frame"><div class="wsp-Button-label"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; line-height: 1.1;">Toggle</div></div></div></span></div></div><canvas width="1520" height="398" style="position: absolute; top: 0px; left: 0px; width: 760px; height: 199px; overflow: hidden;"></canvas><div class="wsp-effects"></div></div></div></div></div><div class="wsp-transform-large" style="width: 760px; height: 199px;"></div><div class="wsp-transform-medium" style="width: 570px; height: 149.25px;"></div><div class="wsp-transform-small" style="width: 380px; height: 99.5px;"></div></div></div>
+			<p>Ok it's a <a href="https://en.wikipedia.org/wiki/Linked_list#Singly_linked_list" target="_blank">singly linked list</a>.
+ You've got a pointer to the first node,
+				and each node has a pointer to the "next" node (or a sentinel for 
+the end of the list). You can start at the first node, and next your way
+ to the end.
+				Unless: some joker has set one of the "next" back to a previous 
+node, in which case you're stuck in an infinte loop. This is the case 
+the
+				Cycle Detection algorithms detect.
+			</p>
+		</div>
+
+		<div id="sketchpadstep" class="step future" data-x="0" data-y="0" data-scale="2" style="position: absolute; transform: translate(-50%, -50%) translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(2); transform-style: preserve-3d;">
+			<div class="cyclecontrol">
+				<button id="cycleReset">New</button>
+				<button id="floyd">Floyd</button>
+				<button id="brent">Brent</button>
+			</div>
+			<div id="cycleSketch"><div class="wsp-base-node wsp-version-4-5-0"><div class="wsp-transform-node"><div class="wsp-main-row wsp-clearfix-group"><div class="wsp-sketch-container"><div class="wsp-clip-node" style="width: 1234px; height: 355px; clip: rect(auto, auto, auto, auto); user-select: none; touch-action: none;"><canvas width="2468" height="710" style="position: absolute; top: 0px; left: 0px; width: 1234px; height: 355px; overflow: hidden;"></canvas><canvas width="2468" height="710" style="position: absolute; top: 0px; left: 0px; width: 1234px; height: 355px; overflow: hidden;"></canvas><div class="wsp-text-layer" style="width: 100%; height: 100%;"><div wsp-id="278" class="wsp-Expression" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; font-size: 16px; text-decoration: none; line-height: 1.1; user-select: none; z-index: 130; left: 77px; top: 180px; opacity: 1;"><div class="mfs-horizontal"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">d =&nbsp;</div><div class="mfs-param" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">0</div></div></div><div wsp-id="256" class="wsp-Expression" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; font-size: 16px; text-decoration: none; line-height: 1.1; display: none; user-select: none; z-index: 135; left: 1003px; top: 235px; opacity: 1;"><div class="mfs-horizontal"><div class="mfs-horizontal"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">targetc1⋅</div><div class="mfs-text mfs-text-italic" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: italic; font-weight: bold; text-decoration: none; line-height: 1.1;">DO</div></div><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;"> =&nbsp;</div><div class="mfs-param" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">286</div><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;"> pixels</div></div></div><div wsp-id="255" class="wsp-Expression" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; font-size: 16px; text-decoration: none; line-height: 1.1; display: none; z-index: 136; left: 1003px; top: 182px; opacity: 1;"><div class="mfs-horizontal"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">targetc1 =&nbsp;</div><div class="mfs-input mfs-responsive-borderwidth" style="user-select: none;">26</div></div></div><div wsp-id="252" class="wsp-Expression" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; font-size: 16px; text-decoration: none; line-height: 1.1; display: none; user-select: none; z-index: 137; left: 869px; top: 214px; opacity: 1;"><div class="mfs-horizontal"><div class="mfs-horizontal"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">targetc0⋅</div><div class="mfs-text mfs-text-italic" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: italic; font-weight: bold; text-decoration: none; line-height: 1.1;">DO</div></div><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;"> =&nbsp;</div><div class="mfs-param" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">187</div><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;"> pixels</div></div></div><div wsp-id="251" class="wsp-Expression" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; font-size: 16px; text-decoration: none; line-height: 1.1; display: none; z-index: 138; left: 869px; top: 187px; opacity: 1;"><div class="mfs-horizontal"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">targetc0 =&nbsp;</div><div class="mfs-input mfs-responsive-borderwidth" style="user-select: none;">17</div></div></div><div wsp-id="129" class="wsp-Expression" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; font-size: 16px; text-decoration: none; line-height: 1.1; display: none; user-select: none; z-index: 139; left: 662px; top: 224px; opacity: 1;"><div class="mfs-horizontal"><div class="mfs-horizontal"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">targetH⋅</div><div class="mfs-text mfs-text-italic" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: italic; font-weight: bold; text-decoration: none; line-height: 1.1;">DO</div></div><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;"> =&nbsp;</div><div class="mfs-param" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">286</div><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;"> pixels</div></div></div><div wsp-id="128" class="wsp-Expression" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; font-size: 16px; text-decoration: none; line-height: 1.1; display: none; z-index: 140; left: 657px; top: 197px; opacity: 1;"><div class="mfs-horizontal"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">targetH =&nbsp;</div><div class="mfs-input mfs-responsive-borderwidth" style="user-select: none;">26</div></div></div><div wsp-id="125" class="wsp-Expression" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; font-size: 16px; text-decoration: none; line-height: 1.1; display: none; user-select: none; z-index: 141; left: 460px; top: 223px; opacity: 1;"><div class="mfs-horizontal"><div class="mfs-horizontal"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">targetT⋅</div><div class="mfs-text mfs-text-italic" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: italic; font-weight: bold; text-decoration: none; line-height: 1.1;">DO</div></div><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;"> =&nbsp;</div><div class="mfs-param" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">1100</div><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;"> pixels</div></div></div><div wsp-id="123" class="wsp-Expression" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; font-size: 16px; text-decoration: none; line-height: 1.1; display: none; z-index: 142; left: 532px; top: 196px; opacity: 1;"><div class="mfs-horizontal"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">targetT =&nbsp;</div><div class="mfs-input mfs-responsive-borderwidth" style="user-select: none;">100</div></div></div><div wsp-id="121" class="wsp-Expression" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; font-size: 16px; text-decoration: none; line-height: 1.1; display: none; z-index: 144; left: 11px; top: 316px; opacity: 1;"><div class="mfs-horizontal"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">d =&nbsp;</div><div class="mfs-input mfs-responsive-borderwidth" style="user-select: none;">−200</div><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;"> pixels</div></div></div><div wsp-id="120" class="wsp-Expression" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; font-size: 16px; text-decoration: none; line-height: 1.1; display: none; user-select: none; z-index: 145; left: 119px; top: 160px; opacity: 1;"><div class="mfs-horizontal"><div class="mfs-sub-group"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">H</div><div class="mfs-text mfs-text-normal mfs-subscript" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">cycle</div></div><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;"> =&nbsp;</div><div class="mfs-param" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">0</div></div></div><div wsp-id="117" class="wsp-Expression" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; font-size: 16px; text-decoration: none; line-height: 1.1; display: none; user-select: none; z-index: 148; left: 18px; top: 160px; opacity: 1;"><div class="mfs-horizontal"><div class="mfs-sub-group"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">T</div><div class="mfs-text mfs-text-normal mfs-subscript" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">cycle</div></div><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;"> =&nbsp;</div><div class="mfs-param" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">0</div></div></div><div wsp-id="112" class="wsp-Expression" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; font-size: 16px; text-decoration: none; line-height: 1.1; user-select: none; z-index: 153; left: 662px; top: 319px; opacity: 1;"><div class="mfs-horizontal"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">CycleStart =&nbsp;</div><div class="mfs-param" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">17</div></div></div><div wsp-id="110" class="wsp-Expression" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; font-size: 16px; text-decoration: none; line-height: 1.1; user-select: none; z-index: 155; left: 794px; top: 319px; opacity: 1;"><div class="mfs-horizontal"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">CycleLength =&nbsp;</div><div class="mfs-param" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">9</div></div></div><div wsp-id="108" class="wsp-Expression" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; font-size: 16px; text-decoration: none; line-height: 1.1; user-select: none; z-index: 157; left: 40px; top: 141px; opacity: 1;"><div class="mfs-horizontal"><div class="mfs-sub-group"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">H</div><div class="mfs-text mfs-text-normal mfs-subscript" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">index</div></div><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;"> =&nbsp;</div><div class="mfs-param" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">0</div></div></div><div wsp-id="106" class="wsp-Expression" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; font-size: 16px; text-decoration: none; line-height: 1.1; user-select: none; z-index: 159; left: 40px; top: 115px; opacity: 1;"><div class="mfs-horizontal"><div class="mfs-sub-group"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">T</div><div class="mfs-text mfs-text-normal mfs-subscript" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">index</div></div><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;"> =&nbsp;</div><div class="mfs-param" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">0</div></div></div><div wsp-id="104" class="wsp-Measure" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; font-size: 16px; text-decoration: none; line-height: 1.1; display: none; z-index: 161; left: 20px; top: 22px; opacity: 1;"><div class="mfs-horizontal"><div class="mfs-text mfs-text-italic" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: italic; font-weight: bold; text-decoration: none; line-height: 1.1;">DO</div><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;"> =&nbsp;</div><div class="mfs-param" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;">11</div><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; line-height: 1.1;"> pixels</div></div></div><div wsp-id="259" class="wsp-Button wsp-appearance-short" type="button" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: normal; font-size: 12px; text-decoration: none; z-index: 165; left: 1081px; top: 310px; opacity: 1;"><span class="wsp-Button-row"><span class="wsp-Button-drag-handle" style="background-color: fuchsia;"></span><div class="wsp-Button-label-frame"><div class="wsp-Button-label"><div class="mfs-text mfs-text-normal" style="color: black; font-family: &quot;Arial&quot;, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; line-height: normal;">Show&nbsp;Controls</div></div></div></span></div></div><canvas width="2468" height="710" style="position: absolute; top: 0px; left: 0px; width: 1234px; height: 355px; overflow: hidden;"></canvas><div class="wsp-effects"></div></div></div></div></div><div class="wsp-transform-large" style="width: 1234px; height: 355px;"></div><div class="wsp-transform-medium" style="width: 925.5px; height: 266.25px;"></div><div class="wsp-transform-small" style="width: 617px; height: 177.5px;"></div></div></div>
+		</div>
+
+
+		<div id="cyclerstep" class="step future" data-x="-800" data-y="-450" style="position: absolute; transform: translate(-50%, -50%) translate3d(-800px, -450px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); transform-style: preserve-3d;">
+			<p>And here is a different visualization, which I made for no particular reason.</p>
+			<div id="cycler"><div class="cycleParent"><table><tbody><tr><td class="index-0"><div class="cellcontent"></div></td><td class="index-1"><div class="cellcontent"></div></td><td class="index-2"><div class="cellcontent"></div></td><td class="index-3"><div class="cellcontent"></div></td><td class="index-4"><div class="cellcontent"></div></td><td class="index-5"><div class="cellcontent"></div></td><td class="index-6"><div class="cellcontent"></div></td><td class="index-7"><div class="cellcontent"></div></td><td class="index-8"><div class="cellcontent"></div></td><td class="index-9"><div class="cellcontent"></div></td></tr><tr><td class="index-10"><div class="cellcontent"></div></td><td class="index-11"><div class="cellcontent"></div></td><td class="index-12"><div class="cellcontent"></div></td><td class="index-13"><div class="cellcontent"></div></td><td class="index-14"><div class="cellcontent"></div></td><td class="index-15"><div class="cellcontent"></div></td><td class="index-16"><div class="cellcontent"></div></td><td class="index-17 cycleEnd"><div class="cellcontent"></div></td><td class="index-18"><div class="cellcontent"></div></td><td class="index-19"><div class="cellcontent"></div></td></tr><tr><td class="index-20"><div class="cellcontent"></div></td><td class="index-21"><div class="cellcontent"></div></td><td class="index-22"><div class="cellcontent"></div></td><td class="index-23"><div class="cellcontent"></div></td><td class="index-24"><div class="cellcontent"></div></td><td class="index-25"><div class="cellcontent"></div></td><td class="index-26 cycleStart"><div class="cellcontent"></div></td><td class="index-27 cyclePast"><div class="cellcontent"></div></td><td class="index-28 cyclePast"><div class="cellcontent"></div></td><td class="index-29 cyclePast"><div class="cellcontent"></div></td></tr><tr><td class="index-30 cyclePast"><div class="cellcontent"></div></td><td class="index-31 cyclePast"><div class="cellcontent"></div></td><td class="index-32 cyclePast"><div class="cellcontent"></div></td><td class="index-33 cyclePast"><div class="cellcontent"></div></td><td class="index-34 cyclePast"><div class="cellcontent"></div></td><td class="index-35 cyclePast"><div class="cellcontent"></div></td><td class="index-36 cyclePast"><div class="cellcontent"></div></td><td class="index-37 cyclePast"><div class="cellcontent"></div></td><td class="index-38 cyclePast"><div class="cellcontent"></div></td><td class="index-39 cyclePast"><div class="cellcontent"></div></td></tr><tr><td class="index-40 cyclePast"><div class="cellcontent"></div></td><td class="index-41 cyclePast"><div class="cellcontent"></div></td><td class="index-42 cyclePast"><div class="cellcontent"></div></td><td class="index-43 cyclePast"><div class="cellcontent"></div></td><td class="index-44 cyclePast"><div class="cellcontent"></div></td><td class="index-45 cyclePast"><div class="cellcontent"></div></td><td class="index-46 cyclePast"><div class="cellcontent"></div></td><td class="index-47 cyclePast"><div class="cellcontent"></div></td><td class="index-48 cyclePast"><div class="cellcontent"></div></td><td class="index-49 cyclePast"><div class="cellcontent"></div></td></tr><tr><td class="index-50 cyclePast"><div class="cellcontent"></div></td><td class="index-51 cyclePast"><div class="cellcontent"></div></td><td class="index-52 cyclePast"><div class="cellcontent"></div></td><td class="index-53 cyclePast"><div class="cellcontent"></div></td><td class="index-54 cyclePast"><div class="cellcontent"></div></td><td class="index-55 cyclePast"><div class="cellcontent"></div></td><td class="index-56 cyclePast"><div class="cellcontent"></div></td><td class="index-57 cyclePast"><div class="cellcontent"></div></td><td class="index-58 cyclePast"><div class="cellcontent"></div></td><td class="index-59 cyclePast"><div class="cellcontent"></div></td></tr><tr><td class="index-60 cyclePast"><div class="cellcontent"></div></td><td class="index-61 cyclePast"><div class="cellcontent"></div></td><td class="index-62 cyclePast"><div class="cellcontent"></div></td><td class="index-63 cyclePast"><div class="cellcontent"></div></td><td class="index-64 cyclePast"><div class="cellcontent"></div></td><td class="index-65 cyclePast"><div class="cellcontent"></div></td><td class="index-66 cyclePast"><div class="cellcontent"></div></td><td class="index-67 cyclePast"><div class="cellcontent"></div></td><td class="index-68 cyclePast"><div class="cellcontent"></div></td><td class="index-69 cyclePast"><div class="cellcontent"></div></td></tr><tr><td class="index-70 cyclePast"><div class="cellcontent"></div></td><td class="index-71 cyclePast"><div class="cellcontent"></div></td><td class="index-72 cyclePast"><div class="cellcontent"></div></td><td class="index-73 cyclePast"><div class="cellcontent"></div></td><td class="index-74 cyclePast"><div class="cellcontent"></div></td><td class="index-75 cyclePast"><div class="cellcontent"></div></td><td class="index-76 cyclePast"><div class="cellcontent"></div></td><td class="index-77 cyclePast"><div class="cellcontent"></div></td><td class="index-78 cyclePast"><div class="cellcontent"></div></td><td class="index-79 cyclePast"><div class="cellcontent"></div></td></tr><tr><td class="index-80 cyclePast"><div class="cellcontent"></div></td><td class="index-81 cyclePast"><div class="cellcontent"></div></td><td class="index-82 cyclePast"><div class="cellcontent"></div></td><td class="index-83 cyclePast"><div class="cellcontent"></div></td><td class="index-84 cyclePast"><div class="cellcontent"></div></td><td class="index-85 cyclePast"><div class="cellcontent"></div></td><td class="index-86 cyclePast"><div class="cellcontent"></div></td><td class="index-87 cyclePast"><div class="cellcontent"></div></td><td class="index-88 cyclePast"><div class="cellcontent"></div></td><td class="index-89 cyclePast"><div class="cellcontent"></div></td></tr><tr><td class="index-90 cyclePast"><div class="cellcontent"></div></td><td class="index-91 cyclePast"><div class="cellcontent"></div></td><td class="index-92 cyclePast"><div class="cellcontent"></div></td><td class="index-93 cyclePast"><div class="cellcontent"></div></td><td class="index-94 cyclePast"><div class="cellcontent"></div></td><td class="index-95 cyclePast"><div class="cellcontent"></div></td><td class="index-96 cyclePast"><div class="cellcontent"></div></td><td class="index-97 cyclePast"><div class="cellcontent"></div></td><td class="index-98 cyclePast"><div class="cellcontent"></div></td><td class="index-99 cyclePast"><div class="cellcontent"></div></td></tr></tbody></table><div class="cycleResults"><div><span class="cycleStartLabel">Start:</span> <span class="cycleStart">&nbsp;</span> <span class="cycleLengthLabel">Length:</span><span class="cycleLength">&nbsp;</span><div><div><span class="curPhaseLabel">Seeking: </span><span class="curPhase">&nbsp;</span></div></div></div></div></div></div>
+		</div>
+
+
+	</div></div>
+
+
+	<script src="CycleDetection_files/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="CycleDetection_files/cyclades.js" type="text/javascript" charset="utf-8"></script>
+	<script src="CycleDetection_files/sketchcycle.js" type="text/javascript" charset="utf-8"></script>
+	<script src="CycleDetection_files/squarecycle.js" type="text/javascript" charset="utf-8"></script>
+	<script charset="utf-8" type="text/javascript" src="CycleDetection_files/ll-sketch-json.js"></script>
+	<script charset="utf-8" type="text/javascript" src="CycleDetection_files/sketch-json.js"></script>
+	<script charset="utf-8" type="text/javascript" src="CycleDetection_files/wsp-min.js"></script>
+	<script charset="utf-8" type="text/javascript" src="CycleDetection_files/wsp-runner.js"></script>
+	<script src="CycleDetection_files/impress.js"></script>
+	<script src="CycleDetection_files/main.js" type="text/javascript" charset="utf-8"></script><div class="wsp-Numpads wsp-version-4-5-0"></div>
+
+
+
+</body></html>

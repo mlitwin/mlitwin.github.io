@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post Title – Matthew Litwin</title>
+  <meta name="date" content="YYYY-MM-DD">
+  <link rel="stylesheet" href="/lib/pico.min.css">
+  <link rel="stylesheet" href="/lib/katex.min.css">
+  <link rel="stylesheet" href="/lib/prism-okaidia.min.css">
+  <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/site-components.js"></script>  <!-- synchronous: no defer, no async -->
+</head>
+<body>
+  <site-nav></site-nav>
+
+  <main class="container">
+    <article>
+      <header>
+        <h1>Post Title</h1>
+        <p><time datetime="YYYY-MM-DD">Month DD, YYYY</time></p>
+      </header>
+
+      <heading-anchors>
+
+      <p>Content here.</p>
+
+      <!-- Inline math: $v = x^i e_i$ -->
+      <!-- Display math: $$g_{ij} x^i y^j$$ -->
+
+      <!-- Code block: -->
+      <pre><code class="language-python">def hello(): pass</code></pre>
+
+      <!-- Images: author provides the file and writes the tag -->
+      <!-- <img src="./diagram.svg" alt="Description"> -->
+
+      </heading-anchors>
+    </article>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="/lib/katex.min.js"></script>
+  <script src="/lib/katex-auto-render.min.js"></script>
+  <script src="/lib/prism.min.js"></script>
+  <script type="module" src="/js/site-runtime.js"></script>
+</body>
+</html>

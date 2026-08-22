@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyclic Motion and the Arrow of Time – Matthew Litwin</title>
+  <meta name="date" content="2023-10-25T21">
+  <link rel="stylesheet" href="/lib/pico.min.css">
+  <link rel="stylesheet" href="/lib/katex.min.css">
+  <link rel="stylesheet" href="/lib/prism-okaidia.min.css">
+  <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/site-components.js"></script>  <!-- synchronous: no defer, no async -->
+</head>
+<body>
+  <site-nav></site-nav>
+
+  <main class="container">
+    <article>
+      <header>
+        <h1>Cyclic Motion and the Arrow of Time</h1>
+        <p><time datetime="2023-10-25T21">2023-10-25T21</time></p>
+      </header>
+
+      <heading-anchors>
+<p>The <a href="https://en.wikipedia.org/wiki/Arrow_of_time">Arrow of Time</a> problem concerns the difficulty in finding in a mathematical model for a physical system a good way of defining the direction of time in a non-arbitrary way: generally if you reverse the signs everywhere, the system retraces its steps backwards. </p>
+<p>Concepts of entropy seem to give an answer to this - the direction moving towards more &quot;randomness&quot; is the forward direction. But most systems turn out to be cyclic, which seems to bust that idea.</p>
+<p>I took a crack at seeing if I could define an arrow of time for a cyclic system.</p>
+<h2>Basic Idea</h2>
+<p>Entropy of a system is related to the probability that it is in a given state $S=-\sum_i p_i ln(p_i)$. That&#39;s kind of hard to make sense of at a given moment in time, because the formula sums over all the states, and at a given time, you are only in one state. Quantum mechanics gets around this by cheating and saying that at a given moment you are in all the states.</p>
+<p>For cyclic systems, however, there is a decent notion of the probability of a given state - it&#39;s proportional to how many times that state occurs in the cycle. Consider a graph of probability of the current state vs time - what if we had a pattern like a sawtooth where there was a steady rise, and then a sharp drop, repeated?</p>
+<p><img src="sawtooth.svg" alt="Sawtooth Wave"></p>
+<p>It is going up more often then going down. The down is bigger, of course, but if you just count the number of times, that doesn&#39;t signify.</p>
+<p>Number going up - number going down is positive for forward time for &quot;generally systems move forward from less probable states to more probable states&quot;</p>
+<h2>Circle Problem</h2>
+<p>Let&#39;s take a very simple periodic system: Particles moving in a fixed circle. Take positions, velocities, and time to be integers. Imagine we have $N$ sensors arraigned around the circle that count how many particles are at that position.</p>
+<pre><code>        3  4
+     2        5
+    1          6
+    0          7
+     N-1      8
+        .. 9
+</code></pre>
+<h3>Definitions</h3>
+<p>More formally we have:</p>
+<ul>
+<li>$N$ sensor positions {$0 \ldots  {N-1}\}$, counting the number of particles under the sensor. Sometimes they will have a sensitivity $s$ meaning they need to count $s$ particles before they go up one.</li>
+<li>Velocities in the range $0 to $(N-1)$ inclusive</li>
+<li>Throughout take $t, k, v \in \mathbb{Z}$</li>
+<li>Write $a \mathbin{div} b$ for integer division $\lfloor \frac{a}{b} \rfloor$</li>
+<li>$a \bmod N$ is positive</li>
+</ul>
+<p>Let $d_t(k;v) =$ Number of particles at time $t$ with position $k$ and velocity $v$.</p>
+<p>Let $\rho_t(k) = \sum_v d_t(k;v)$ be the observed density at at time $t$ at position $k$.</p>
+<h3>Basics</h3>
+<p>$d_t(k,v) = d_0(({k+v t})\bmod N;v)$, and thus $\rho_t$ has period N: $\rho_t(k) = \rho_{t+a N}(k)$</p>
+<h3>States</h3>
+<p>Let $D_t(k;s) = \rho_t(k) \mathbin{div} s$ be the density at time $t$ position $k$ with sensitivity $s$</p>
+<p>Fix $s$</p>
+<p>Since $\rho_t$ is periodic with period N, then $S_t= \{D(k)\}_t$ are the N (possibly repeated) available states.</p>
+<p>Let $J_t = $ the number of times state $S_t$ occurs.</p>
+<h3>Arrow of time</h3>
+<h4>Jitter</h4>
+<p>Motivation: if you see a transition from a rare state, to a less rare state, to a common state, maybe that means time is moving forward.</p>
+<p>See <a href="./results/Jitter.md">Jitter</a></p>
+<h1>Simulation</h1>
+<p>./circle -n 2000 -v 30 -p 1</p>
+<h2>Visualization</h2>
+<p><a href="https://mlitwin.github.io/entropy/">https://mlitwin.github.io/entropy/</a></p>
+
+      </heading-anchors>
+    </article>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="/lib/katex.min.js"></script>
+  <script src="/lib/katex-auto-render.min.js"></script>
+  <script src="/lib/prism.min.js"></script>
+  <script type="module" src="/js/site-runtime.js"></script>
+</body>
+</html>

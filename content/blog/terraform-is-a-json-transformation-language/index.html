@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terraform is a JSON transformation language with side-effects – Matthew Litwin</title>
+  <meta name="date" content="2021-04-17">
+  <link rel="stylesheet" href="/lib/pico.min.css">
+  <link rel="stylesheet" href="/lib/katex.min.css">
+  <link rel="stylesheet" href="/lib/prism-okaidia.min.css">
+  <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/site-components.js"></script>  <!-- synchronous: no defer, no async -->
+</head>
+<body>
+  <site-nav></site-nav>
+
+  <main class="container">
+    <article>
+      <header>
+        <h1>Terraform is a JSON transformation language with side-effects</h1>
+        <p><time datetime="2021-04-17">April 17, 2021</time></p>
+      </header>
+
+      <heading-anchors>
+<p>We use <a href="https://www.terraform.io/">Terraform</a> a lot at my work. There&#39;s been an interesting learning curve as I&#39;ve gone from no knowledge of it, to using it in production. I had a bit of trouble figuring out a conceptual model - a way of thinking about what it was doing - that worked for me.</p>
+<p>Eventually I found one.</p>
+<h2>What Terraform is</h2>
+<p>Terraform configurations are written in <a href="https://github.com/hashicorp/hcl">HCL</a> which is</p>
+<blockquote>
+<p>a specialized language for our tools, and JSON as the interoperability layer.</p>
+</blockquote>
+<p>HCL provides significant templating functionality, and syntactic sugar - but to understand what the configuration will actually do, you should think of it as JSON. Specifically, think of it in terms of a set of deeply nested objects, with key -&gt; value a.b.c.f -&gt; config. The meaning of the config comes from the keys, and the value. </p>
+<h2>What Terraform does</h2>
+<p>Schematically, here&#39;s what happens when you use terraform:</p>
+<p>$$\operatorname{T}(state, code; infrastructure) \rightarrow (state', infrastructure')$$</p>
+<pre class="mermaid">
+graph TD
+code["code.tf / variables.tfvars"]
+state0[state.tfstate]
+state_tmp[refreshed.tfstate]
+state1[state.tfstate]
+infrastructure0[/infrastructure\]
+infrastructure1[\infrastructure/]
+tf_refresh(( ))
+tf_plan(( ))
+tf_plan_out[plan.json]
+tf_apply(( ))
+
+code --> tf_refresh
+state0 --> tf_refresh
+infrastructure0 --> tf_refresh
+tf_refresh -- refresh --> state_tmp
+code --> tf_plan
+state_tmp --> tf_plan
+tf_plan -- plan --> tf_plan_out
+tf_plan_out --> tf_apply
+infrastructure0 --> tf_apply
+tf_apply -- apply --> state1
+tf_apply -- apply --> infrastructure1
+</pre>
+<p>The tricky part for me to understand here is the role of the <code>tf.state</code> file. It&#39;s the mysterious file that&#39;s always being &#39;refreshed&#39;, and sometimes (or before you get the hang of things, maybe more than sometimes) gets corrupt and needs you to mess around to <a href="https://medium.com/@abtreece/recovering-terraform-state-69c9966db71e">recover it</a>.</p>
+<p>But <code>tf.state</code> is the key to understanding what terraform is doing. Basically, it&#39;s just taking <code>tf.state</code>, applying a program (defined by your <code>.tf</code> files), and updating to a new <code>tf.state</code>. What happens to your infrastructure is just a happy side effect. This is I think a weakness of the terraform model - that you have two sources of truth - the state file, and the actual infrastructure. I wonder if for AWS at least, you could tag the infrastructure terraform created with enough metadata so that you could get rid of <code>tf.state</code>.</p>
+
+      </heading-anchors>
+    </article>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="/lib/katex.min.js"></script>
+  <script src="/lib/katex-auto-render.min.js"></script>
+  <script src="/lib/prism.min.js"></script>
+  <script type="module" src="/js/site-runtime.js"></script>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+</body>
+</html>

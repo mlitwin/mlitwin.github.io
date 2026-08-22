@@ -1,7 +1,10 @@
 _site/
+lib/
 node_modules/
 package-lock.json
 .cache
+.playwright-mcp/
+archive/
 
 .DS_Store
 Notes.md

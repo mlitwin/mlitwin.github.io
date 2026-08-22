@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Tangent Space – Matthew Litwin</title>
+  <meta name="date" content="2025-05-24">
+  <link rel="stylesheet" href="/lib/pico.min.css">
+  <link rel="stylesheet" href="/lib/katex.min.css">
+  <link rel="stylesheet" href="/lib/prism-okaidia.min.css">
+  <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/site-components.js"></script>  <!-- synchronous: no defer, no async -->
+</head>
+<body>
+  <site-nav></site-nav>
+
+  <main class="container">
+    <article>
+      <header>
+        <h1>The Tangent Space</h1>
+        <p><time datetime="2025-05-24">May 24, 2025</time></p>
+      </header>
+
+      <heading-anchors>
+<p>Let&#39;s set the scene of the things I think I understand, at least to the first approximation. We have a curvilinear coordinate system on a space under some metric. For example, the surface of a sphere. We will start simple, and then mess with it to look at a slightly more complicated variant.</p>
+<h3>Coordinates</h3>
+<p><img src="https://antoninus.org/svg-gen/images/spherestandard.svg" alt="Sphere"></p>
+<p>Define a <a href="https://en.wikipedia.org/wiki/Spherical_coordinate_system">Spherical Coordinate System</a>. For a given point take:</p>
+<ul>
+<li>$r =$ radius</li>
+<li>$\theta =$ polar angle (angle from the north pole)</li>
+<li>$\phi =$ azimuth (angle from the prime meridian)</li>
+</ul>
+<p>In our example we will let $r=1$.</p>
+<h4>Coordinate System</h4>
+<ul>
+<li>The lines of longitude ($\theta$ is constant) are great circles through the poles</li>
+<li>The lines of latitude ($\phi$ is constant) are perpendicular to the longitudes</li>
+</ul>
+<h4>Cartesian Coordinates</h4>
+<p>For the conversion to cartesian coordinates we have:</p>
+<ul>
+<li>$x=r \sin\theta \cos\phi $</li>
+<li>$y=r \sin\theta \sin\phi $</li>
+<li>$z=r \cos \theta$</li>
+</ul>
+<h3>Tangent Space</h3>
+<p>At each pont you have basis vectors of the tangent space: $\{e_1,e_2\}$.</p>
+<p>For our sphere, the basis vectors are perpendicular, so this is a cartesian coordinate system.</p>
+<p><img src="https://antoninus.org/svg-gen/images/spherestandard-tanget.svg" alt="Sphere">&#39;</p>
+<p>But how long are they are they?</p>
+<p>Let $e_1$ be our line of longitude, which is a great circle, so a constant diameter for all points. Take our unit of distance so $|e_1|=1$.</p>
+<p>Now for $e_2$ or line of latitude, we have to be a little careful since its radius depends on $\theta$, it&#39;s only a great circle along the equator $\theta=\pi/2$. Looking at the cartesian coordinates, $z$ is constant, and you are left with a circle of radius $r \sin \theta$.</p>
+<ul>
+<li>$|e_1|=1$</li>
+<li>$|e_2|=\sin \theta$</li>
+</ul>
+<p>Well that&#39;s enough for tonight. </p>
+<h1>Next Up</h1>
+<p>Next up will be &quot;A Tangent Space with a non-orthogonal coordinate system&quot;</p>
+
+      </heading-anchors>
+    </article>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="/lib/katex.min.js"></script>
+  <script src="/lib/katex-auto-render.min.js"></script>
+  <script src="/lib/prism.min.js"></script>
+  <script type="module" src="/js/site-runtime.js"></script>
+</body>
+</html>

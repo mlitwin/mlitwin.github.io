@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Dual Basis – Matthew Litwin</title>
+  <meta name="date" content="2025-07-25">
+  <link rel="stylesheet" href="/lib/pico.min.css">
+  <link rel="stylesheet" href="/lib/katex.min.css">
+  <link rel="stylesheet" href="/lib/prism-okaidia.min.css">
+  <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/site-components.js"></script>  <!-- synchronous: no defer, no async -->
+</head>
+<body>
+  <site-nav></site-nav>
+
+  <main class="container">
+    <article>
+      <header>
+        <h1>The Dual Basis</h1>
+        <p><time datetime="2025-07-25">July 25, 2025</time></p>
+      </header>
+
+      <heading-anchors>
+<p>The tangent space and the metric lets us do basic calculus at a point on our surface: vector displacements with the metric telling us distances and angles.</p>
+<p>The next step is to &quot;do calculus&quot; with scalar functions on our surface. At a point on our surface, we can approximate a scalar function with a <a href="https://en.wikipedia.org/wiki/Linear_form">Linear Functional</a> These are what we are going to need:</p>
+<p>$$f(x+y)=f(x)+f(y)$$
+$$f(\lambda x)=\lambda f(x)$$</p>
+<h2>The Dual Space</h2>
+<p>If we have a real valued function $F$ on our surface, we can
+consider at any point a <a href="https://en.wikipedia.org/wiki/Linear_form">Linear Functional</a> f on the tangent space $V$ which approximates it: $f(x+y)=f(x)+f(y)$ and $f(\lambda x)=\lambda f(x)$</p>
+<p>If $v = \sum_i x^i e_i$ then $f(v) = \sum_i A_i x^i$, where $A_i = f(e_i)$</p>
+<p>Conversely we can define a linear functional by its action on the $\{e_i\}$
+$$
+f(v) \coloneqq \sum_i f(e_i) x^i
+$$</p>
+<p>The set of our linear functionals on our tangent space is a vector space (it&#39;s closed under addition and multiplication by a scalar), and we now see it has the same dimension as the tangent space. It&#39;s denoted $V^*$</p>
+<h2>The Dot Product</h2>
+<p>There is a deep relationship between the Dual Space and the Tangent Space (hence the &quot;dual&quot;). This is through a notion of the dot product, which you can define on the tangent space using the Metric Tensor. </p>
+<p>With the Tangent space and the Metric Tensor, we can determine the geometry of our surface in its coordinate system by using the Metric Tensor to define a dot product, which encapsulates the notion of distance of vectors and the angle between vectors.</p>
+<p>$$g_{i j}=e_i \cdot e_j$$
+and if $x=x^i e_i$ and $y=y^i e_i$, then</p>
+<p>$$x \cdot y = g_{i j} x^i y^j$$</p>
+<p>As special case for a vector $v=\sum_i x^i e_i$ we can define its length</p>
+<p>$$v \cdot v = |v|^2 = g_{i j} x^i x^j$$</p>
+<p>and the definition of a scalar product can then define the angle between vectors</p>
+<p>$$
+x \cdot y=|x||y|\cos\theta
+$$  </p>
+<p>and a way to project $y$ onto $x$ using the component of $y$ along $x$</p>
+<p>$$
+\text{comp}_x y = \frac{x \cdot y}{|x|}
+$$</p>
+<p>$$
+\text{proj}_x y = (\text{comp}_x y) x =\frac{x \cdot y}{|x|^2}x
+$$</p>
+<h2>The Dual Basis</h2>
+<p>The elements of the Dual Space are linear functionals. But for any vector $v$ in the Tangent space, we can use it to define a linear function, interpreting it as a linear function where for any tangent space vector $x$</p>
+<p>$$
+    v(x) = v \cdot x
+$$</p>
+<p>For an orthonormal basis of a vector space, the dot product has a nice property that you can use it to compute the component of any vector $v$ along a basis vector $e$ just by taking $v \cdot e$</p>
+<p>The basis of our tangent space might not be nice in this sense. The $\{e_i\}$ might not be unit vectors, but more significantly they might not be orthogonal at all.</p>
+<p>But we can find such a basis - the dual basis $\{e^i\}$ where this property holds, and it will be unique.</p>
+<p>We want for any vector $v$ in our tangent space to have components $x^i$ in $\{e_i\}$ so that</p>
+<p>$$
+v = \sum_i (v \cdot e^i) e_i
+$$</p>
+<p>If it works for any $v$, then it should work for each $e_j$ too, and if it works on the basis vectors, it&#39;s going to work for any $v$ since the dot product is linear. A basis vector $e_j$ is really a vector whose $j$-th component is $1$ and the rest $0$.</p>
+<p>We can write this in terms of the <a href="https://en.wikipedia.org/wiki/Kronecker_delta">Kronecker delta</a></p>
+<p>$$
+\delta^i_j = \begin{cases}
+1 & \text{if } i = j \\
+0 & \text{if } i \neq j
+\end{cases}
+$$</p>
+<p>Writing out each $e_j$ in full as a linear combination of all the basis vectors</p>
+<p>$$
+ e_j = \sum_i \delta^i_j e_i = \sum_i(e_j \cdot e^i) e_i
+$$</p>
+<p>Comparing components, we must have</p>
+<p>$$
+e_j \cdot e^i = \delta^i_j 
+$$</p>
+<p>Expressing the basis $\{e^i\}$, we can express the new basis in terms of the tangent basis $\{e_i\}$ according to some change of basis matrix $\{\alpha^{ij}\}$</p>
+<p>$$
+    e^i = \sum_k \alpha^{ik}e_k
+$$</p>
+<p>and now dotting with $e_j$</p>
+<p>$$
+\delta^i_j = e_j \cdot e^i = \sum_k \alpha^{ik}(e_j \cdot e_k) = \sum_k \alpha^{ik}g_{jk}  = \sum_k \alpha^{ik}g_{kj}
+$$</p>
+<p>Which in matrix terms means
+$$
+\mathbf{\alpha} \mathbf{g} = \mathrm{I}
+$$</p>
+<p>which means that</p>
+<p>$$
+    \alpha= g^{-1} = \{g^{ij}\}
+$$</p>
+<p>$$
+    \alpha^{ij}= g^{ij}
+$$</p>
+<p>and we can now express the dual basis vectors in terms of the metric tensor and the tangent space basis vectors</p>
+<p>$$
+    e^i = \sum_j g^{ij}e_j
+$$</p>
+<h2>Two interpretations of the Dual Basis</h2>
+<p>Vectors in the tangent space are naturally thought of as column vectors, taking for $v=\sum_i x^i e_i$ the column vector</p>
+<p>$$
+x=\
+\begin{bmatrix} 
+x^1 \\ 
+\vdots \\ 
+x^n
+\end{bmatrix}
+$$</p>
+<p>A linear transformation on the tangent space has a straightforward formulation as matrix multiplication.</p>
+<p>$$
+v' = \mathbf{A}v
+$$</p>
+<p>Now  the dual basis $\{e^i\}$ of the Dual Space, which is a space of linear functionals, which means we interpret $e^i$ as the functional with</p>
+<p>$$
+e^i(e_j) = \delta^i_j
+$$</p>
+<p>But also the $\{e^i\}$ are actual vectors in our tangent space, computed by</p>
+<p>$$
+e^i = \sum_j g^{ij}e_j
+$$</p>
+<p>with the defining relationship
+$$
+e^i \cdot e_j = \delta^i_j
+$$</p>
+<p>So we can also think of them as column vector in the tangent space itself. This is somewhat less direct than when you start with tangent vectors, so I will write them (in a nonstandard way) with a hat $\hat{e^i}$ when thinking of them not as functionals but as vectors living in the tangent space.</p>
+<p>$$
+\hat{e^i}=\
+\begin{bmatrix} 
+g^{i1} \\ 
+\vdots \\ 
+g^{in}
+\end{bmatrix}
+$$</p>
+<p>and for a general $f=\sum_i \alpha_i e^i$,</p>
+<p>$$
+\hat{f}= \sum_i \alpha_i \hat{e^i}
+$$</p>
+<p>and taking $\alpha$ as a column vector</p>
+<p>$$
+\alpha=\
+\begin{bmatrix} 
+\alpha_1 \\ 
+\vdots \\ 
+\alpha_n
+\end{bmatrix}
+$$</p>
+<p>we can write our linear function $f$ in terms of the column vector $\alpha$</p>
+<p>$$
+f(v) = \alpha^T x
+$$</p>
+<p>For a linear transformation $f' = \mathbf{A}f$, of $f=\sum_i \alpha_i e^i$, the matrix form is a little different than with the tangent space</p>
+<p>$$
+f'(v) = (\mathbf{A}\alpha)^T x = \alpha^T \mathbf{A}^T x
+$$</p>
+<p>So transforming $\hat{f}$ by $\mathbf{A}$ is equivalent to transforming the input vectors $x$ by $\mathbf{A}^T$, and vice-versa.</p>
+<h2>Next Up</h2>
+<p>Next up is the gradient</p>
+
+      </heading-anchors>
+    </article>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="/lib/katex.min.js"></script>
+  <script src="/lib/katex-auto-render.min.js"></script>
+  <script src="/lib/prism.min.js"></script>
+  <script type="module" src="/js/site-runtime.js"></script>
+</body>
+</html>
