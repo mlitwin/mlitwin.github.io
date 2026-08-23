@@ -6,7 +6,7 @@ class SiteNav extends HTMLElement {
 					<ul><li><strong><a href="/">Matthew Litwin</a></strong></li></ul>
 					<ul>
 						<li><a href="/blog.html">Blog</a></li>
-						<li><a href="/resume.html">Resume</a></li>
+						<li><a href="/resume.html">Résumé</a></li>
 					</ul>
 				</nav>
 			</header>`;
