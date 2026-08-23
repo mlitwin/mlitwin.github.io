@@ -8,10 +8,10 @@
 		"assemble": "node scripts/assemble.js",
 		"build": "npm run build-lib && npm run assemble",
 		"start": "npm run build && npx serve _site",
-		"check-links": "npm run build && node scripts/check-links.js",
-		"check-links:external": "npm run build && node scripts/check-links.js --external",
-		"check-links:deployed": "node scripts/check-links.js --deployed",
-		"check-links:deployed:external": "node scripts/check-links.js --deployed --external"
+		"check-links": "npm run build && node --disable-warning=ExperimentalWarning scripts/check-links.js",
+		"check-links:external": "npm run build && node --disable-warning=ExperimentalWarning scripts/check-links.js --external",
+		"check-links:deployed": "node --disable-warning=ExperimentalWarning scripts/check-links.js --deployed",
+		"check-links:deployed:external": "node --disable-warning=ExperimentalWarning scripts/check-links.js --deployed --external"
 	},
 	"license": "MIT",
 	"engines": {
