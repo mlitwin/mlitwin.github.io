@@ -7,17 +7,22 @@
 		"build-lib": "node scripts/build-lib.js",
 		"assemble": "node scripts/assemble.js",
 		"build": "npm run build-lib && npm run assemble",
-		"start": "npm run build && npx serve _site"
+		"start": "npm run build && npx serve _site",
+		"check-links": "npm run build && node scripts/check-links.js",
+		"check-links:external": "npm run build && node scripts/check-links.js --external",
+		"check-links:deployed": "node scripts/check-links.js --deployed",
+		"check-links:deployed:external": "node scripts/check-links.js --deployed --external"
 	},
 	"license": "MIT",
 	"engines": {
-		"node": ">=18"
+		"node": ">=20"
 	},
 	"devDependencies": {
 		"@picocss/pico": "^2.0.6",
 		"@zachleat/heading-anchors": "^1.0.1",
 		"esbuild": "^0.24.0",
 		"katex": "^0.16.11",
+		"linkinator": "^7.6.1",
 		"prismjs": "^1.29.0"
 	}
 }

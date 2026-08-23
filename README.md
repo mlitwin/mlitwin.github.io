@@ -63,6 +63,31 @@ Cyclades/         standalone legacy presentation, copied verbatim to _site/Cycla
 4. Add a link to it from `content/blog.html` if it isn't already picked up
    by `<post-archive>` (it is, automatically, once it's in `config.json`).
 
+## Checking for broken links
+
+`scripts/check-links.js` (via [linkinator](https://github.com/JustinBeckwith/linkinator))
+has four modes:
+
+- **`npm run check-links`** — builds the site and checks internal links only,
+  against the local build. Fast, no network flakiness — good for routine use.
+- **`npm run check-links:external`** — same, but also checks every external
+  link (Wikipedia citations, GitHub/LinkedIn, etc). Slower and dependent on
+  those sites being up; 403/429 responses from sites that block non-browser
+  requests (GitHub, LinkedIn, Medium) are logged but not treated as failures.
+- **`npm run check-links:deployed`** / **`:deployed:external`** — same two
+  checks, but against `https://antoninus.org` instead of the local build.
+  Catches issues that only exist in production (redirects, a file that
+  didn't actually get deployed, DNS/CNAME problems).
+
+linkinator doesn't execute JavaScript, so it can't see links that
+`<site-nav>`/`<site-footer>`/`<recent-posts>`/`<post-archive>`/`<post-nav>`
+render client-side. The script works around this instead of silently missing
+it: every built page is enumerated directly (rather than relying on
+linkinator to discover pages by crawling), the handful of hardcoded
+nav/footer links are checked directly, and every `content/config.json` post
+`path` is verified against the actual built file, since that's the single
+source those list/prev-next widgets render from.
+
 ## Deployment
 
 `.github/workflows/gh-pages.yml` runs `build-lib` + `assemble` on every push
