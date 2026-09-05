@@ -52,6 +52,12 @@ Cyclades/         standalone legacy presentation, copied verbatim to _site/Cycla
 
 ## Adding a new post
 
+`npm run new-post -- "Post Title" [YYYY-MM-DD]` (`scripts/new-post.js`) does
+steps 1–3 below: it slugifies the title, copies `templates/post.html` to
+`content/blog/<slug>/index.html` with the title/date filled in, and inserts
+an entry into `content/config.json`'s `posts` array at the right sorted
+position. Date defaults to today if omitted.
+
 1. Copy `templates/post.html` to `content/blog/<slug>/index.html`.
 2. Fill in the title, date, and body. Math is raw LaTeX in `$...$` /
    `$$...$$` (rendered by KaTeX at runtime); code blocks are standard
@@ -62,6 +68,9 @@ Cyclades/         standalone legacy presentation, copied verbatim to _site/Cycla
    hand-ordered newest-first; nothing sorts by date automatically.
 4. Add a link to it from `content/blog.html` if it isn't already picked up
    by `<post-archive>` (it is, automatically, once it's in `config.json`).
+
+After running the script, all that's left is to fill in the post body (step
+2 above) and, if needed, step 4.
 
 ## Checking for broken links
 

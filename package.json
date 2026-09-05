@@ -7,6 +7,7 @@
 		"build-lib": "node scripts/build-lib.js",
 		"assemble": "node scripts/assemble.js",
 		"build": "npm run build-lib && npm run assemble",
+		"new-post": "node scripts/new-post.js",
 		"start": "npm run build && npx serve _site",
 		"check-links": "npm run build && node --disable-warning=ExperimentalWarning scripts/check-links.js",
 		"check-links:external": "npm run build && node --disable-warning=ExperimentalWarning scripts/check-links.js --external",
