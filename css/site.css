@@ -114,3 +114,8 @@ img {
 	border-radius: 0.5em;
 	max-width: 12em;
 }
+
+figure > blockquote {
+	margin-bottom: 0;
+	padding-bottom: calc(var(--pico-spacing) / 2)
+}

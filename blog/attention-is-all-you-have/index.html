@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attention Is All You Have – Matthew Litwin</title>
+  <meta name="date" content="2026-09-27">
+  <link rel="stylesheet" href="/lib/post.css">
+  <link rel="stylesheet" href="/css/site.css">
+  <script src="/js/site-components.js"></script> <!-- synchronous: no defer, no async -->
+</head>
+
+<body>
+  <site-nav></site-nav>
+
+  <main class="container">
+    <article>
+      <header>
+        <h1>Attention Is All You Have</h1>
+        <p><time datetime="2026-09-27">September 27, 2026</time></p>
+      </header>
+
+      <heading-anchors>
+
+        <h2>Introduction</h2>
+        <p><a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a> showed the fundamental role of a
+          mathematical "attention" in large language models. In using LLMs via developer tools like Claude or Copilot 
+          I am seeing human attention as the fundamental limiting factor. You still need the developer to drive the tool,
+          so the tool is best understood as a multiplier of the output of the developer.
+        </p>
+
+        <h2>Trends and Properties</h2>
+        <p>
+          Software Engineering practice around LLM usage is still rapidly evolving,
+          but some basic properties and asymptotic trends seem to be starting to reveal themselves.
+        </p>
+        <ul>
+          <li>AI impact is heterogeneous across different types of tasks. Minor gains, big gains, sometimes worse.</li>
+          <li>Engineer involvement and attention to what the AI is doing is still needed.</li>
+          <li>The amount of attention needed decreases with the power (and thus cost) of the model.</li>
+          <li>Market forces are operative - no strong monopolies (yet).</li>
+        </ul>
+
+        <h2>Economic Forces</h2>
+
+        <figure>
+          <blockquote>
+            The real price of everything, what everything really costs to the man who wants to acquire it, is the toil and trouble of
+             acquiring it. What everything is really worth to the man who has acquired it, and who wants to dispose of it or exchange it
+             for something else, is the toil and trouble which it can save to himself, and which it can impose upon other people.
+          </blockquote>
+          <figcaption>— <cite>Adam Smith</cite></figcaption>
+        </figure>
+
+        <p>
+          What this means here is, I think, that all else being equal:
+        </p>
+        <ul>
+          <li>Market forces will tend to drive to an equilibrium between the price people are willing to pay, and the cost it takes to produce.</li>
+          <li>Profit or loss, then, will lie in the deviations from equilibrium.</li>
+          <li>Understanding the deviations from equilibrium will show you where you should be optimizing.</li>
+        </ul>
+
+        <h2>AI Cost and Value</h2>
+
+        <h3>Rough Estimate</h3>
+
+        <figure>
+          <blockquote>
+            What song the Syrens sang, or what name Achilles assumed when he hid himself among women,
+            though puzzling questions, are not beyond all conjecture.
+          </blockquote>
+          <figcaption>— <cite>Sir Thomas Browne</cite></figcaption>
+        </figure>
+
+        <p>
+          Let's do some <a href="https://en.wikipedia.org/wiki/Fermi_problem">Fermi Estimation</a> to figure out the
+          value of AI, at least to an order of magnitude (powers of 10), under the assumption of price / cost equilibrium.
+        </p>
+        <ul>
+          <li><a href="https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm">Software
+              Developers</a> cost
+            around $\$100{,}000 / \text{year}$.
+          </li>
+          <li>Asking around, AI spend limits for developers are around $\$100/\text{month}$</li>
+          <li>$\$100/\text{month} \times 10 = \$1000/\text{year}$ (remember, this is Fermi estimation so years have 10 months), so 1% of cost.</li>
+          <li>AI value increase must be one notch more than 1%.</li>
+          <li>AI makes developers 10% more efficient.</li>
+        </ul>
+
+        <h3>Mathematics</h3>
+
+        <figure>
+          <blockquote>
+            When the demand price is equal to the supply price, the amount produced has no tendency either to be increased or to be diminished;
+            it is in equilibrium.
+          </blockquote>
+          <figcaption>— <cite>Alfred Marshall</cite></figcaption>
+        </figure>
+
+        <p>I think the basic principles of supply and demand are operative here</p>
+        <ul>
+          <li>No monopoly here, there are several big players (Anthropic, OpenAI, Google, etc) as well as lots of little
+            ones</li>
+          <li>Techniques are well known, there are open source models that are within order of magnitude striking
+            distance of the proprietary ones</li>
+          <li>Compute power is available to everyone - sellers of AI tools and consumers alike - so cost drivers like memory price affect everyone; hosting your own won't be much cheaper.
+          </li>
+        </ul>
+
+        <p>Given this, we will tend towards equilibrium &hellip; eventually.</p>
+
+        <h4>A Mathematical Model</h4>
+
+        <p>
+          Take $p$ as the fractional improvement of a developer when using an LLM system. $p=0$ is no value gained,
+          $p=0.2$ is a 20% improvement. This is our measure of value.
+        </p>
+
+        <p>
+          Let's make a simple model for the cost to the seller, which has a basic scaling law. The idea is it will
+          get harder to make gains the further on we go. Take cost to be
+        </p>
+        <div>
+          $$
+          C(p) = \alpha\, p^\beta, \qquad \alpha>0,\ \beta>0
+          $$
+        </div>
+
+        <ul>
+          <li>$p$ is the fractional improvement in units of "developer".</li>
+          <li>
+              $\beta$ is some kind of universal LLM scaling factor for $p$ - how much it costs to build more powerful AIs.
+              This is our "law of AI nature".
+          </li>
+          <li>
+            $\alpha$ is operational efficiency factor, or more precisely inefficiency - when it's bigger it costs more.
+            This is our factor for the "state of the art" in implementation - we expect improvements here ($\alpha$ goes down).
+          </li>
+        </ul>
+
+        <p>You will have economic equilibrium when the price, the perceived value, and the cost to produce are all the same.</p>
+        <div>
+          $$
+          p^* = \alpha\,(p^*)^\beta
+          $$
+        </div>
+
+        <p>and so</p>
+        <div>
+          $$
+            \alpha = (p^*)^{1 - \beta}
+          $$
+          $$
+            p^* = \alpha^\frac{1}{(1 - \beta)}
+          $$
+        </div>
+        <p>Where $\beta = 1$, we need to go back to the original $p^* = \alpha\,(p^*)^\beta$, and then we must have</p>
+          <div>
+          $$
+            \alpha = 1
+          $$
+        </div>
+       
+        <p>Three cases:</p>
+
+        <dl>
+          <dt>$\beta > 1$: Superlinear</dt>
+          <dd>Here $1-\beta$ is negative, so as $\alpha$ goes down, $p^*$ goes up.</dd>
+
+          <dt>$\beta = 1$</dt>
+          <dd>This is a degenerate case: the cost law is $C(p) = \alpha\,p$, and equilibrium forces $\alpha = 1$, so $C(p) = p$.
+            Seems equivalent to just the cost per hour of developer time without using AI at all.</dd>
+
+          <dt>$0 \lt \beta \lt 1$: Sublinear</dt>
+          <dd>Here $1-\beta$ is positive, so as $\alpha$ goes down, $p^*$ goes down too.</dd>
+        </dl>
+
+        <p>What's $\beta$? I don't know. It certainly feels like the attention-based LLM has some power law, pushing towards superlinear.
+          On the other hand, more powerful models can let the developer do multiple disparate things simultaneously, pushing towards sublinear.
+          Theory doesn't tell us, and we (or at least, I) don't have empirical data. 
+        </p>
+
+        <h3>A Word About Economic Equilibrium</h3>
+
+        <figure>
+          <blockquote>
+            [Economists answer] a complex question, studying one bit at a time, and at last combining his partial solutions into a more or
+            less complete solution of the whole riddle. In breaking it up, he segregates those disturbing causes, 
+            whose wanderings happen to be inconvenient, for the time in a pound called Caeteris Paribus.
+          </blockquote>
+          <figcaption>— <cite><a href="https://plato.stanford.edu/entries/ceteris-paribus/">Alfred Marshall</a></cite></figcaption>
+        </figure>
+
+        <p>The equilibrium we are talking about here is an economic one, rather than some sort of dynamical system expressed in the equations.
+          It hypothesizes tendencies driving together the price of something, its value, and its cost to produce, all else being equal. But if
+          in fact we were ever at that exact equilibrium, that's break even for all parties, and no-one would bother. It suggests a large scale pattern,
+          but that's just to try to help understand where the pattern fails to hold.
+        </p>
+
+        <p>What matters is where the equilibrium breaks.</p>
+
+        <h2>Implications</h2>
+     
+        <p>
+          The basic conclusion here is that market forces are operational, so profit and loss are going to happen at the
+          margins of equilibrium. Considering the various suggestions I've heard, my thought is we should:
+        </p>
+
+        <ul>
+          <li>Look for marginal improvements in process and execution, rather than much more that we are paying for.</li>
+          <li>Distinguish between improvements that market forces will tend to erode, and those that are less vulnerable
+            to erosion.</li>
+        </ul>
+
+        <h3>Erodible Improvements</h3>
+        <p>If any of these become common, the Copilots and Claudes will just adopt them.</p>
+        <ul>
+          <li>Generic gateways to choose model</li>
+          <li>Generic token compression tools</li>
+        </ul>
+
+        <h3>Stable Improvements</h3>
+
+        <p>I wish I had a longer list for these:</p>
+        <ul>
+          <li>Bespoke tooling for your specific situation - skills relevant to your team's way of doing things.</li>
+        </ul>
+
+
+        <h3>Outside the Margins</h3>
+
+        <p>
+          The heterogeneous effects of AI on software development means we should think in terms of global optimization
+          at the development process level. This is analogous to the discovery of a new algorithm - you need to go back
+          and re-think at a high level how best to use it - it might not just drop in to improve things, you might need
+          a different approach.
+        </p>
+
+        <p>Here are a few ideas I've seen or tried:</p>
+        <ul>
+          <li>
+            Documentation in code - an implementation that works and is thus explicit, but
+            with the expectation that it will be mutated in substance beyond recognition.
+          </li>
+          <li>
+            Implement breadth first, not depth first. Full end-to-end including tests, deployment. Accept significant
+            iteration and widespread refactoring.
+            This also means few (or even one) developers working on the initial phase of development.
+          </li>
+          <li>
+            More production ready prototypes, concentrating on architectural soundness.
+            Robust e2e harness more important than e2e coverage.
+          </li>
+          <li>
+            Desired developer skill-set is (even) less for specific knowledge of languages and toolchains. This is a
+            relative thing, of course, but a mobile engineer who knows the app store process can be augmented by any
+            skilled programmer without mobile experience.
+          </li>
+        </ul>
+
+      <p>Eventually market forces would operate on these too, if they take hold, but they seem hard to execute, so probably lots of room
+        before equilibrium.
+      </p>
+
+      </heading-anchors>
+
+      <post-nav></post-nav>
+    </article>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="/lib/vendor.js"></script>
+  <script src="/js/post-list-components.js"></script>
+</body>
+
+</html>
