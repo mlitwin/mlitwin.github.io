@@ -1,6 +1,11 @@
 {
 	"posts": [
 		{
+			"title": "Attention Is All You Have",
+			"date": "2026-09-05",
+			"path": "/blog/attention-is-all-you-have/"
+		},
+		{
 			"title": "The Einstein Summation Convention",
 			"date": "2025-08-04",
 			"path": "/blog/the-einstein-summation-convention/"
