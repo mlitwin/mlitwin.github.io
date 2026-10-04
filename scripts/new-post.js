@@ -24,20 +24,10 @@ if (existsSync(postPath)) {
 	process.exit(1);
 }
 
-const [year, month, day] = date.split("-");
-const monthName = new Date(`${date}T00:00:00Z`).toLocaleDateString("en-US", {
-	month: "long",
-	timeZone: "UTC",
-});
-const displayDate = `${monthName} ${Number(day)}, ${year}`;
-
-let html = readFileSync("templates/post.html", "utf8");
-html = html
-	.replace("Post Title – Matthew Litwin", `${title} – Matthew Litwin`)
-	.replace('content="YYYY-MM-DD"', `content="${date}"`)
-	.replace(">Post Title<", `>${title}<`)
-	.replace('datetime="YYYY-MM-DD"', `datetime="${date}"`)
-	.replace(">Month DD, YYYY<", `>${displayDate}<`);
+// Only <title> needs filling in; the visible title and dates are rendered by
+// <post-header> from config.json.
+const html = readFileSync("templates/post.html", "utf8")
+	.replace("Post Title – Matthew Litwin", `${title} – Matthew Litwin`);
 
 mkdirSync(postDir, { recursive: true });
 writeFileSync(postPath, html);
@@ -55,4 +45,4 @@ writeFileSync(configPath, JSON.stringify(config, null, "\t") + "\n");
 
 console.log(`Created ${postPath}`);
 console.log(`Added entry to ${configPath}`);
-console.log("Next: fill in the body, then check content/blog.html if needed.");
+console.log("Next: fill in the body. Set \"date\" in config.json to the publish date when it goes live.");

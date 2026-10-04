@@ -3,9 +3,10 @@
 Matt Litwin's personal site — a static HTML site with no template engine and no
 generated markup. Pages are lean, hand-authored HTML files that use two Web
 Components (`<site-nav>`/`<site-footer>`) for shared chrome, plus a small set
-of components (`<recent-posts>`, `<post-archive>`, `<post-nav>`) that read a
-JSON manifest for post listings. All dynamic rendering — math, syntax
-highlighting, heading anchors, site chrome — happens client-side at runtime.
+of components (`<recent-posts>`, `<post-archive>`, `<post-header>`,
+`<post-nav>`) that read a JSON manifest for post titles, dates and listings.
+All dynamic rendering — math, syntax highlighting, heading anchors, site
+chrome — happens client-side at runtime.
 
 ## Getting started
 
@@ -50,27 +51,51 @@ archive/          gitignored scratch area for posts not yet finished
 Cyclades/         standalone legacy presentation, copied verbatim to _site/Cyclades/
 ```
 
+## Post metadata
+
+`content/config.json` is the single source of truth for every post's title
+and dates:
+
+```json
+{
+	"title": "The Gradient",
+	"date": "2025-07-27",
+	"updated": "2026-10-04",
+	"path": "/blog/the-gradient/"
+}
+```
+
+- `date` — publication date (`YYYY-MM-DD`). Drives ordering everywhere
+  (`<recent-posts>`, `<post-archive>`, `<post-nav>`); the components sort by
+  it, so the array's own order doesn't matter.
+- `updated` — optional, `YYYY-MM-DD`. Shown on the post as "· Updated …";
+  never affects ordering.
+
+A post page doesn't repeat any of this: `<post-header>` renders the `<h1>`
+and dates from its `config.json` entry (matched on the page's path). The
+only duplicate is the `<title>` tag, kept static so tabs, bookmarks and
+non-JS crawlers see a real title; `npm run check-links` fails if it drifts
+from the config title, or if a post directory has no `config.json` entry.
+
 ## Adding a new post
 
-`npm run new-post -- "Post Title" [YYYY-MM-DD]` (`scripts/new-post.js`) does
-steps 1–3 below: it slugifies the title, copies `templates/post.html` to
-`content/blog/<slug>/index.html` with the title/date filled in, and inserts
-an entry into `content/config.json`'s `posts` array at the right sorted
-position. Date defaults to today if omitted.
+`npm run new-post -- "Post Title" [YYYY-MM-DD]` (`scripts/new-post.js`)
+slugifies the title, copies `templates/post.html` to
+`content/blog/<slug>/index.html` with `<title>` filled in, and adds an entry
+to `content/config.json`. Date defaults to today — update it to the actual
+publish date when the post goes live.
 
-1. Copy `templates/post.html` to `content/blog/<slug>/index.html`.
-2. Fill in the title, date, and body. Math is raw LaTeX in `$...$` /
-   `$$...$$` (rendered by KaTeX at runtime); code blocks are standard
-   `<pre><code class="language-x">` (highlighted by Prism at runtime).
-3. Add an entry to `content/config.json`'s `posts` array, in the position
-   matching where it should sort — this drives the home page's recent-posts
-   list, the archive page, and prev/next navigation. The array is
-   hand-ordered newest-first; nothing sorts by date automatically.
-4. Add a link to it from `content/blog.html` if it isn't already picked up
-   by `<post-archive>` (it is, automatically, once it's in `config.json`).
+By hand, it's the same two edits:
 
-After running the script, all that's left is to fill in the post body (step
-2 above) and, if needed, step 4.
+1. Copy `templates/post.html` (or any existing post) to
+   `content/blog/<slug>/index.html` and set its `<title>`.
+2. Add a `{ title, date, path }` entry to `content/config.json`.
+
+Then write the body. Math is raw LaTeX in `$...$` / `$$...$$` (rendered by
+KaTeX at runtime); code blocks are standard `<pre><code class="language-x">`
+(highlighted by Prism at runtime).
+
+To mark a revision, add `"updated": "YYYY-MM-DD"` to the post's entry.
 
 ## Checking for broken links
 

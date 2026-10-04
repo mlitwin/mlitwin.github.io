@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Post Title – Matthew Litwin</title>
-  <meta name="date" content="YYYY-MM-DD">
   <link rel="stylesheet" href="/lib/post.css">
   <link rel="stylesheet" href="/css/site.css">
   <script src="/js/site-components.js"></script>  <!-- synchronous: no defer, no async -->
@@ -14,10 +13,7 @@
 
   <main class="container">
     <article>
-      <header>
-        <h1>Post Title</h1>
-        <p><time datetime="YYYY-MM-DD">Month DD, YYYY</time></p>
-      </header>
+      <post-header></post-header>  <!-- title + dates come from /config.json -->
 
       <heading-anchors>
 

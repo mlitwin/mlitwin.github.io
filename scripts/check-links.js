@@ -52,6 +52,38 @@ function checkConfigPaths() {
 	return missing.length === 0;
 }
 
+// config.json is the source of truth for post metadata; the only thing a post
+// page still repeats is its <title>. Catch posts missing from config.json
+// (invisible in lists/nav, and <post-header> renders nothing) and <title>s
+// that have drifted from the configured title.
+function checkPostMetadata() {
+	const config = JSON.parse(readFileSync("content/config.json", "utf8"));
+	const byPath = new Map(config.posts.map((p) => [p.path, p]));
+	let ok = true;
+	for (const dir of readdirSync("content/blog")) {
+		const file = join("content/blog", dir, "index.html");
+		if (!existsSync(file)) continue;
+		const post = byPath.get(`/blog/${dir}/`);
+		if (!post) {
+			console.log(`  [unlisted] ${file} has no config.json entry`);
+			ok = false;
+			continue;
+		}
+		const title = readFileSync(file, "utf8").match(/<title>([^<]*)<\/title>/)?.[1];
+		if (!title?.startsWith(post.title)) {
+			console.log(`  [title] ${file}: <title>${title}</title> vs config "${post.title}"`);
+			ok = false;
+		}
+		for (const key of ["date", "updated"]) {
+			if (key in post && !/^\d{4}-\d{2}-\d{2}$/.test(post[key])) {
+				console.log(`  [${key}] ${post.path}: "${post[key]}" is not YYYY-MM-DD`);
+				ok = false;
+			}
+		}
+	}
+	return ok;
+}
+
 // Sites that block non-browser user agents with 403/429 regardless of
 // whether the link is actually broken (GitHub, LinkedIn, Medium all do
 // this) — treated as a warning, not a failure.
@@ -77,7 +109,7 @@ async function checkChromeLinks() {
 	return brokenCount;
 }
 
-const configPathsOk = checkConfigPaths();
+const configPathsOk = [checkConfigPaths(), checkPostMetadata()].every(Boolean);
 
 const pages = findHtmlFiles(SITE_DIR);
 const path = deployed ? pages.map((p) => `${DEPLOY_BASE}/${p}`) : pages;
