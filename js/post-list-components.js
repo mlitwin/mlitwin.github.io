@@ -1,11 +1,36 @@
+// config.json is the single source of truth for each post's title, `date`
+// (publication — drives ordering) and optional `updated` (informational only,
+// never affects ordering). Posts are sorted newest-first here, so the file's
+// own order doesn't matter.
 let configPromise;
 function getConfig() {
-	configPromise ??= fetch("/config.json").then((res) => res.json());
+	configPromise ??= fetch("/config.json")
+		.then((res) => res.json())
+		.then((config) => {
+			config.posts.sort((a, b) => b.date.localeCompare(a.date));
+			return config;
+		});
 	return configPromise;
 }
 
+// Tolerate /blog/x, /blog/x/ and /blog/x/index.html.
+function normalizePath(path) {
+	return path.replace(/index\.html$/, "").replace(/\/?$/, "/");
+}
+
+async function findCurrentPost() {
+	const { posts } = await getConfig();
+	const here = normalizePath(location.pathname);
+	const i = posts.findIndex((p) => normalizePath(p.path) === here);
+	return { posts, i, post: posts[i] };
+}
+
+function timeTag(iso) {
+	return `<time datetime="${iso}">${formatDate(iso)}</time>`;
+}
+
 function postLink(post) {
-	return `<li><a href="${post.path}">${post.title}</a> — <time datetime="${post.date}">${formatDate(post.date)}</time></li>`;
+	return `<li><a href="${post.path}">${post.title}</a> — ${timeTag(post.date)}</li>`;
 }
 
 function formatDate(iso) {
@@ -28,10 +53,24 @@ class PostArchive extends HTMLElement {
 	}
 }
 
+class PostHeader extends HTMLElement {
+	async connectedCallback() {
+		const { post } = await findCurrentPost();
+		if (!post) return;
+		const updated = post.updated
+			? ` · <span class="post-updated">Updated ${timeTag(post.updated)}</span>`
+			: "";
+		this.innerHTML = `
+			<header>
+				<h1>${post.title}</h1>
+				<p>${timeTag(post.date)}${updated}</p>
+			</header>`;
+	}
+}
+
 class PostNav extends HTMLElement {
 	async connectedCallback() {
-		const { posts } = await getConfig();
-		const i = posts.findIndex((p) => p.path === location.pathname);
+		const { posts, i } = await findCurrentPost();
 		if (i === -1) return;
 		const prev = posts[i + 1]; // older
 		const next = posts[i - 1]; // newer
@@ -46,6 +85,7 @@ class PostNav extends HTMLElement {
 
 customElements.define("recent-posts", RecentPosts);
 customElements.define("post-archive", PostArchive);
+customElements.define("post-header", PostHeader);
 customElements.define("post-nav", PostNav);
 
 // No-op on pages without math (window.renderMathInElement only exists
